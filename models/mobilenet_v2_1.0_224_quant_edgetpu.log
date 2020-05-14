@@ -1,0 +1,11 @@
+Edge TPU Compiler version 2.1.302470888
+Input: mobilenet_v2_1.0_224_quant.tflite
+Output: mobilenet_v2_1.0_224_quant_edgetpu.tflite
+
+Operator                       Count      Status
+
+DEQUANTIZE                     1          Operation is working on an unsupported data type
+RESHAPE                        1          Mapped to Edge TPU
+SOFTMAX                        1          Mapped to Edge TPU
+FULLY_CONNECTED                2          Mapped to Edge TPU
+QUANTIZE                       1          Operation is otherwise supported, but not mapped due to some unspecified limitation
