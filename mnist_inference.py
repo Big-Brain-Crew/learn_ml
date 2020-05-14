@@ -1,34 +1,56 @@
-import tensorflow as tf
-import tensorflow_datasets as tfds
-import PIL
+### ---------------------------------------------------------------------------- ###
+#  This script runs inference on a saved image using a model trained
+#  on the MNIST digit dataset. The main purpose of the script is to test 
+#  performing inference on the Coral dev board using a TFLite Edge TPU compiled 
+#  model. Later another script will be made to run live inference.
+### ---------------------------------------------------------------------------- ###
 
-assert tf.__version__.startswith('2')
-
+import platform
+from PIL import Image
+import tflite_runtime.interpreter as tflite
 import os
 import numpy as np
-import matplotlib.pyplot as plt
 
-IMAGE_SIZE = 28
-BATCH_SIZE = 128
-def normalize_img(image, label):
-    """Normalizes images: `uint8` -> `float32`."""
-    return tf.cast(image, tf.float32) / 255., label
+EDGETPU_SHARED_LIB = {
+  'Linux': 'libedgetpu.so.1',
+  'Darwin': 'libedgetpu.1.dylib',
+  'Windows': 'edgetpu.dll'
+}[platform.system()]
 
+# Create a TFLite Interpreter for running inference.
+def make_interpreter(model_file):
+
+  model_file, *device = model_file.split('@')
+
+  return tflite.Interpreter(
+      model_path=model_file,
+      experimental_delegates=[
+          tflite.load_delegate(EDGETPU_SHARED_LIB,
+                               {'device': device[0]} if device else {})
+      ])
+
+
+# Set the input tensor to the intepreter
 def set_input_tensor(interpreter, input):
+
     input_details = interpreter.get_input_details()[0]
     tensor_index = input_details['index']
     input_tensor = interpreter.tensor(tensor_index)()[0]
     input_tensor[:, :] = input
+
     # NOTE: This model uses float inputs, but if inputs were uint8,
     # we would quantize the input like this:
     #   scale, zero_point = input_details['quantization']
     #   input_tensor[:, :] = np.uint8(input / scale + zero_point)
 
+# Run inference on an image
 def classify_image(interpreter, input):
+
     set_input_tensor(interpreter, input)
-    interpreter.invoke()
+    interpreter.invoke() # Calculate inference
     output_details = interpreter.get_output_details()[0]
     output = interpreter.get_tensor(output_details['index'])
+
     # NOTE: This model uses float outputs, but if outputs were uint8,
     # we would dequantize the results like this:
     #   scale, zero_point = output_details['quantization']
@@ -36,24 +58,23 @@ def classify_image(interpreter, input):
     top_1 = np.argmax(output)
     return top_1
 
+
 def main():
 
-    image = Image.open(args.input).convert('L').resize((28, 28), Image.ANTIALIAS)
+    # Load the image
+    image = Image.open("images/digit.png").convert('L').resize((28, 28), Image.ANTIALIAS)
     image = np.expand_dims(np.array(image), 2)
 
-    interpreter = tf.lite.Interpreter('mnist_quant_edgetpu.tflite')
+    # Create the TFLite interpreter
+    # This requires a tensorflow model that has been post-quantized, converted
+    # to TFLite, and compiled for the edge TPU.
+    interpreter = make_interpreter("models/mnist_quant_edgetpu.tflite")
     interpreter.allocate_tensors()
 
-    # Collect all inference predictions in a list
-    batch_prediction = []
-
+    # Perform inference
     prediction = classify_image(interpreter, image)
-    batch_prediction.append(prediction)
+    print(prediction)
 
-    # Compare all predictions to the ground truth
-    tflite_accuracy = tf.keras.metrics.Accuracy()
-    tflite_accuracy(batch_prediction, batch_truth)
-    print("Quant TF Lite accuracy: {:.3%}".format(tflite_accuracy.result()))
 
-if __init__ == "__main__":
+if __name__ == "__main__":
     main()
