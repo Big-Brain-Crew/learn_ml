@@ -4,6 +4,8 @@ import cv2
 from classifier import Classifier
 
 
+
+
 # Instantiate a Flask app
 app = Flask(__name__)
 
@@ -24,7 +26,7 @@ def gen(camera):
 # Define the video feed on the webpage
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(Camera()),
+    return Response(gen(Classifier("classification_model.tflite")),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
