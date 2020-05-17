@@ -25,9 +25,9 @@ class Classifier(BaseClassifier):
     # image: image to be cropped.
     # target_dims: Output dimensions. Expected as a 2D list.
     # i.e. to output a RGB image of size (28,28,3), pass [28,28].
-    def crop_resize_square(self, image, target_dims):
+    def crop_resize_square(self, img, target_dims):
         # Get the shape of the input image
-        input_dims = image.shape
+        input_dims = img.shape
 
         # Get the smallest input dimension
         smallest_dim_idx = np.argmin(input)
@@ -39,13 +39,34 @@ class Classifier(BaseClassifier):
         height_crop_end   = int(input_dims[1] - height_crop_start)
 
         # Crop the image
-        cropped = image[width_crop_start:width_crop_end, height_crop_start: height_crop_end]
+        cropped = img[width_crop_start:width_crop_end, height_crop_start: height_crop_end]
 
         # Return resized image
         return cv2.resize(cropped, dsize=tuple(target_dims))
 
-    def convert_to_gray(self, image):
-        return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # Conver the image to gray scale
+    def convert_to_gray(self, img):
+        return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Format the image to match the graph tensor input
+    # Either (1, X, Y) or (1, X, Y, 1)
+    def format_input(self, img,  input_details):
+
+        input_shape = input_details[0]['shape']
+
+        # Add first dimension
+        input_data = np.expand_dims(img, axis = 0)
+
+        # Add end dimension if model expects it
+        if input_shape.shape[0] > 3 and input_shape[3] == 1:
+            input_data = np.expand_dims(input_data, axis=3)
+
+        # Convert input to float if model expects it
+        # This is necessary for tf2 models
+        if input_details[0]['dtype'] == np.float32:
+            input_data = input_data.astype(np.float32)
+
+        return input_data
 
     def frames(self):
         # Get input and output tensors
@@ -54,6 +75,7 @@ class Classifier(BaseClassifier):
 
         input_shape = input_details[0]['shape']
 
+        # Open camera capture
         camera = cv2.VideoCapture(self.video_source)
         if not camera.isOpened():
             raise RuntimeError('Could not start camera.')
@@ -63,38 +85,15 @@ class Classifier(BaseClassifier):
 
             # read current frame
             _, img = camera.read()
-            orig_img = img.copy()
+            original_img = img.copy()
 
-            # Model expects square images
-            img = self.crop_resize_square(img, input_shape[1:3])
+            # Perform image preprocessing
+            img = self.preprocess(img, input_shape)
 
-            # Image needs to be black and white
-            # Input tensor may be of the shape (1,X,Y) or (1,X,Y,dim)
-            if input_shape.shape[0] < 4 or input_shape[3] == 1:
-                img = self.convert_to_gray(img)
+            # Format the image as tensor input
+            input_data = self.format_input(img, input_details)
 
-            # Threshold
-            _, img = cv2.threshold(img, 127, 255, cv2.THRESH_OTSU)
-
-            # Invert
-            img = cv2.bitwise_not(img)
-
-            # Normalize the image
-            img = img / 255.0
-
-            # Add first dimension
-            input_data = np.expand_dims(img, axis = 0)
-
-            # Add end dimension if model expects it
-            if input_shape.shape[0] > 3 and input_shape[3] == 1:
-                input_data = np.expand_dims(input_data, axis=3)
-
-            # Convert input to float if model expects it
-            # This is necessary for tf2 models
-            if input_details[0]['dtype'] == np.float32:
-                input_data = input_data.astype(np.float32)
-
-            # Test model on random input data
+            # Set the image as the input tensor 
             self.interpreter.set_tensor(input_details[0]['index'], input_data)
 
             # Perform inference
@@ -104,10 +103,45 @@ class Classifier(BaseClassifier):
             # Use `tensor()` in order to get a pointer to the tensor.
             probabilities = np.squeeze(self.interpreter.get_tensor(output_details[0]['index']))
 
+            # The result is the maximum probability
             result = np.argmax(probabilities)
 
             # Display result on original image
-            cv2.putText(orig_img, str(result), (0,100), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(original_img, str(result), (0,100), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 0), 2, cv2.LINE_AA)
 
             # encode
-            yield cv2.imencode('.jpg', orig_img)[1].tobytes()
+            yield cv2.imencode('.jpg', original_img)[1].tobytes()
+    
+
+    # Perform all required image preprocessing. Should be implemented by child class.
+    def preprocess(self, img, input_shape):
+        pass
+
+# Number classifier trained on the MNIST digits dataset.
+class MnistClassifier(Classifier):
+    def __init__(self, model_path):
+        super(MnistClassifier, self).__init__(model_path)
+    
+    # The MNIST dataset consists of white numbers on a black background.
+    # The camera image must be cropped to a square, resized, and converted
+    # to a similar black background and white number.
+    def preprocess(self, img, input_shape):
+
+        # Model expects square images
+        img = self.crop_resize_square(img, input_shape[1:3])
+
+        # Image needs to be black and white
+        # Input tensor may be of the shape (1,X,Y) or (1,X,Y,dim)
+        if input_shape.shape[0] < 4 or input_shape[3] == 1:
+            img = self.convert_to_gray(img)
+
+        # Threshold
+        _, img = cv2.threshold(img, 127, 255, cv2.THRESH_OTSU)
+
+        # Invert
+        img = cv2.bitwise_not(img)
+
+        # Normalize the image
+        img = img / 255.0
+
+        return img
