@@ -13,4 +13,4 @@ deploy:
   provider: script
   script: bash docs/deploy.sh
   on:
-    branch: doc_generation
+    branch: master
