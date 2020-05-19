@@ -19,6 +19,7 @@ git config user.name "Travis Builder"
 git config user.email "$GH_EMAIL"
 
 # Copy the HTML files to the gh-pages branch
+rm -rf ./
 cp -R ../$REPO/docs/_build/html/* ./
 
 git add -A
