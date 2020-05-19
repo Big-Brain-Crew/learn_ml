@@ -7,3 +7,4 @@ cd docs
 sphinx-apidoc -o . ..
 # Generate the html
 make html
+cd ..

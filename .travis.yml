@@ -9,6 +9,7 @@ install: "pip install sphinx sphinx_rtd_theme"
 script: docs/build.sh
 
 deploy:
+  skip_cleanup: true
   provider: script
   script: docs/deploy.sh
   on:
