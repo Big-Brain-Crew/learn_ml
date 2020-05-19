@@ -10,6 +10,6 @@ script: docs/build.sh sphinx-build -nWT -b dummy . _build/html
 
 deploy:
   provider: script
-  script: bash scripts/deploy.sh
+  script: bash docs/deploy.sh
   on:
     branch: master
