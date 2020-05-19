@@ -1,3 +1,6 @@
 #!/bin/bash
 
-ls
+cd docs
+
+sphinx-apidoc -o . ..
+make html
