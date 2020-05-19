@@ -23,5 +23,5 @@ rm -rf ./
 cp -R ../$REPO/docs/_build/html/* ./
 
 git add -A
-git commit -m "Autodoc commit for $COMMIT."
+git commit -m "Autodoc commit for $TRAVIS_COMMIT."
 git push -q origin gh-pages
