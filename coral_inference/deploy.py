@@ -25,7 +25,7 @@ def deploy(address, model, identity_file = None, password = None):
     print("Transferring model to Anything Sensor...")
     # SCPCLient takes a paramiko transport as an argument
     with SCPClient(ssh.get_transport()) as scp:
-        scp.put(model, "/home/mendel/learn_ml/coral_inference/classification/classification_model.tflite")
+        scp.put(model, "/home/mendel/learn_ml/coral_inference/classification/" + model)
     print("Transfer Successful!")
 
 
