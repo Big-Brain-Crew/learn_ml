@@ -1,0 +1,7 @@
+train\_mnist module
+===================
+
+.. automodule:: train_mnist
+   :members:
+   :undoc-members:
+   :show-inheritance:

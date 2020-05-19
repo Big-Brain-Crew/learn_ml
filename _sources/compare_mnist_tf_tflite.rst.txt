@@ -1,0 +1,7 @@
+compare\_mnist\_tf\_tflite module
+=================================
+
+.. automodule:: compare_mnist_tf_tflite
+   :members:
+   :undoc-members:
+   :show-inheritance:
