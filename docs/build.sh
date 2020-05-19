@@ -4,7 +4,7 @@
 cd docs
 
 # Build API docs from the docstrings
-sphinx-apidoc -o . ..
+sphinx-apidoc --implicit-namespaces -f -o . ..
 # Generate the html
 make html
 cd ..
