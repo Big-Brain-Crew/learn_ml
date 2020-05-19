@@ -174,72 +174,8 @@
 <div class="section" id="learn-ml-coral-inference-classification-app-module">
 <h2>learn_ml.coral_inference.classification.app module<a class="headerlink" href="#learn-ml-coral-inference-classification-app-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-learn_ml.coral_inference.classification.base_classifier">
-<span id="learn-ml-coral-inference-classification-base-classifier-module"></span><h2>learn_ml.coral_inference.classification.base_classifier module<a class="headerlink" href="#module-learn_ml.coral_inference.classification.base_classifier" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="learn_ml.coral_inference.classification.base_classifier.BaseClassifier">
-<em class="property">class </em><code class="sig-prename descclassname">learn_ml.coral_inference.classification.base_classifier.</code><code class="sig-name descname">BaseClassifier</code><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/base_classifier.html#BaseClassifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.BaseClassifier" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt id="learn_ml.coral_inference.classification.base_classifier.BaseClassifier.event">
-<code class="sig-name descname">event</code><em class="property"> = &lt;learn_ml.coral_inference.classification.base_classifier.CameraEvent object&gt;</em><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.BaseClassifier.event" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="learn_ml.coral_inference.classification.base_classifier.BaseClassifier.frame">
-<code class="sig-name descname">frame</code><em class="property"> = None</em><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.BaseClassifier.frame" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.coral_inference.classification.base_classifier.BaseClassifier.frames">
-<em class="property">static </em><code class="sig-name descname">frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/base_classifier.html#BaseClassifier.frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.BaseClassifier.frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Generator that returns frames from the camera.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.coral_inference.classification.base_classifier.BaseClassifier.get_frame">
-<code class="sig-name descname">get_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/base_classifier.html#BaseClassifier.get_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.BaseClassifier.get_frame" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the current camera frame.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="learn_ml.coral_inference.classification.base_classifier.BaseClassifier.last_access">
-<code class="sig-name descname">last_access</code><em class="property"> = 0</em><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.BaseClassifier.last_access" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="learn_ml.coral_inference.classification.base_classifier.BaseClassifier.thread">
-<code class="sig-name descname">thread</code><em class="property"> = None</em><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.BaseClassifier.thread" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="learn_ml.coral_inference.classification.base_classifier.CameraEvent">
-<em class="property">class </em><code class="sig-prename descclassname">learn_ml.coral_inference.classification.base_classifier.</code><code class="sig-name descname">CameraEvent</code><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/base_classifier.html#CameraEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.CameraEvent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>An Event-like class that signals all active clients when a new frame is
-available.</p>
-<dl class="py method">
-<dt id="learn_ml.coral_inference.classification.base_classifier.CameraEvent.clear">
-<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/base_classifier.html#CameraEvent.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.CameraEvent.clear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invoked from each client’s thread after a frame was processed.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.coral_inference.classification.base_classifier.CameraEvent.set">
-<code class="sig-name descname">set</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/base_classifier.html#CameraEvent.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.CameraEvent.set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invoked by the camera thread when a new frame is available.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.coral_inference.classification.base_classifier.CameraEvent.wait">
-<code class="sig-name descname">wait</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/base_classifier.html#CameraEvent.wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.base_classifier.CameraEvent.wait" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invoked from each client’s thread to wait for the next frame.</p>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="learn-ml-coral-inference-classification-base-classifier-module">
+<h2>learn_ml.coral_inference.classification.base_classifier module<a class="headerlink" href="#learn-ml-coral-inference-classification-base-classifier-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="learn-ml-coral-inference-classification-classifier-module">
 <h2>learn_ml.coral_inference.classification.classifier module<a class="headerlink" href="#learn-ml-coral-inference-classification-classifier-module" title="Permalink to this headline">¶</a></h2>
@@ -247,8 +183,8 @@ available.</p>
 <div class="section" id="learn-ml-coral-inference-classification-mnist-inference-module">
 <h2>learn_ml.coral_inference.classification.mnist_inference module<a class="headerlink" href="#learn-ml-coral-inference-classification-mnist-inference-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-learn_ml.coral_inference.classification">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-learn_ml.coral_inference.classification" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
