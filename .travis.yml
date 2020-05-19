@@ -11,6 +11,6 @@ script: docs/build.sh
 deploy:
   skip_cleanup: true
   provider: script
-  script: docs/deploy.sh
+  script: bash docs/deploy.sh
   on:
     branch: doc_generation
