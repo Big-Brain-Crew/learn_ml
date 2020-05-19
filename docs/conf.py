@@ -30,7 +30,8 @@ author = 'Alexander Barnett, Swapnil Pande, Alexander Stephens'
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.githubpages",
-    "sphinx.ext.viewcode"
+    "sphinx.ext.viewcode",
+    'sphinx.ext.napoleon'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
