@@ -1,12 +1,12 @@
 language: python
 python:
-  - "2.7"
+  - "3.6"
 
 sudo: false
 cache: pip
 
 install: "pip install sphinx sphinx_rtd_theme"
-script: docs/build.sh sphinx-build -nWT -b dummy . _build/html
+script: docs/build.sh
 
 deploy:
   provider: script
