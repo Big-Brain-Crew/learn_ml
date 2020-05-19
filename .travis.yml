@@ -1,0 +1,15 @@
+language: python
+python:
+  - "2.7"
+
+sudo: false
+cache: pip
+
+install: "pip install sphinx sphinx_rtd_theme"
+script: docs/build.sh sphinx-build -nWT -b dummy . _build/html
+
+deploy:
+  provider: script
+  script: bash scripts/deploy.sh
+  on:
+    branch: master
