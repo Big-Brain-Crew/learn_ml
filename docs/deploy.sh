@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# cd out of the repo
+cd ..
+
+# Clone the repo to the gh-pages branch
+git clone -b gh-pages "https://$GH_TOKEN@github.com/$ORG/$REPO.git" gh-pages
+
+# Update git config.
+git config user.name "Travis Builder"
+git config user.email "$GH_EMAIL"
+
+# Copy the HTML files to the gh-pages branch
+cp -R ../$REPO/docs/_build/html/* ./
+
+git add -add
+git commit "Autodoc commit for $COMMIT."
+git push -q origin gh-pages
