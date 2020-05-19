@@ -22,5 +22,5 @@ git config user.email "$GH_EMAIL"
 cp -R ../$REPO/docs/_build/html/* ./
 
 git add -A
-git commit "Autodoc commit for $COMMIT."
+git commit -m "Autodoc commit for $COMMIT."
 git push -q origin gh-pages
