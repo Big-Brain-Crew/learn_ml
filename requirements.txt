@@ -1,3 +1,0 @@
-scp
-paramiko
-argparse
