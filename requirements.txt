@@ -2,3 +2,6 @@ scp
 paramiko
 argparse
 matplotlib
+tensorflow
+flask
+Pillow
