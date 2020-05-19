@@ -2,13 +2,11 @@
 
 # cd out of the repo
 cd ..
-ls
 
 # Clone the repo to the gh-pages branch
 git clone -b gh-pages "https://$GH_TOKEN@github.com/$ORG/$REPO.git" gh-pages
 
 cd gh-pages
-ls
 
 # Update git config.
 git config user.name "Travis Builder"
