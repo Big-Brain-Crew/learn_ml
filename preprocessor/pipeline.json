@@ -1,0 +1,34 @@
+{
+    "pipeline": {
+        "dataset": {
+            "label": "mnist",
+            "type": "image"
+        },
+        "operations": [
+            {
+                "map": [
+                    {"map_func": "normalize_img"},
+                    {"num_parallel_calls": "autotune"}
+                ]
+            },
+            {
+                "cache": []
+            },
+            {
+                "shuffle": [
+                    {"buffer_size": "train_size"}
+                ]
+            },
+            {
+                "batch": [
+                    {"batch_size": 128}
+                ]
+            },
+            {
+                "prefetch": [
+                    {"buffer_size": "autotune"}
+                ]
+            }
+        ]
+    }
+}
