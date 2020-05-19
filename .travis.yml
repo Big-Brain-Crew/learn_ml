@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.6"
+
+sudo: false
+cache: pip
+
+install: "pip install sphinx sphinx_rtd_theme"
+script: docs/build.sh
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: bash docs/deploy.sh
+  on:
+    branch: master
