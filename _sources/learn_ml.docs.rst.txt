@@ -1,0 +1,14 @@
+learn\_ml.docs namespace
+========================
+
+Submodules
+----------
+
+learn\_ml.docs.conf module
+--------------------------
+
+.. automodule:: learn_ml.docs.conf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+

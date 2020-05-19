@@ -1,0 +1,31 @@
+learn\_ml namespace
+===================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   learn_ml.coral_inference
+   learn_ml.docs
+
+Submodules
+----------
+
+learn\_ml.compare\_mnist\_tf\_tflite module
+-------------------------------------------
+
+.. automodule:: learn_ml.compare_mnist_tf_tflite
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+learn\_ml.train\_mnist module
+-----------------------------
+
+.. automodule:: learn_ml.train_mnist
+   :members:
+   :undoc-members:
+   :show-inheritance:
+

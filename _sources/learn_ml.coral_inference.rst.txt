@@ -1,0 +1,30 @@
+learn\_ml.coral\_inference namespace
+====================================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   learn_ml.coral_inference.classification
+
+Submodules
+----------
+
+learn\_ml.coral\_inference.convert\_to\_edgetpu module
+------------------------------------------------------
+
+.. automodule:: learn_ml.coral_inference.convert_to_edgetpu
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+learn\_ml.coral\_inference.deploy module
+----------------------------------------
+
+.. automodule:: learn_ml.coral_inference.deploy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+

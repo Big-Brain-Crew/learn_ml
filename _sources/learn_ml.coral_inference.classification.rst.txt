@@ -1,0 +1,46 @@
+learn\_ml.coral\_inference.classification package
+=================================================
+
+Submodules
+----------
+
+learn\_ml.coral\_inference.classification.app module
+----------------------------------------------------
+
+.. automodule:: learn_ml.coral_inference.classification.app
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+learn\_ml.coral\_inference.classification.base\_classifier module
+-----------------------------------------------------------------
+
+.. automodule:: learn_ml.coral_inference.classification.base_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+learn\_ml.coral\_inference.classification.classifier module
+-----------------------------------------------------------
+
+.. automodule:: learn_ml.coral_inference.classification.classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+learn\_ml.coral\_inference.classification.mnist\_inference module
+-----------------------------------------------------------------
+
+.. automodule:: learn_ml.coral_inference.classification.mnist_inference
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: learn_ml.coral_inference.classification
+   :members:
+   :undoc-members:
+   :show-inheritance:

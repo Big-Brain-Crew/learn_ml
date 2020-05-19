@@ -4,5 +4,4 @@ learn_ml
 .. toctree::
    :maxdepth: 4
 
-   compare_mnist_tf_tflite
-   train_mnist
+   learn_ml
