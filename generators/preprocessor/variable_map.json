@@ -1,0 +1,6 @@
+{
+    "variable_map" : {
+        "train_size" : "self.ds_info.splits['train'].num_examples",
+        "autotune" : "tf.data.experimental.AUTOTUNE"
+    }
+}

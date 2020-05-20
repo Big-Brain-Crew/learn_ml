@@ -7,7 +7,7 @@
 import os
 import sys
 import random
-sys.path.append(os.path.join(os.getcwd(), "preprocessor"))
+sys.path.append(os.path.join(os.getcwd(), "generators/preprocessor"))
 
 import numpy as np
 import tensorflow as tf
@@ -19,7 +19,7 @@ from tensorflow.keras.layers import (Conv2D, Dense, Dropout, Flatten,
 import tensorflow_datasets as tfds
 import argparse
 
-if not os.path.exists("preprocessor/pipeline.py"):
+if not os.path.exists("generators/preprocessor/pipeline.py"):
     raise Exception("Must generate pipeline.py before using this script. " + \
                     "Run pipeline_generator.py to do so.")
     
