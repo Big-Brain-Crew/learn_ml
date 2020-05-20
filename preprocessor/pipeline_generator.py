@@ -131,16 +131,17 @@ class PipelineGenerator(object):
             specific function names, i.e. tf2 function calls.
         '''
 
-        for i in range(0, len(params)):
-            _param = params[i]
-            value = list(_param.values())[0]
+        # Create a new dictionary to store the new mapped params
+        mapped_params = {}
 
+        for _param, value in params.items():
             if value in self.variable_map:
-
                 # Replace parameter code for its real value
-                params[i][list(_param.keys())[0]] = self.variable_map[value]
+                mapped_params[_param] = self.variable_map[value]
+            else:
+                mapped_params[_param] = value
 
-        return params
+        return mapped_params
 
     def operations(self):
         ''' Generate code for all preprocessing operations.
