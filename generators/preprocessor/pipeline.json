@@ -1,33 +1,37 @@
 {
     "pipeline": {
         "dataset": {
-            "label": "mnist",
-            "type": "image"
+            "label": "mnist"
         },
-       "operations": [
+        "operations": [
             {
-                "name" : "map",
-                "args" : {
+                "name": "map",
+                "args": {
                     "map_func": "normalize_img",
                     "num_parallel_calls": "autotune"
                 }
             },
             {
-                "name" : "cache",
-                "args" : {}
+                "name": "cache",
+                "args": {}
             },
             {
-                "name" : "shuffle",
-                "args":  {"buffer_size": "train_size"}
+                "name": "shuffle",
+                "args": {
+                    "buffer_size": "train_size"
+                }
             },
             {
-                "name" : "batch",
-                "args": {"batch_size" : 128}
-
+                "name": "batch",
+                "args": {
+                    "batch_size": 128
+                }
             },
             {
-                "name" : "prefetch",
-                "args":  {"buffer_size": "autotune"}
+                "name": "prefetch",
+                "args": {
+                    "buffer_size": "autotune"
+                }
             }
         ]
     }

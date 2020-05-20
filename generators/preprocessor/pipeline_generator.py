@@ -25,7 +25,7 @@ class PipelineGenerator(PythonGenerator):
 
         super(PipelineGenerator, self).__init__(out="generators/preprocessor/pipeline.py")
 
-    def __indent(self, inc=1):
+    def _indent(self, inc=1):
         ''' Increments the indent level of the output string.
         '''
 
@@ -43,13 +43,13 @@ class PipelineGenerator(PythonGenerator):
 
         return self.indent_str * self.indent_level
 
-    def __write(self, line):
+    def _write(self, line):
         ''' Writes a line of code to the file.
         '''
 
         self.out.write(self.__spaces() + line)
 
-    def __write_docstring(self, line):
+    def _write_docstring(self, line):
         ''' Writes a line of docstring to the file.
             line: Docstring comment without docstring quotes.
         '''
@@ -57,68 +57,68 @@ class PipelineGenerator(PythonGenerator):
         self.out.write(self.__spaces() + "'''" + line)
         self.out.write(self.__spaces() + "'''\n\n")
 
-    def __start_method(self):
+    def _start_method(self):
         '''Formats out string to generate a method.
         '''
 
-        self.__indent()
+        self._indent()
 
-    def __end_method(self):
+    def _end_method(self):
         '''Formats out string once method is done.
         '''
 
-        self.__write("\n\n")
+        self._write("\n\n")
         self.__unindent(2)
 
-    def __imports(self):
+    def _imports(self):
         ''' Generate import statements.
         '''
 
-        self.__write("# Imports\n")
-        self.__write("import os\n")
-        self.__write("import sys\n")
-        self.__write("sys.path.append(os.path.join(os.getcwd(), \"generators/preprocessor\"))\n")
-        self.__write("import tensorflow as tf\n")
-        self.__write("import tensorflow_datasets as tfds\n")
-        self.__write("import json\n")
-        self.__write("from tf_utils import *\n")
-        self.__write("\n\n")
+        self._write("# Imports\n")
+        self._write("import os\n")
+        self._write("import sys\n")
+        self._write("sys.path.append(os.path.join(os.getcwd(), \"generators/preprocessor\"))\n")
+        self._write("import tensorflow as tf\n")
+        self._write("import tensorflow_datasets as tfds\n")
+        self._write("import json\n")
+        self._write("from tf_utils import *\n")
+        self._write("\n\n")
 
-    def __class_def(self):
+    def _class_def(self):
         ''' Generate DatasetPipeline class definition.
         '''
 
         # DatasetPipeline class
-        self.__write("class DatasetPipeline(object):\n")
-        self.__indent()
-        self.__write_docstring("Represents a dataset that has been preprocessed.\n")
+        self._write("class DatasetPipeline(object):\n")
+        self._indent()
+        self._write_docstring("Represents a dataset that has been preprocessed.\n")
 
         # Init
-        self.__write("def __init__(self):\n\n")
-        self.__indent()
-        self.__write(
+        self._write("def __init__(self):\n\n")
+        self._indent()
+        self._write(
             "(self.ds_train, self.ds_test), self.ds_info = self.load_dataset()\n\n")
-        self.__write("self.preprocess()\n")
+        self._write("self.preprocess()\n")
 
-        self.__end_method()
+        self._end_method()
 
-    def __load_dataset(self):
+    def _load_dataset(self):
         '''Generate code for loading the dataset.
         '''
 
-        self.__start_method()
-        self.__write("def load_dataset(self):\n")
-        self.__indent()
-        self.__write_docstring("Load the dataset from Tensorflow Datasets.\n")
+        self._start_method()
+        self._write("def load_dataset(self):\n")
+        self._indent()
+        self._write_docstring("Load the dataset from Tensorflow Datasets.\n")
 
         # Load dataset from Tensorflow Datasets
-        self.__write("return tfds.load(\'{ds}\',".format(ds=self.dataset) +
+        self._write("return tfds.load(\'{ds}\',".format(ds=self.dataset) +
                      "split=['train', 'test']," +
                      "shuffle_files=True," +
                      "as_supervised=True," +
                      "with_info = True)\n")
 
-        self.__end_method()
+        self._end_method()
 
     def __map_variables(self, params):
         ''' Convert parameter value representations to their actual values.
@@ -138,14 +138,14 @@ class PipelineGenerator(PythonGenerator):
 
         return mapped_params
 
-    def __operations(self):
+    def _operations(self):
         ''' Generate code for all preprocessing operations.
         '''
 
-        self.__start_method()
-        self.__write("def preprocess(self):\n")
-        self.__indent()
-        self.__write_docstring("Apply data preprocessing operations.\n")
+        self._start_method()
+        self._write("def preprocess(self):\n")
+        self._indent()
+        self._write_docstring("Apply data preprocessing operations.\n")
 
         for _op in self.ops:
 
@@ -161,41 +161,41 @@ class PipelineGenerator(PythonGenerator):
 
             # Concatenate them all
             op_str = fn_str + '(' + param_str + ')\n'
-            self.__write(op_str)
+            self._write(op_str)
 
-        self.__end_method()
+        self._end_method()
 
-    def __helper_funcs(self):
+    def _helper_funcs(self):
         ''' Generates get/set helper functions.
         '''
 
         # def get_training_dataset()
-        self.__start_method()
-        self.__write("def get_training_dataset(self):\n")
-        self.__indent()
-        self.__write_docstring("Returns the training dataset.\n")
-        self.__write("return self.ds_train\n")
+        self._start_method()
+        self._write("def get_training_dataset(self):\n")
+        self._indent()
+        self._write_docstring("Returns the training dataset.\n")
+        self._write("return self.ds_train\n")
 
-        self.__end_method()
+        self._end_method()
 
         # def get_test_dataset()
-        self.__start_method()
-        self.__write("def get_test_dataset(self):\n")
-        self.__indent()
-        self.__write_docstring("Returns the test dataset.\n")
-        self.__write("return self.ds_test\n")
+        self._start_method()
+        self._write("def get_test_dataset(self):\n")
+        self._indent()
+        self._write_docstring("Returns the test dataset.\n")
+        self._write("return self.ds_test\n")
 
-        self.__end_method()
+        self._end_method()
 
     def gen_pipeline(self):
         ''' Generate all code part of the dataset pipeline.
         '''
 
-        self.__imports()
-        self.__class_def()
-        self.__load_dataset()
-        self.__operations()
-        self.__helper_funcs()
+        self._imports()
+        self._class_def()
+        self._load_dataset()
+        self._operations()
+        self._helper_funcs()
 
         print("Saved to {}".format(self.out_file_name))
 
@@ -208,27 +208,63 @@ class PipelineGenerator(PythonGenerator):
         return self.out
 
 
-# class PipelineConfigGenerator(JsonGenerator):
-#     def __init__(self):
+class PipelineConfigGenerator(JsonGenerator):
+    ''' Generates a pipeline config JSON file based on user selections.
 
-#         self.config_file = "generators/preprocessor/pipeline.json"
-#         self.out = open(self.config_file, "w+")
+    Generates a config file that describes a dataset preprocessing pipeline
+    based off a user's selection of dataset source and preprocessing operations.
+    '''
 
-#         self.pipeline = {}
-#         self.pipeline["pipeline"] = {}
-#         self.pipeline["pipeline"]["dataset"] = {}
-#         self.pipeline["pipeline"]["operations"] = []
+    def __init__(self, out_file):
 
-#         super(PipelineConfigGenerator, self).__init__()
+        super(PipelineConfigGenerator, self).__init__(out_file)
 
-#     def add_dataset(self, label):
-#         self.pipeline["pipeline"]["dataset"]["label"] = label
+        # Add the root dict
+        self.add_entry("pipeline", {})
 
-#     def add_operation(self, name, variables=None):
-#         operation = {
-#             name: [{var[0]: var[1]} if var is not None for var in variables]
-#         }
-#         self.pipeline["pipeline"]["operations"].append(operation)
+        # Add the dataset and operations 
+        self.indent("pipeline")
+        self.add_entry("dataset", {})
+        self.add_entry("operations", [])
 
-#     def create_config(self):
-#         json.dump(self.pipeline, self.out, indent=4)
+    def add_dataset(self, label):
+        ''' Add a dataset source. 
+
+        All available datasets can be found in the Tensorflow Datasets catalog.
+            (https://www.tensorflow.org/datasets/catalog/overview)
+
+        Args:
+            label : dataset identifier. Equivalent to the Tensorflow dataset name.
+        '''
+
+        self.add_entry("dataset", {"label" : label})
+
+    def add_operation(self, op_name, args={}):
+        ''' Add a preprocessing operation.
+
+        A list of all allowable operations can be found as methods for the tf.data.Dataset class
+            (https://www.tensorflow.org/api_docs/python/tf/data/Dataset)
+
+        Args:
+            op_name : Name of the operation. Equivalent to a tf.Dataset method name.
+            args : Dictionary of arguments (param : value) passed to the method. The value doesn't 
+                always correspond to the actual argument so that functionality can be abstracted 
+                from specific machine learning libraries. Check variable_map.json for all values 
+                and their representations.
+
+            Example usage:
+
+            args = {
+                    "map_func" : "normalize_img",
+                    "num_parallel_calls" : "autotune"
+                    }
+
+            pipeline.add_operation("map", args)
+        '''
+
+        operation = {
+            "name" : op_name,
+            "args" : args
+        }
+        self.add_entry("operations", operation)
+    
