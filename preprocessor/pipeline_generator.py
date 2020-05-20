@@ -55,7 +55,7 @@ class PipelineGenerator(object):
         self.out.write(self.spaces() + line)
 
     def write_docstring(self, line):
-        ''' Writes a line of docstring to the file. 
+        ''' Writes a line of docstring to the file.
             line: Docstring comment without docstring quotes.
         '''
 
@@ -127,18 +127,17 @@ class PipelineGenerator(object):
 
     def map_variables(self, params):
         ''' Convert parameter value representations to their actual values.
-            This is necessary to keep the pipeline config file independent of 
+            This is necessary to keep the pipeline config file independent of
             specific function names, i.e. tf2 function calls.
         '''
 
-        for i in range(0, len(params)):
-            _param = params[i]
-            value = list(_param.values())[0]
+        for _param in enumerate(params):
+            value = list(_param[1].values())[0]
 
             if value in self.variable_map:
 
                 # Replace parameter code for its real value
-                params[i][list(_param.keys())[0]] = self.variable_map[value]
+                params[_param[0]][list(_param[1].keys())[0]] = self.variable_map[value]
 
         return params
 
