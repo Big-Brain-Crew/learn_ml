@@ -7,7 +7,6 @@
 import os
 import sys
 import random
-sys.path.append(os.path.join(os.getcwd(), "generators/preprocessor"))
 
 import numpy as np
 import tensorflow as tf
@@ -23,7 +22,7 @@ if not os.path.exists("generators/preprocessor/pipeline.py"):
     raise Exception("Must generate pipeline.py before using this script. " + \
                     "Run pipeline_generator.py to do so.")
     
-from pipeline import DatasetPipeline
+from generators.preprocessor.pipeline import DatasetPipeline
 
 
 def build_model():

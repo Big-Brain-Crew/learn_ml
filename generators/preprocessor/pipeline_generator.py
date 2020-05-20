@@ -5,10 +5,11 @@
 import json
 import os
 import sys
-sys.path.append(os.path.join(os.getcwd(), "generators/preprocessor"))
+
+from generators.python_generator import PythonGenerator
 
 
-class PipelineGenerator(object):
+class PipelineGenerator(PythonGenerator):
     '''Generates a dataset preprocessing pipeline based off a JSON config file.
     '''
 
@@ -25,10 +26,7 @@ class PipelineGenerator(object):
         self.dataset = self.pipeline["dataset"]["label"]  # Label for dataset being used
         self.ops = self.pipeline["operations"]  # Preprocessing performed on the dataset
 
-        self.out = open("generators/preprocessor/pipeline.py", "w+")  # Code written to this file
-
-        self.indent_level = 0  # Keeps track of current indentation
-        self.indent_str = "    "
+        super(PipelineGenerator, self).__init__(out="generators/preprocessor/pipeline.py")
 
     def __indent(self, inc=1):
         ''' Increments the indent level of the output string.
@@ -201,6 +199,8 @@ class PipelineGenerator(object):
         self.__operations()
         self.__helper_funcs()
 
+        print("Saved to {}".format(self.out_file_name))
+
     def get_pipeline_file_name(self):
         '''Returns the name of the generated pipeline script.
 
@@ -208,16 +208,3 @@ class PipelineGenerator(object):
         '''
 
         return self.out
-
-
-def main():
-    '''Generate a dataset pipeline script.
-    '''
-
-    pipe_gen = PipelineGenerator(pipeline_config="generators/preprocessor/pipeline.json",
-                                 mapping_config="generators/preprocessor/variable_map.json")
-    pipe_gen.gen_pipeline()
-
-
-if __name__ == "__main__":
-    main()
