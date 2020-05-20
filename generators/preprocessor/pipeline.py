@@ -1,11 +1,7 @@
 # Imports
-import os
-import sys
-sys.path.append(os.path.join(os.getcwd(), "generators/preprocessor"))
 import tensorflow as tf
 import tensorflow_datasets as tfds
-import json
-from preprocessor.tf_utils import *
+from tf_utils import *
 
 
 class DatasetPipeline(object):

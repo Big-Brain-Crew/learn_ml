@@ -1,29 +1,31 @@
-''' This script generates a dataset pipeline script based off a JSON config file.
- This config  file is generated from user inputs on the frontend. The generated script
- describes a DatasetPipeline object that can then be used for agnostic model training.
+'''
 '''
 import json
 from generators.base_generators import PythonGenerator, JsonGenerator
 
 
-class PipelineGenerator(PythonGenerator):
-    '''Generates a dataset preprocessing pipeline based off a JSON config file.
+class ModelGenerator(PythonGenerator):
+    '''Generates a MNIST model based off a JSON config file.
     '''
 
-    def __init__(self, pipeline_config="generators/preprocessor/pipeline.json",
-                 mapping_config="generators/preprocessor/variable_map.json"):
-        assert pipeline_config is not None
+    def __init__(self, model_config="generators/model/model.json",
+                 mapping_config="generators/model/model_variable_map.json"):
+        assert model_config is not None
 
         # Load config files
-        config_file = open(pipeline_config)  # JSON defining pipeline
+        config_file = open(model_config)  # JSON defining pipeline
         mapping_file = open(mapping_config)  # JSON defining parameter representations
-        self.pipeline = json.load(config_file)["pipeline"]
-        self.variable_map = json.load(mapping_file)["variable_map"]
+        self.model = json.load(config_file)["model"]
 
-        self.dataset = self.pipeline["dataset"]["label"]  # Label for dataset being used
-        self.ops = self.pipeline["operations"]  # Preprocessing performed on the dataset
+        self.variable_map = json.load(mapping_file)["model_map"]
+        self.model_name_map = self.variable_map["model_name_map"]
+        self.arg_map = self.variable_map["arg_map"]["args"]
+        self.value_map = self.variable_map["arg_map"]["values"]
 
-        super(PipelineGenerator, self).__init__(out="generators/preprocessor/pipeline.py")
+        self.model_name = self.model["model"]["model_name"]  # Label for dataset being used
+        self.layers = self.model["layers"]  # Preprocessing performed on the dataset
+
+        super(ModelGenerator, self).__init__(out="generators/model/model.py")
 
     def _imports(self):
         ''' Generate import statements.
@@ -31,7 +33,6 @@ class PipelineGenerator(PythonGenerator):
 
         self._write("# Imports\n")
         self._write("import tensorflow as tf\n")
-        self._write("import tensorflow_datasets as tfds\n")
         self._write("from tf_utils import *\n")
         self._write("\n\n")
 
@@ -40,38 +41,20 @@ class PipelineGenerator(PythonGenerator):
         '''
 
         # DatasetPipeline class
-        self._write("class DatasetPipeline(object):\n")
+        self._write("class Model(object):\n")
         self._indent()
-        self._write_docstring("Represents a dataset that has been preprocessed.\n")
+        self._write_docstring("Represents a Tensorflow Model.\n")
 
         # Init
         self._write("def __init__(self):\n\n")
         self._indent()
         self._write(
-            "(self.ds_train, self.ds_test), self.ds_info = self.load_dataset()\n\n")
-        self._write("self.preprocess()\n")
+            "self.model = self.build_model()\n\n")
 
         self._end_method()
 
-    def _load_dataset(self):
-        '''Generate code for loading the dataset.
-        '''
 
-        self._start_method()
-        self._write("def load_dataset(self):\n")
-        self._indent()
-        self._write_docstring("Load the dataset from Tensorflow Datasets.\n")
-
-        # Load dataset from Tensorflow Datasets
-        self._write("return tfds.load(\'{ds}\',".format(ds=self.dataset) +
-                     "split=['train', 'test']," +
-                     "shuffle_files=True," +
-                     "as_supervised=True," +
-                     "with_info = True)\n")
-
-        self._end_method()
-
-    def __map_variables(self, params):
+    def _map_variables(self, params):
         ''' Convert parameter value representations to their actual values.
             This is necessary to keep the pipeline config file independent of
             specific function names, i.e. tf2 function calls.
@@ -101,7 +84,7 @@ class PipelineGenerator(PythonGenerator):
         for _op in self.ops:
 
             # Retrieve variables and map their values
-            variables = self.__map_variables(_op["args"])
+            variables = self._map_variables(_op["args"])
 
             # Define the Tensorflow function
             fn_str = 'self.ds_train = self.ds_train.{fn}'.format(fn=_op["name"])
@@ -113,6 +96,19 @@ class PipelineGenerator(PythonGenerator):
             # Concatenate them all
             op_str = fn_str + '(' + param_str + ')\n'
             self._write(op_str)
+
+        self._end_method()
+
+def _build_model(self):
+        '''Generate code for building the model.
+        '''
+
+        self._start_method()
+        self._write("def build_model(self):\n")
+        self._indent()
+        self._write_docstring("Build the MNIST model.\n")
+
+        self.write("model = {model}".format(_))
 
         self._end_method()
 
@@ -138,17 +134,16 @@ class PipelineGenerator(PythonGenerator):
 
         self._end_method()
 
-    def gen_pipeline(self):
+    def gen_model(self):
         ''' Generate all code part of the dataset pipeline.
         '''
 
         self._imports()
         self._class_def()
-        self._load_dataset()
-        self._operations()
-        self._helper_funcs()
+        # self._build_model()
+        # self._operations()
+        # self._helper_funcs()
 
-        self._close()
         print("Saved to {}".format(self.out_file_name))
 
     def get_pipeline_file_name(self):
@@ -174,7 +169,7 @@ class PipelineConfigGenerator(JsonGenerator):
         # Add the root dict
         self.add_entry("pipeline", {})
 
-        # Add the dataset and operations 
+        # Add the dataset and operations
         self.indent("pipeline")
         self.add_entry("dataset", {})
         self.add_entry("operations", [])
@@ -189,7 +184,7 @@ class PipelineConfigGenerator(JsonGenerator):
             label : dataset identifier. Equivalent to the Tensorflow dataset name.
         '''
 
-        self.add_entry("dataset", {"label" : label})
+        self.add_entry("dataset", {"label": label})
 
     def add_operation(self, op_name, args={}):
         ''' Add a preprocessing operation.
@@ -215,8 +210,7 @@ class PipelineConfigGenerator(JsonGenerator):
         '''
 
         operation = {
-            "name" : op_name,
-            "args" : args
+            "name": op_name,
+            "args": args
         }
         self.add_entry("operations", operation)
-    

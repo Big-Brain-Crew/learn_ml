@@ -1,0 +1,29 @@
+{
+    "model": {
+        "model": {
+            "model_name": "sequential"
+        },
+        "layers": [
+            {
+                "name": "flatten",
+                "args": {
+                    "input_shape": [28, 28, 1]
+                }
+            },
+            {
+                "name": "dense",
+                "args": {
+                    "units" : 128,
+                    "activation" : "relu"
+                }
+            },
+            {
+                "name": "dense",
+                "args": {
+                    "units": 10,
+                    "activation" : "softmax"
+                }
+            }
+        ]
+    }
+}

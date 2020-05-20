@@ -1,5 +1,5 @@
 import os, sys
-# sys.path.append(os.getcwd())
+sys.path.append(os.getcwd())
 import generators.preprocessor.pipeline_generator as pipeline_generator
 
 def main():

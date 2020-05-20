@@ -19,53 +19,50 @@ class PythonGenerator(object):
         self.indent_level = 0  # Keeps track of current indentation
         self.indent_str = "    "
 
-    def __indent(self, inc=1):
+    def _indent(self, inc=1):
         ''' Increments the indent level of the output string.
         '''
 
         self.indent_level += inc
 
-    def __unindent(self, dec=1):
+    def _unindent(self, dec=1):
         ''' Decrements the indent level of the output string.
         '''
 
         self.indent_level -= dec
 
-    def __spaces(self):
+    def _spaces(self):
         '''Returns a string of the correct number of spaces for the current indent level.
         '''
 
         return self.indent_str * self.indent_level
 
-    def __write(self, line):
+    def _write(self, line):
         ''' Writes a line of code to the file.
         '''
 
-        self.out.write(self.__spaces() + line)
+        self.out.write(self._spaces() + line)
 
-    def __write_docstring(self, line):
+    def _write_docstring(self, line):
         ''' Writes a line of docstring to the file.
             line: Docstring comment without docstring quotes.
         '''
 
-        self.out.write(self.__spaces() + "'''" + line)
-        self.out.write(self.__spaces() + "'''\n\n")
+        self.out.write(self._spaces() + "'''" + line)
+        self.out.write(self._spaces() + "'''\n\n")
 
-    def __start_method(self):
+    def _start_method(self):
         '''Formats out string to generate a method.
         '''
 
-        self.__indent()
+        self._indent()
 
-    def __end_method(self):
+    def _end_method(self):
         '''Formats out string once method is done.
         '''
 
-        self.__write("\n\n")
-        self.__unindent(2)
-    
-    def _close(self):
-        self.out.close()
+        self._write("\n\n")
+        self._unindent(2)
 
     def get_gen_file_name(self):
         '''Returns the name of the generated Python script.
