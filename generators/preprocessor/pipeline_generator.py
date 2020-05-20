@@ -126,15 +126,17 @@ class PipelineGenerator(PythonGenerator):
             specific function names, i.e. tf2 function calls.
         '''
 
-        for _param in enumerate(params):
-            value = list(_param[1].values())[0]
+        # Create a new dictionary to store the new mapped params
+        mapped_params = {}
 
+        for _param, value in params.items():
             if value in self.variable_map:
-
                 # Replace parameter code for its real value
-                params[_param[0]][list(_param[1].keys())[0]] = self.variable_map[value]
+                mapped_params[_param] = self.variable_map[value]
+            else:
+                mapped_params[_param] = value
 
-        return params
+        return mapped_params
 
     def __operations(self):
         ''' Generate code for all preprocessing operations.
@@ -148,15 +150,14 @@ class PipelineGenerator(PythonGenerator):
         for _op in self.ops:
 
             # Retrieve variables and map their values
-            variables = self.__map_variables(list(_op.values())[0])
+            variables = self.__map_variables(_op["args"])
 
             # Define the Tensorflow function
-            fn_str = 'self.ds_train = self.ds_train.{fn}'.format(fn=list(_op)[0])
+            fn_str = 'self.ds_train = self.ds_train.{fn}'.format(fn=_op["name"])
 
             # Define the variables to the function
-            param_str = ', '.join(["{param}={val}".format(param=list(param)[0],
-                                                          val=list(param.values())[0])
-                                   for param in variables])
+            param_str = ', '.join(["{param}={val}".format(param=param, val=val)
+                                   for param, val in variables.items()])
 
             # Concatenate them all
             op_str = fn_str + '(' + param_str + ')\n'
@@ -207,27 +208,27 @@ class PipelineGenerator(PythonGenerator):
         return self.out
 
 
-class PipelineConfigGenerator(JsonGenerator):
-    def __init__(self):
-        
-        self.config_file = "generators/preprocessor/pipeline.json"
-        self.out = open(self.config_file, "w+")
+# class PipelineConfigGenerator(JsonGenerator):
+#     def __init__(self):
 
-        self.pipeline = {}
-        self.pipeline["pipeline"] = {}
-        self.pipeline["pipeline"]["dataset"] = {}
-        self.pipeline["pipeline"]["operations"] = []
+#         self.config_file = "generators/preprocessor/pipeline.json"
+#         self.out = open(self.config_file, "w+")
 
-        super(PipelineConfigGenerator, self).__init__()
+#         self.pipeline = {}
+#         self.pipeline["pipeline"] = {}
+#         self.pipeline["pipeline"]["dataset"] = {}
+#         self.pipeline["pipeline"]["operations"] = []
 
-    def add_dataset(self, label):
-        self.pipeline["pipeline"]["dataset"]["label"] = label 
+#         super(PipelineConfigGenerator, self).__init__()
 
-    def add_operation(self, name, variables=None):
-        operation = {
-            name : [{var[0] : var[1]} if var is not None for var in variables]
-        }
-        self.pipeline["pipeline"]["operations"].append(operation)
+#     def add_dataset(self, label):
+#         self.pipeline["pipeline"]["dataset"]["label"] = label
 
-    def create_config(self):
-        json.dump(self.pipeline, self.out, indent=4)
+#     def add_operation(self, name, variables=None):
+#         operation = {
+#             name: [{var[0]: var[1]} if var is not None for var in variables]
+#         }
+#         self.pipeline["pipeline"]["operations"].append(operation)
+
+#     def create_config(self):
+#         json.dump(self.pipeline, self.out, indent=4)
