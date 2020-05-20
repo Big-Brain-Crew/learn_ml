@@ -4,30 +4,30 @@
             "label": "mnist",
             "type": "image"
         },
-        "operations": [
+       "operations": [
             {
-                "map": [
-                    {"map_func": "normalize_img"},
-                    {"num_parallel_calls": "autotune"}
-                ]
+                "name" : "map",
+                "args" : {
+                    "map_func": "normalize_img",
+                    "num_parallel_calls": "autotune"
+                }
             },
             {
-                "cache": []
+                "name" : "cache",
+                "args" : {}
             },
             {
-                "shuffle": [
-                    {"buffer_size": "train_size"}
-                ]
+                "name" : "shuffle",
+                "args":  {"buffer_size": "train_size"}
             },
             {
-                "batch": [
-                    {"batch_size": 128}
-                ]
+                "name" : "batch",
+                "args": {"batch_size" : 128}
+
             },
             {
-                "prefetch": [
-                    {"buffer_size": "autotune"}
-                ]
+                "name" : "prefetch",
+                "args":  {"buffer_size": "autotune"}
             }
         ]
     }
