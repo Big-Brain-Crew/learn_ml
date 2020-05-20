@@ -8,14 +8,15 @@ Subpackages
    :maxdepth: 4
 
    learn_ml.coral_inference
+   learn_ml.preprocessor
 
 Submodules
 ----------
 
-learn\_ml.compare\_mnist\_tf\_tflite module
--------------------------------------------
+learn\_ml.train module
+----------------------
 
-.. automodule:: learn_ml.compare_mnist_tf_tflite
+.. automodule:: learn_ml.train
    :members:
    :undoc-members:
    :show-inheritance:

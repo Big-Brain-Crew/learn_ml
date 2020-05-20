@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>learn_ml.preprocessor package &mdash; learn-ml  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="learn_ml.coral_inference.classification package" href="learn_ml.coral_inference.classification.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> learn-ml
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">learn_ml</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="learn_ml.html">learn_ml namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="learn_ml.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="learn_ml.coral_inference.html">learn_ml.coral_inference namespace</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">learn_ml.preprocessor package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#learn-ml-train-module">learn_ml.train module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#learn-ml-train-mnist-module">learn_ml.train_mnist module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">learn-ml</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">learn_ml</a> &raquo;</li>
+        
+          <li><a href="learn_ml.html">learn_ml namespace</a> &raquo;</li>
+        
+      <li>learn_ml.preprocessor package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/learn_ml.preprocessor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="learn-ml-preprocessor-package">
+<h1>learn_ml.preprocessor package<a class="headerlink" href="#learn-ml-preprocessor-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-learn_ml.preprocessor.pipeline">
+<span id="learn-ml-preprocessor-pipeline-module"></span><h2>learn_ml.preprocessor.pipeline module<a class="headerlink" href="#module-learn_ml.preprocessor.pipeline" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="learn_ml.preprocessor.pipeline.DatasetPipeline">
+<em class="property">class </em><code class="sig-prename descclassname">learn_ml.preprocessor.pipeline.</code><code class="sig-name descname">DatasetPipeline</code><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline.html#DatasetPipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline.DatasetPipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a dataset that has been preprocessed.</p>
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline.DatasetPipeline.get_test_dataset">
+<code class="sig-name descname">get_test_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline.html#DatasetPipeline.get_test_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline.DatasetPipeline.get_test_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the test dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline.DatasetPipeline.get_training_dataset">
+<code class="sig-name descname">get_training_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline.html#DatasetPipeline.get_training_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline.DatasetPipeline.get_training_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the training dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline.DatasetPipeline.load_dataset">
+<code class="sig-name descname">load_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline.html#DatasetPipeline.load_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline.DatasetPipeline.load_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the dataset from Tensorflow Datasets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline.DatasetPipeline.preprocess">
+<code class="sig-name descname">preprocess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline.html#DatasetPipeline.preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline.DatasetPipeline.preprocess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply data preprocessing operations.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-learn_ml.preprocessor.pipeline_generator">
+<span id="learn-ml-preprocessor-pipeline-generator-module"></span><h2>learn_ml.preprocessor.pipeline_generator module<a class="headerlink" href="#module-learn_ml.preprocessor.pipeline_generator" title="Permalink to this headline">¶</a></h2>
+<p>This script generates a dataset pipeline script based off a JSON config file.
+This config  file is generated from user inputs on the frontend. The generated script
+describes a DatasetPipeline object that can then be used for agnostic model training.</p>
+<dl class="py class">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator">
+<em class="property">class </em><code class="sig-prename descclassname">learn_ml.preprocessor.pipeline_generator.</code><code class="sig-name descname">PipelineGenerator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pipeline_config</span><span class="o">=</span><span class="default_value">'preprocessor/pipeline.json'</span></em>, <em class="sig-param"><span class="n">mapping_config</span><span class="o">=</span><span class="default_value">'preprocessor/variable_map.json'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Generates a dataset preprocessing pipeline based off a JSON config file.</p>
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.class_def">
+<code class="sig-name descname">class_def</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.class_def"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.class_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate DatasetPipeline class definition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.end_method">
+<code class="sig-name descname">end_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.end_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.end_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats out string once method is done.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.gen_pipeline">
+<code class="sig-name descname">gen_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.gen_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.gen_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate all code part of the dataset pipeline.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.helper_funcs">
+<code class="sig-name descname">helper_funcs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.helper_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.helper_funcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates get/set helper functions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.imports">
+<code class="sig-name descname">imports</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.imports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.imports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate import statements.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.indent">
+<code class="sig-name descname">indent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inc</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.indent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.indent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increments the indent level of the output string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.load_dataset">
+<code class="sig-name descname">load_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.load_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.load_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate code for loading the dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.map_variables">
+<code class="sig-name descname">map_variables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.map_variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.map_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert parameter value representations to their actual values.
+This is necessary to keep the pipeline config file independent of
+specific function names, i.e. tf2 function calls.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.operations">
+<code class="sig-name descname">operations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate code for all preprocessing operations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.spaces">
+<code class="sig-name descname">spaces</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.spaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.spaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string of the correct number of spaces for the current indent level.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.start_method">
+<code class="sig-name descname">start_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.start_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.start_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats out string to generate a method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.unindent">
+<code class="sig-name descname">unindent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dec</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.unindent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.unindent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrements the indent level of the output string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a line of code to the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.preprocessor.pipeline_generator.PipelineGenerator.write_docstring">
+<code class="sig-name descname">write_docstring</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#PipelineGenerator.write_docstring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.PipelineGenerator.write_docstring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a line of docstring to the file.
+line: Docstring comment without docstring quotes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="learn_ml.preprocessor.pipeline_generator.main">
+<code class="sig-prename descclassname">learn_ml.preprocessor.pipeline_generator.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/pipeline_generator.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.pipeline_generator.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a dataset pipeline script.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-learn_ml.preprocessor.tf_utils">
+<span id="learn-ml-preprocessor-tf-utils-module"></span><h2>learn_ml.preprocessor.tf_utils module<a class="headerlink" href="#module-learn_ml.preprocessor.tf_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="learn_ml.preprocessor.tf_utils.normalize_img">
+<code class="sig-prename descclassname">learn_ml.preprocessor.tf_utils.</code><code class="sig-name descname">normalize_img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/preprocessor/tf_utils.html#normalize_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.preprocessor.tf_utils.normalize_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalizes images: <cite>uint8</cite> -&gt; <cite>float32</cite>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-learn_ml.preprocessor">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-learn_ml.preprocessor" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="learn_ml.coral_inference.classification.html" class="btn btn-neutral float-left" title="learn_ml.coral_inference.classification package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Alexander Barnett, Swapnil Pande, Alexander Stephens
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
