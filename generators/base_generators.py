@@ -71,3 +71,8 @@ class PythonGenerator(object):
         '''
 
         return self.out
+
+
+class JsonGenerator(object):
+    def __init__(self):
+        pass

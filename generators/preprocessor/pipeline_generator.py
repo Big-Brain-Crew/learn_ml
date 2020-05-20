@@ -3,10 +3,7 @@
  describes a DatasetPipeline object that can then be used for agnostic model training.
 '''
 import json
-import os
-import sys
-
-from generators.python_generator import PythonGenerator
+from generators.base_generators import PythonGenerator, JsonGenerator
 
 
 class PipelineGenerator(PythonGenerator):
@@ -208,3 +205,29 @@ class PipelineGenerator(PythonGenerator):
         '''
 
         return self.out
+
+
+class PipelineConfigGenerator(JsonGenerator):
+    def __init__(self):
+        
+        self.config_file = "generators/preprocessor/pipeline.json"
+        self.out = open(self.config_file, "w+")
+
+        self.pipeline = {}
+        self.pipeline["pipeline"] = {}
+        self.pipeline["pipeline"]["dataset"] = {}
+        self.pipeline["pipeline"]["operations"] = []
+
+        super(PipelineConfigGenerator, self).__init__()
+
+    def add_dataset(self, label):
+        self.pipeline["pipeline"]["dataset"]["label"] = label 
+
+    def add_operation(self, name, variables=None):
+        operation = {
+            name : [{var[0] : var[1]} if var is not None for var in variables]
+        }
+        self.pipeline["pipeline"]["operations"].append(operation)
+
+    def create_config(self):
+        json.dump(self.pipeline, self.out, indent=4)
