@@ -31,7 +31,7 @@ def deploy(address, model, identity_file = None, password = None):
 
     # Start model execution
     ssh.exec_command("pkill screen")
-    ssh.exec_command("cd /home/mendel/learn_ml/coral_inference/classification && screen -d -m python3 app.py")
+    ssh.exec_command("cd /home/mendel/learn_ml/coral_inference/classification && screen -d -m python3 app.py -m " + model)
 
     print("Started execution!")
     print("Stream accessible at {}:5000".format(address))
