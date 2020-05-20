@@ -154,15 +154,15 @@ class PipelineGenerator(object):
         for _op in self.ops:
 
             # Retrieve variables and map their values
-            variables = self.map_variables(list(_op.values())[0])
+            # Retrieve variables and map their values
+            variables = self.map_variables(_op["args"])
 
             # Define the Tensorflow function
-            fn_str = 'self.ds_train = self.ds_train.{fn}'.format(fn=list(_op)[0])
+            fn_str = 'self.ds_train = self.ds_train.{fn}'.format(fn=_op["name"])
 
             # Define the variables to the function
-            param_str = ', '.join(["{param}={val}".format(param=list(param)[0],
-                                                          val=list(param.values())[0])
-                                   for param in variables])
+            param_str = ', '.join(["{param}={val}".format(param=param, val=val)
+                                   for param, val in variables.items()])
 
             # Concatenate them all
             op_str = fn_str + '(' + param_str + ')\n'
