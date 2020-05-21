@@ -1,6 +1,6 @@
 import os
 import cv2
-from base_classifier import BaseClassifier
+from coral_inference.classification.base_classifier import BaseClassifier
 import time
 
 import tflite_runtime.interpreter as tflite
@@ -93,7 +93,7 @@ class Classifier(BaseClassifier):
             # Format the image as tensor input
             input_data = self.format_input(img, input_details)
 
-            # Set the image as the input tensor 
+            # Set the image as the input tensor
             self.interpreter.set_tensor(input_details[0]['index'], input_data)
 
             # Perform inference
@@ -111,7 +111,7 @@ class Classifier(BaseClassifier):
 
             # encode
             yield cv2.imencode('.jpg', original_img)[1].tobytes()
-    
+
 
     # Perform all required image preprocessing. Should be implemented by child class.
     def preprocess(self, img, input_shape):
@@ -121,7 +121,7 @@ class Classifier(BaseClassifier):
 class MnistClassifier(Classifier):
     def __init__(self, model_path):
         super(MnistClassifier, self).__init__(model_path)
-    
+
     # The MNIST dataset consists of white numbers on a black background.
     # The camera image must be cropped to a square, resized, and converted
     # to a similar black background and white number.

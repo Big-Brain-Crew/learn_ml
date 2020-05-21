@@ -3,6 +3,7 @@ paramiko
 argparse
 matplotlib
 tensorflow
+tensorflow_datasets
 flask
 Pillow
 opencv-python
