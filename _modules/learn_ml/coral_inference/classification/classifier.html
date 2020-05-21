@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>learn_ml.coral_inference.classification.classifier &mdash; learn-ml  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> learn-ml
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">learn_ml</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">learn-ml</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>learn_ml.coral_inference.classification.classifier</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for learn_ml.coral_inference.classification.classifier</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">from</span> <span class="nn">coral_inference.classification.base_classifier</span> <span class="kn">import</span> <span class="n">BaseClassifier</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">tflite_runtime.interpreter</span> <span class="k">as</span> <span class="nn">tflite</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="Classifier"><a class="viewcode-back" href="../../../../learn_ml.coral_inference.classification.html#learn_ml.coral_inference.classification.classifier.Classifier">[docs]</a><span class="k">class</span> <span class="nc">Classifier</span><span class="p">(</span><span class="n">BaseClassifier</span><span class="p">):</span>
+    <span class="n">video_source</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OPENCV_CAMERA_SOURCE&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_video_source</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;OPENCV_CAMERA_SOURCE&#39;</span><span class="p">]))</span>
+
+        <span class="c1"># Load TFLite model and allocate tensors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span> <span class="o">=</span> <span class="n">tflite</span><span class="o">.</span><span class="n">Interpreter</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">experimental_delegates</span><span class="o">=</span><span class="p">[</span><span class="n">tflite</span><span class="o">.</span><span class="n">load_delegate</span><span class="p">(</span><span class="s1">&#39;libedgetpu.so.1.0&#39;</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">allocate_tensors</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Classifier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Classifier.set_video_source"><a class="viewcode-back" href="../../../../learn_ml.coral_inference.classification.html#learn_ml.coral_inference.classification.classifier.Classifier.set_video_source">[docs]</a>    <span class="k">def</span> <span class="nf">set_video_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">video_source</span> <span class="o">=</span> <span class="n">source</span></div>
+
+    <span class="c1"># Crops an image into a square.</span>
+    <span class="c1"># image: image to be cropped.</span>
+    <span class="c1"># target_dims: Output dimensions. Expected as a 2D list.</span>
+    <span class="c1"># i.e. to output a RGB image of size (28,28,3), pass [28,28].</span>
+<div class="viewcode-block" id="Classifier.crop_resize_square"><a class="viewcode-back" href="../../../../learn_ml.coral_inference.classification.html#learn_ml.coral_inference.classification.classifier.Classifier.crop_resize_square">[docs]</a>    <span class="k">def</span> <span class="nf">crop_resize_square</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">target_dims</span><span class="p">):</span>
+        <span class="c1"># Get the shape of the input image</span>
+        <span class="n">input_dims</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># Get the smallest input dimension</span>
+        <span class="n">smallest_dim_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+
+        <span class="c1"># Get the start and end indices to crop at</span>
+        <span class="n">width_crop_start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">input_dims</span><span class="p">[</span><span class="n">smallest_dim_idx</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">width_crop_end</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">input_dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">width_crop_start</span><span class="p">)</span>
+        <span class="n">height_crop_start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">input_dims</span><span class="p">[</span><span class="n">smallest_dim_idx</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">height_crop_end</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">input_dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">height_crop_start</span><span class="p">)</span>
+
+        <span class="c1"># Crop the image</span>
+        <span class="n">cropped</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">width_crop_start</span><span class="p">:</span><span class="n">width_crop_end</span><span class="p">,</span> <span class="n">height_crop_start</span><span class="p">:</span> <span class="n">height_crop_end</span><span class="p">]</span>
+
+        <span class="c1"># Return resized image</span>
+        <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cropped</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">target_dims</span><span class="p">))</span></div>
+
+    <span class="c1"># Conver the image to gray scale</span>
+<div class="viewcode-block" id="Classifier.convert_to_gray"><a class="viewcode-back" href="../../../../learn_ml.coral_inference.classification.html#learn_ml.coral_inference.classification.classifier.Classifier.convert_to_gray">[docs]</a>    <span class="k">def</span> <span class="nf">convert_to_gray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span></div>
+
+    <span class="c1"># Format the image to match the graph tensor input</span>
+    <span class="c1"># Either (1, X, Y) or (1, X, Y, 1)</span>
+<div class="viewcode-block" id="Classifier.format_input"><a class="viewcode-back" href="../../../../learn_ml.coral_inference.classification.html#learn_ml.coral_inference.classification.classifier.Classifier.format_input">[docs]</a>    <span class="k">def</span> <span class="nf">format_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span>  <span class="n">input_details</span><span class="p">):</span>
+
+        <span class="n">input_shape</span> <span class="o">=</span> <span class="n">input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Add first dimension</span>
+        <span class="n">input_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Add end dimension if model expects it</span>
+        <span class="k">if</span> <span class="n">input_shape</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">input_shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">input_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># Convert input to float if model expects it</span>
+        <span class="c1"># This is necessary for tf2 models</span>
+        <span class="k">if</span> <span class="n">input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;dtype&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span>
+            <span class="n">input_data</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">input_data</span></div>
+
+<div class="viewcode-block" id="Classifier.frames"><a class="viewcode-back" href="../../../../learn_ml.coral_inference.classification.html#learn_ml.coral_inference.classification.classifier.Classifier.frames">[docs]</a>    <span class="k">def</span> <span class="nf">frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Get input and output tensors</span>
+        <span class="n">input_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">get_input_details</span><span class="p">()</span>
+        <span class="n">output_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">get_output_details</span><span class="p">()</span>
+
+        <span class="n">input_shape</span> <span class="o">=</span> <span class="n">input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Open camera capture</span>
+        <span class="n">camera</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">video_source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">camera</span><span class="o">.</span><span class="n">isOpened</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Could not start camera.&#39;</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+            <span class="c1"># read current frame</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">original_img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="c1"># Perform image preprocessing</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">)</span>
+
+            <span class="c1"># Format the image as tensor input</span>
+            <span class="n">input_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_input</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">input_details</span><span class="p">)</span>
+
+            <span class="c1"># Set the image as the input tensor</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">set_tensor</span><span class="p">(</span><span class="n">input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">input_data</span><span class="p">)</span>
+
+            <span class="c1"># Perform inference</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span>
+
+            <span class="c1"># The function `get_tensor()` returns a copy of the tensor data.</span>
+            <span class="c1"># Use `tensor()` in order to get a pointer to the tensor.</span>
+            <span class="n">probabilities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">get_tensor</span><span class="p">(</span><span class="n">output_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;index&#39;</span><span class="p">]))</span>
+
+            <span class="c1"># The result is the maximum probability</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">probabilities</span><span class="p">)</span>
+
+            <span class="c1"># Display result on original image</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">original_img</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span><span class="p">)</span>
+
+            <span class="c1"># encode</span>
+            <span class="k">yield</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imencode</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="n">original_img</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span></div>
+
+
+    <span class="c1"># Perform all required image preprocessing. Should be implemented by child class.</span>
+<div class="viewcode-block" id="Classifier.preprocess"><a class="viewcode-back" href="../../../../learn_ml.coral_inference.classification.html#learn_ml.coral_inference.classification.classifier.Classifier.preprocess">[docs]</a>    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+<span class="c1"># Number classifier trained on the MNIST digits dataset.</span>
+<div class="viewcode-block" id="MnistClassifier"><a class="viewcode-back" href="../../../../learn_ml.coral_inference.classification.html#learn_ml.coral_inference.classification.classifier.MnistClassifier">[docs]</a><span class="k">class</span> <span class="nc">MnistClassifier</span><span class="p">(</span><span class="n">Classifier</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_path</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MnistClassifier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+
+    <span class="c1"># The MNIST dataset consists of white numbers on a black background.</span>
+    <span class="c1"># The camera image must be cropped to a square, resized, and converted</span>
+    <span class="c1"># to a similar black background and white number.</span>
+<div class="viewcode-block" id="MnistClassifier.preprocess"><a class="viewcode-back" href="../../../../learn_ml.coral_inference.classification.html#learn_ml.coral_inference.classification.classifier.MnistClassifier.preprocess">[docs]</a>    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
+
+        <span class="c1"># Model expects square images</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_resize_square</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+
+        <span class="c1"># Image needs to be black and white</span>
+        <span class="c1"># Input tensor may be of the shape (1,X,Y) or (1,X,Y,dim)</span>
+        <span class="k">if</span> <span class="n">input_shape</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="ow">or</span> <span class="n">input_shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_to_gray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="c1"># Threshold</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_OTSU</span><span class="p">)</span>
+
+        <span class="c1"># Invert</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">bitwise_not</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="c1"># Normalize the image</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span> <span class="o">/</span> <span class="mf">255.0</span>
+
+        <span class="k">return</span> <span class="n">img</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Alexander Barnett, Swapnil Pande, Alexander Stephens
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

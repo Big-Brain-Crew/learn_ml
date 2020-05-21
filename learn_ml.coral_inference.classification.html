@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="learn_ml.generators package" href="learn_ml.generators.html" />
-    <link rel="prev" title="learn_ml.coral_inference namespace" href="learn_ml.coral_inference.html" /> 
+    <link rel="prev" title="learn_ml.coral_inference package" href="learn_ml.coral_inference.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,14 +85,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">learn_ml</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="learn_ml.html">learn_ml namespace</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="learn_ml.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="learn_ml.coral_inference.html">learn_ml.coral_inference namespace</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="learn_ml.coral_inference.html">learn_ml.coral_inference package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="learn_ml.generators.html">learn_ml.generators package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="learn_ml.tests.html">learn_ml.tests namespace</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="learn_ml.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="learn_ml.html#learn-ml-train-module">learn_ml.train module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#learn-ml-train-mnist-module">learn_ml.train_mnist module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#module-learn_ml.train_mnist">learn_ml.train_mnist module</a></li>
 </ul>
 </li>
 </ul>
@@ -146,7 +146,7 @@
         
           <li><a href="learn_ml.html">learn_ml namespace</a> &raquo;</li>
         
-          <li><a href="learn_ml.coral_inference.html">learn_ml.coral_inference namespace</a> &raquo;</li>
+          <li><a href="learn_ml.coral_inference.html">learn_ml.coral_inference package</a> &raquo;</li>
         
       <li>learn_ml.coral_inference.classification package</li>
     
@@ -242,8 +242,61 @@ available.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="learn-ml-coral-inference-classification-classifier-module">
-<h2>learn_ml.coral_inference.classification.classifier module<a class="headerlink" href="#learn-ml-coral-inference-classification-classifier-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-learn_ml.coral_inference.classification.classifier">
+<span id="learn-ml-coral-inference-classification-classifier-module"></span><h2>learn_ml.coral_inference.classification.classifier module<a class="headerlink" href="#module-learn_ml.coral_inference.classification.classifier" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="learn_ml.coral_inference.classification.classifier.Classifier">
+<em class="property">class </em><code class="sig-prename descclassname">learn_ml.coral_inference.classification.classifier.</code><code class="sig-name descname">Classifier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/classifier.html#Classifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.Classifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">coral_inference.classification.base_classifier.BaseClassifier</span></code></p>
+<dl class="py method">
+<dt id="learn_ml.coral_inference.classification.classifier.Classifier.convert_to_gray">
+<code class="sig-name descname">convert_to_gray</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/classifier.html#Classifier.convert_to_gray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.Classifier.convert_to_gray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.coral_inference.classification.classifier.Classifier.crop_resize_square">
+<code class="sig-name descname">crop_resize_square</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span></em>, <em class="sig-param"><span class="n">target_dims</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/classifier.html#Classifier.crop_resize_square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.Classifier.crop_resize_square" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.coral_inference.classification.classifier.Classifier.format_input">
+<code class="sig-name descname">format_input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span></em>, <em class="sig-param"><span class="n">input_details</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/classifier.html#Classifier.format_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.Classifier.format_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.coral_inference.classification.classifier.Classifier.frames">
+<code class="sig-name descname">frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/classifier.html#Classifier.frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.Classifier.frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>“Generator that returns frames from the camera.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.coral_inference.classification.classifier.Classifier.preprocess">
+<code class="sig-name descname">preprocess</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span></em>, <em class="sig-param"><span class="n">input_shape</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/classifier.html#Classifier.preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.Classifier.preprocess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.coral_inference.classification.classifier.Classifier.set_video_source">
+<code class="sig-name descname">set_video_source</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/classifier.html#Classifier.set_video_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.Classifier.set_video_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="learn_ml.coral_inference.classification.classifier.Classifier.video_source">
+<code class="sig-name descname">video_source</code><em class="property"> = 1</em><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.Classifier.video_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="learn_ml.coral_inference.classification.classifier.MnistClassifier">
+<em class="property">class </em><code class="sig-prename descclassname">learn_ml.coral_inference.classification.classifier.</code><code class="sig-name descname">MnistClassifier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/classifier.html#MnistClassifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.MnistClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#learn_ml.coral_inference.classification.classifier.Classifier" title="learn_ml.coral_inference.classification.classifier.Classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">learn_ml.coral_inference.classification.classifier.Classifier</span></code></a></p>
+<dl class="py method">
+<dt id="learn_ml.coral_inference.classification.classifier.MnistClassifier.preprocess">
+<code class="sig-name descname">preprocess</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span></em>, <em class="sig-param"><span class="n">input_shape</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/classification/classifier.html#MnistClassifier.preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.classification.classifier.MnistClassifier.preprocess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-learn_ml.coral_inference.classification.mnist_inference">
 <span id="learn-ml-coral-inference-classification-mnist-inference-module"></span><h2>learn_ml.coral_inference.classification.mnist_inference module<a class="headerlink" href="#module-learn_ml.coral_inference.classification.mnist_inference" title="Permalink to this headline">¶</a></h2>
@@ -284,7 +337,7 @@ available.</p>
         <a href="learn_ml.generators.html" class="btn btn-neutral float-right" title="learn_ml.generators package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="learn_ml.coral_inference.html" class="btn btn-neutral float-left" title="learn_ml.coral_inference namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="learn_ml.coral_inference.html" class="btn btn-neutral float-left" title="learn_ml.coral_inference package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
