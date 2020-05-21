@@ -7,31 +7,40 @@
             {
                 "name": "flatten",
                 "args": {
-                    "input_shape": [28, 28, 1]
+                    "input_shape": [
+                        28,
+                        28,
+                        1
+                    ]
                 }
             },
             {
                 "name": "dense",
                 "args": {
-                    "units" : 128,
-                    "activation" : "relu"
+                    "units": 128,
+                    "activation": "relu"
                 }
             },
             {
                 "name": "dense",
                 "args": {
                     "units": 10,
-                    "activation" : "softmax"
+                    "activation": "softmax"
                 }
             }
         ],
-        "compile" : {
-            "loss" : "sparse_categorical_crossentropy",
-            "optimizer" :{
-                "name" : "adam",
-                "learning_rate" : 0.001
-            },
-            "metrics" : "accuracy"
+        "compile": {
+            "name": "compile",
+            "args": {
+                "loss": "crossentropy",
+                "optimizer": {
+                    "name": "adam",
+                    "args": {
+                        "learning_rate": 0.001
+                    }
+                },
+                "metrics": "accuracy"
+            }
         }
     }
 }

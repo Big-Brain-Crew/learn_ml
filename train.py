@@ -23,26 +23,27 @@ if not os.path.exists("generators/preprocessor/pipeline.py"):
                     "Run pipeline_generator.py to do so.")
     
 from generators.preprocessor.pipeline import DatasetPipeline
+from generators.model.model import Model
 
 
-def build_model():
-    '''Temporary function until model code generation is made.
-    '''
+# def build_model():
+#     '''Temporary function until model code generation is made.
+#     '''
 
-    model = tf.keras.models.Sequential([
-        tf.keras.layers.Flatten(input_shape=(28, 28, 1)),
-        tf.keras.layers.Dense(128, activation='relu'),
-        tf.keras.layers.Dense(10, activation='softmax')
-    ])
+#     model = tf.keras.models.Sequential([
+#         tf.keras.layers.Flatten(input_shape=(28, 28, 1)),
+#         tf.keras.layers.Dense(128, activation='relu'),
+#         tf.keras.layers.Dense(10, activation='softmax')
+#     ])
 
-    # Compile the model
-    model.compile(
-        loss='sparse_categorical_crossentropy',
-        optimizer=tf.keras.optimizers.Adam(0.001),
-        metrics=['accuracy'],
-    )
+#     # Compile the model
+#     model.compile(
+#         loss='sparse_categorical_crossentropy',
+#         optimizer=tf.keras.optimizers.Adam(0.001),
+#         metrics=['accuracy'],
+#     )
 
-    return model
+#     return model
 
 
 def train(model, ds_train, epochs):
@@ -57,20 +58,13 @@ def train(model, ds_train, epochs):
 def main(args):
 
     # Load the Dataset Pipeline
-    ds_pipeline = DatasetPipeline()
+    dataset = DatasetPipeline()
 
     # Build the Model
-    model = build_model()
+    model = Model(dataset.get_training_dataset())
 
     # Train
-    train(model, ds_pipeline.get_training_dataset(), 6)
-
-    # # Evaluate model
-    # model.evaluate()
-
-    # # Show reults
-    # model.results()
-
+    model.train()
 
 if __name__ == "__main__":
     # Parse arguments
