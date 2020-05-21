@@ -8,7 +8,8 @@ Subpackages
    :maxdepth: 4
 
    learn_ml.coral_inference
-   learn_ml.preprocessor
+   learn_ml.generators
+   learn_ml.tests
 
 Submodules
 ----------

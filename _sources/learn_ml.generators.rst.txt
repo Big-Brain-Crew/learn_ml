@@ -1,0 +1,30 @@
+learn\_ml.generators package
+============================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   learn_ml.generators.preprocessor
+
+Submodules
+----------
+
+learn\_ml.generators.base\_generators module
+--------------------------------------------
+
+.. automodule:: learn_ml.generators.base_generators
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: learn_ml.generators
+   :members:
+   :undoc-members:
+   :show-inheritance:
