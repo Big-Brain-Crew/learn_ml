@@ -63,6 +63,9 @@ class PythonGenerator(object):
 
         self._write("\n\n")
         self._unindent(2)
+    
+    def _close(self):
+        self.out.close()
 
     def get_gen_file_name(self):
         '''Returns the name of the generated Python script.
