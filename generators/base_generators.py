@@ -63,6 +63,9 @@ class PythonGenerator(object):
 
         self.__write("\n\n")
         self.__unindent(2)
+    
+    def _close(self):
+        self.out.close()
 
     def get_gen_file_name(self):
         '''Returns the name of the generated Python script.
@@ -73,6 +76,7 @@ class PythonGenerator(object):
         return self.out
 
 
+
 class JsonGenerator(object):
     def __init__(self, out_file):
         
@@ -81,6 +85,9 @@ class JsonGenerator(object):
 
         self.root = {}
         self.index = self.root
+    
+    def _close(self):
+        self.out.close()
         
     def indent(self, name):
         self.index = self.root[name]
@@ -96,3 +103,5 @@ class JsonGenerator(object):
     
     def write(self):
         json.dump(self.root, self.out, indent=4)
+        self._close()
+        print("Saved to {}".format(self.out_file))

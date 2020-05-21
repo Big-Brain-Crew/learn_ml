@@ -197,6 +197,7 @@ class PipelineGenerator(PythonGenerator):
         self._operations()
         self._helper_funcs()
 
+        self._close()
         print("Saved to {}".format(self.out_file_name))
 
     def get_pipeline_file_name(self):
