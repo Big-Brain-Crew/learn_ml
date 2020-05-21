@@ -32,7 +32,7 @@ class PipelineGenerator(PythonGenerator):
         self._write("# Imports\n")
         self._write("import tensorflow as tf\n")
         self._write("import tensorflow_datasets as tfds\n")
-        self._write("from tf_utils import *\n")
+        self._write("from generators.preprocessor.tf_utils import *\n")
         self._write("\n\n")
 
     def _class_def(self):

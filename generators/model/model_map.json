@@ -1,16 +1,10 @@
 {
-    "model_map" : {
-        "model_name_map" : {
-            "model_name" : {
-                "sequential" : "tf.keras.models.Sequential"
-            }
-        },
-        "arg_map" : {
-            "args" : {
-                "dense" : "tf.keras.layers.Dense",
-                "flatten" : "tf.keras.layers.Flatten"
-            },
-            "values" : {}
-        }
+    "model_map": {
+        "sequential": "tf.keras.models.Sequential",
+        "dense": "tf.keras.layers.Dense",
+        "flatten": "tf.keras.layers.Flatten",
+        "relu" : "\"relu\"",
+        "softmax" : "\"softmax\"",
+        "adam" : "tf.keras.optimizers.Adam"
     }
 }

@@ -1,7 +1,7 @@
 # Imports
 import tensorflow as tf
 import tensorflow_datasets as tfds
-from tf_utils import *
+from generators.preprocessor.tf_utils import *
 
 
 class DatasetPipeline(object):

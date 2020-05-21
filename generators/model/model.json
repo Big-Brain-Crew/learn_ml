@@ -24,6 +24,14 @@
                     "activation" : "softmax"
                 }
             }
-        ]
+        ],
+        "compile" : {
+            "loss" : "sparse_categorical_crossentropy",
+            "optimizer" :{
+                "name" : "adam",
+                "learning_rate" : 0.001
+            },
+            "metrics" : "accuracy"
+        }
     }
 }
