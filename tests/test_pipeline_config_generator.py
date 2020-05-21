@@ -1,7 +1,8 @@
-import generators.preprocessor.pipeline_generator as pipeline_generator
 import os
 import sys
 sys.path.append(os.getcwd())
+
+import generators.preprocessor.pipeline_generator as pipeline_generator
 
 
 def main():
