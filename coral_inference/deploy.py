@@ -1,8 +1,41 @@
+"""Provides a command-line interface and python API for deploying a model to the Google Coral board.
+
+Currently, this script is setup to deploy the model via ssh. Therefore, it requires the address of the coral board
+and that you have a key or password to access it. Once the model is deployed to the coral, it will also publish
+a web server to display the results. The deploy script also only handles classification problems, support for more
+model types is in the pipeline. The python API exposes a deploy function. If called from the command line, you must
+pass a model (using -m argument), the address of the coral (-a), and EITHER an identity file (-i) OR a password (-p).
+
+    Typical usage example:
+
+    python3 deploy.py -m foo/model_quantized.tflite -a x.x.x.x -i ~/id_rsa
+"""
+
 from paramiko import SSHClient
 from scp import SCPClient
 import argparse
 
 def deploy(address, model, identity_file = None, password = None):
+    """ Deploys the a model to the Coral Board.
+
+    Connects to the coral board via ssh to deploy the model. You must pass a tflite model.
+    For maximum performance, you should pass a quantized tflite model, which can be generated
+    using the convert_to_edgetpu module. After deploying the model, the function will start
+    a webserver publishing the results.
+
+
+    Args:
+        address: Address of the coral board
+        model: Path to the tflite model to deploy
+        identity_file: [Optional] Path to the identity file. Identity file must be provided
+            if password is not provided.
+        password: [Optional] Password to use for ssh authentication. Password must be provided
+            if identity_file is not provided.
+    Returns:
+        None
+    """
+
+
     # Flag for whether or not authenticating with key
     use_key = False
     if(identity_file is not None):
