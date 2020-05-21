@@ -1,7 +1,7 @@
 # Imports
 import os
 import sys
-sys.path.append(os.path.join(os.getcwd(), "preprocessor"))
+sys.path.append(os.path.join(os.getcwd(), "generators/preprocessor"))
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import json
