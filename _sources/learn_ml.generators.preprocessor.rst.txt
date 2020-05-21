@@ -4,14 +4,6 @@ learn\_ml.generators.preprocessor package
 Submodules
 ----------
 
-learn\_ml.generators.preprocessor.pipeline module
--------------------------------------------------
-
-.. automodule:: learn_ml.generators.preprocessor.pipeline
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 learn\_ml.generators.preprocessor.pipeline\_generator module
 ------------------------------------------------------------
 
