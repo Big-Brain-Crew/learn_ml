@@ -5,8 +5,8 @@ def main():
     '''Generate a dataset pipeline script.
     '''
 
-    pipe_gen = python_generators.ModelGenerator(model_config="generators/model/model.json",
-                                 map_config="generators/model/model_map.json")
+    pipe_gen = python_generators.ModelGenerator(model_config="project/model.json",
+                                 map_config="generators/model_map.json")
     pipe_gen.gen_model()
 
 

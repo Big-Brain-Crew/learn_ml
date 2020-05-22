@@ -2,14 +2,14 @@ import os
 import sys
 sys.path.append(os.getcwd())
 
-import generators.preprocessor.pipeline_generator as pipeline_generator
+import generators.json_generators as json_generators
 
 
 def main():
     '''Generate a dataset pipeline script.
     '''
 
-    config_gen = pipeline_generator.PipelineConfigGenerator("generators/preprocessor/pipeline.json")
+    config_gen = json_generators.PipelineJsonGenerator("project/pipeline.json")
 
     config_gen.add_dataset("mnist")
 

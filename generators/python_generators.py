@@ -179,7 +179,7 @@ class PipelineGenerator(ClassGenerator):
 
         super(PipelineGenerator, self).__init__(class_config=pipeline_config,
                                                 map_config=map_config,
-                                                out="generators/preprocessor/pipeline.py")
+                                                out="project/pipeline.py")
 
         self.pipeline = self.class_["pipeline"]
         self.dataset = self.pipeline["dataset"]["label"]  # Label for dataset being used
@@ -190,7 +190,7 @@ class PipelineGenerator(ClassGenerator):
         imports = {
             "tensorflow": "tf",
             "tensorflow_datasets": "tfds",
-            "generators.tf_utils": "tf_utils"
+            "tf_utils": "tf_utils"
         }
         self._write_imports(imports)
 
@@ -290,7 +290,7 @@ class ModelGenerator(ClassGenerator):
 
         super(ModelGenerator, self).__init__(class_config=model_config,
                                              map_config=map_config,
-                                             out="generators/model/model.py")
+                                             out="project/model.py")
 
         self.model = self.class_["model"]
         # Label for dataset being used
@@ -302,7 +302,7 @@ class ModelGenerator(ClassGenerator):
 
         imports = {
             "tensorflow": "tf",
-            "generators.tf_utils": "tf_utils"
+            "tf_utils": "tf_utils"
         }
 
         self._write_imports(imports)
