@@ -129,8 +129,9 @@ class ClassGenerator(PythonGenerator):
 
         # Return the mapped output in quotations if it is of type string
         if isinstance(input, str) and input in self.map:
-            return "\"{}\"".format(self.map[input]["name"]) \
-                if self.map[input]["type"] == "string" else self.map[input]["name"]
+            return self.map[input]["name"] if self.map[input]["type"] is not "string" \
+                else "\"{}\"".format(self.map[input]["name"])
+        
         else:
             return input  # Input not in the map
 

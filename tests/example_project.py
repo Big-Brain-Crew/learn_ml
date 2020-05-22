@@ -58,13 +58,11 @@ def create_model_json():
     }
     config_gen.add_layer("dense", args)
 
-    optim_args = {
-        "learning_rate" : 0.001
-    }
+    
     args = {
         "loss" : "crossentropy",
-        "optimizer" : config_gen.add_optimizer("adam", optim_args),
-        "metrics" : "accuracy"
+        "optimizer" : config_gen.create_fn_dict("adam", {"learning_rate" : 0.001}),
+        "metrics" : ["accuracy"]
     }
     config_gen.add_compile(args)
 

@@ -13,23 +13,19 @@
             "type" : "object"
         },
         "relu" : {
-            "name" : "relu",
-            "type" : "string"
+            "name" : "tf.nn.relu",
+            "type" : "object"
         },
         "softmax" : {
-            "name" : "softmax",
-            "type" : "string"
+            "name" : "tf.nn.softmax",
+            "type" : "object"
         },
         "adam" : {
             "name" : "tf.keras.optimizers.Adam",
             "type" : "object"
         },
         "crossentropy" : {
-            "name" : "sparse_categorical_crossentropy",
-            "type" : "string"
-        },
-        "accuracy" : {
-            "name" : "[\"accuracy\"]",
+            "name" : "tf.keras.losses.sparse_categorical_crossentropy",
             "type" : "object"
         }
     }
