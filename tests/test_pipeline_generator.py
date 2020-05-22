@@ -1,13 +1,15 @@
-import os, sys
+import generators.python_generators as python_generators
+import os
+import sys
 sys.path.append(os.getcwd())
-import generators.preprocessor.pipeline_generator as pipeline_generator
+
 
 def main():
     '''Generate a dataset pipeline script.
     '''
 
-    pipe_gen = pipeline_generator.PipelineGenerator(pipeline_config="generators/preprocessor/pipeline.json",
-                                 mapping_config="generators/preprocessor/variable_map.json")
+    pipe_gen = python_generators.PipelineGenerator(pipeline_config="generators/preprocessor/pipeline.json",
+                                                   map_config="generators/preprocessor/pipeline_map.json")
     pipe_gen.gen_pipeline()
 
 

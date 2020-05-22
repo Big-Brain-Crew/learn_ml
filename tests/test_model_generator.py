@@ -1,13 +1,12 @@
 import os, sys
 sys.path.append(os.getcwd())
-import generators.model.model_generator as model_generator
-
+import generators.python_generators as python_generators
 def main():
     '''Generate a dataset pipeline script.
     '''
 
-    pipe_gen = model_generator.ModelGenerator(model_config="generators/model/model.json",
-                                 mapping_config="generators/model/model_map.json")
+    pipe_gen = python_generators.ModelGenerator(model_config="generators/model/model.json",
+                                 map_config="generators/model/model_map.json")
     pipe_gen.gen_model()
 
 

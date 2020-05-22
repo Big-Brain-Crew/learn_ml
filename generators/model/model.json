@@ -1,7 +1,7 @@
 {
     "model": {
         "model": {
-            "model_name": "sequential"
+            "name": "sequential"
         },
         "layers": [
             {

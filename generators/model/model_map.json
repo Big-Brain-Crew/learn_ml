@@ -1,5 +1,5 @@
 {
-    "model_map": {
+    "map": {
         "sequential": {
             "name" : "tf.keras.models.Sequential",
             "type" : "object"

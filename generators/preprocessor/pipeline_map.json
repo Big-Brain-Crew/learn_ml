@@ -1,0 +1,16 @@
+{
+    "map": {
+        "train_size": {
+            "name": "self.ds_info.splits['train'].num_examples",
+            "type": "object"
+        },
+        "autotune": {
+            "name": "tf.data.experimental.AUTOTUNE",
+            "type": "object"
+        },
+        "normalize_img" : {
+            "name" : "tf_utils.normalize_img",
+            "type" : "object"
+        }
+    }
+}
