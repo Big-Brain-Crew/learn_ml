@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, Response
 import cv2
-from classifier import Classifier
-import classifier
+from coral_inference.classification import classifier
 import argparse
 
 # Parse arguments
@@ -39,7 +38,7 @@ def gen(camera):
 # Define the video feed on the webpage
 @app.route('/video_feed')
 def video_feed():
-     
+
     # Choose classifier
     model_type = args.model.split('/')[-1].split('_')[0]
     print(model_type)

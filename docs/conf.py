@@ -16,6 +16,8 @@ sys.path.insert(0, os.path.abspath('../..'))
 sys.path.append(os.path.abspath('..'))
 
 
+
+
 # -- Project information -----------------------------------------------------
 
 project = 'learn-ml'
@@ -35,7 +37,7 @@ extensions = [
     'sphinx.ext.napoleon'
 ]
 
-autodoc_mock_imports = ["tensorflow", "tensorflow_datasets" ]
+autodoc_mock_imports = ["tflite_runtime"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
