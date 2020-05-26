@@ -3,6 +3,7 @@ import sys
 import pytest
 import warnings
 import pdb
+import json
 
 
 @pytest.fixture
@@ -33,6 +34,33 @@ def pygen_file_reader():
 def class_file_reader():
     return open("./tests/files/test_class_generator.txt", "r")
 
+
+@pytest.fixture
+def json_generator():
+    sys.path.append(os.getcwd())
+    import generators.json_generators as json_generators
+    json_gen = json_generators.JsonGenerator(
+        out_file="./tests/files/test_json_generator.json")
+    return json_gen
+
+
+@pytest.fixture
+def pipeline_json_generator():
+    sys.path.append(os.getcwd())
+    import generators.json_generators as json_generators
+
+    json_generator = json_generators.PipelineJsonGenerator(
+        out_file="./tests/files/test_json_generator.json")
+    return json_generator
+
+
+@pytest.fixture
+def model_json_generator():
+    sys.path.append(os.getcwd())
+    import generators.json_generators as json_generators
+    json_generator = json_generators.ModelJsonGenerator(
+        out_file="./tests/files/test_json_generator.json")
+    return json_generator
 
 class TestPythonGenerator:
     def test_init(self):
@@ -132,6 +160,153 @@ class TestPythonGenerator:
         assert python_generator.get_gen_file_name() == "./tests/files/test_python_generator.txt"
 
 
+class TestGeneratorUtils:
+    def test_is_valid_arg_dict(self):
+        sys.path.append(os.getcwd())
+        import generators.generator_utils as generator_utils
+
+        args = None
+        arg_str = generator_utils._is_valid_arg_dict(args)
+
+        args = {}
+        arg_str = generator_utils._is_valid_arg_dict(args)
+
+        args = "not a dict"
+        with pytest.raises(TypeError, match=r".*formatted as a dictionary.*"):
+            generator_utils._is_valid_arg_dict(args)
+
+        args = {
+            "param_1": "val_1",
+            "param_2": None
+        }
+        with pytest.raises(ValueError, match=r".*None.*"):
+            generator_utils._is_valid_arg_dict(args)
+
+        args = {
+            "param_1": None,
+            "param_2": "val_2",
+            "param_3": None
+        }
+        with pytest.raises(ValueError, match=r".*None.*"):
+            generator_utils._is_valid_arg_dict(args)
+
+        args = {
+            "param_1": 4,
+            "param_2": None
+        }
+        with pytest.raises(ValueError, match=r".*None.*"):
+            generator_utils._is_valid_arg_dict(args)
+
+        args = {
+            5: "val_1",
+            "param_2": "val_2"
+        }
+        with pytest.raises(TypeError, match=r".*keys must be.*"):
+            generator_utils._is_valid_arg_dict(args)
+
+        args = {
+            "param_1": None,
+            "param_2": "val_2"
+        }
+        generator_utils._is_valid_arg_dict(args)
+
+        args = {
+            "param_1": "val_1",
+            "param_2": "val_2"
+        }
+        generator_utils._is_valid_arg_dict(args)
+
+        args = {
+            "param_1": None,
+            "param_2": None
+        }
+        generator_utils._is_valid_arg_dict(args)
+
+        args = {
+            "param_1": None,
+            "param_2": 4
+        }
+        generator_utils._is_valid_arg_dict(args)
+
+    def test_is_valid_fn_dict(self):
+        sys.path.append(os.getcwd())
+        import generators.generator_utils as generator_utils
+
+        fn_dict = None
+        with pytest.raises(TypeError, match=r".*dict.*"):
+            generator_utils._is_valid_fn_dict(fn_dict)
+
+        fn_dict = "notadict"
+        with pytest.raises(TypeError, match=r".*dict.*"):
+            generator_utils._is_valid_fn_dict(fn_dict)
+
+        fn_dict = {
+            "1": "val",
+            "2": "val"
+        }
+        with pytest.raises(ValueError, match=r".*\"name\".*"):
+            generator_utils._is_valid_fn_dict(fn_dict)
+
+        fn_dict = {
+            "name": 4,
+            "args": None
+        }
+        with pytest.raises(TypeError, match=r".*name must be.*"):
+            generator_utils._is_valid_fn_dict(fn_dict)
+
+        fn_dict = {
+            "name": "function",
+            "args": "notadict"
+        }
+        with pytest.raises(TypeError):
+            generator_utils._is_valid_fn_dict(fn_dict)
+
+        fn_dict = {
+            "name": "function",
+            "notargs": {}
+        }
+        with pytest.raises(ValueError, match=r".*\"args\".*"):
+            generator_utils._is_valid_fn_dict(fn_dict)
+
+        fn_dict = {
+            "notname": "function",
+            "args": None
+        }
+        with pytest.raises(ValueError, match=r".*\"name\".*"):
+            generator_utils._is_valid_fn_dict(fn_dict)
+
+        fn_dict = {
+            "name": "function",
+            "args": {"param": "val"},
+            "extra": "catchme"
+        }
+        with pytest.raises(ValueError, match=r".*only keys.*"):
+            generator_utils._is_valid_fn_dict(fn_dict)
+
+    def test_create_fn_dict(self):
+        sys.path.append(os.getcwd())
+        import generators.generator_utils as generator_utils
+
+        fn_dict = generator_utils.create_fn_dict("function")
+        assert fn_dict == {
+            "name": "function",
+            "args": None
+        }
+
+        args = {
+            "param_1": "value_1",
+            "param_2": "value_2"
+        }
+        fn_dict = generator_utils.create_fn_dict("function", args)
+        assert fn_dict == {
+            "name": "function",
+            "args": {
+                "param_1": "value_1",
+                "param_2": "value_2"
+            }
+        }
+
+
 class TestClassGenerator:
     def test_init(self):
         sys.path.append(os.getcwd())
@@ -180,70 +355,6 @@ class TestClassGenerator:
             "\n"
         ]
 
-    def test_is_valid_arg_dict(self, class_generator):
-        args = None
-        arg_str = class_generator._is_valid_arg_dict(args)
-
-        args = {}
-        arg_str = class_generator._is_valid_arg_dict(args)
-
-        args = "not a dict"
-        with pytest.raises(TypeError, match=r".*formatted as a dictionary.*"):
-            class_generator._is_valid_arg_dict(args)
-
-        args = {
-            "param_1": "val_1",
-            "param_2": None
-        }
-        with pytest.raises(ValueError, match=r".*None.*"):
-            class_generator._is_valid_arg_dict(args)
-
-        args = {
-            "param_1": None,
-            "param_2": "val_2",
-            "param_3": None
-        }
-        with pytest.raises(ValueError, match=r".*None.*"):
-            class_generator._is_valid_arg_dict(args)
-
-        args = {
-            "param_1": 4,
-            "param_2": None
-        }
-        with pytest.raises(ValueError, match=r".*None.*"):
-            class_generator._is_valid_arg_dict(args)
-
-        args = {
-            5: "val_1",
-            "param_2": "val_2"
-        }
-        with pytest.raises(TypeError, match=r".*keys must be.*"):
-            class_generator._is_valid_arg_dict(args)
-
-        args = {
-            "param_1": None,
-            "param_2": "val_2"
-        }
-        class_generator._is_valid_arg_dict(args)
-
-        args = {
-            "param_1": "val_1",
-            "param_2": "val_2"
-        }
-        class_generator._is_valid_arg_dict(args)
-
-        args = {
-            "param_1": None,
-            "param_2": None
-        }
-        class_generator._is_valid_arg_dict(args)
-
-        args = {
-            "param_1": None,
-            "param_2": 4
-        }
-        class_generator._is_valid_arg_dict(args)
-
     def test_arg_str(self, class_generator):
         args = None
         arg_str = class_generator._arg_str(args)
@@ -280,58 +391,6 @@ class TestClassGenerator:
         }
         arg_str = class_generator._arg_str(args)
         assert arg_str == "param_1, param_2=4"
-
-    def test_is_valid_fn_dict(self, class_generator):
-        fn_dict = None
-        with pytest.raises(TypeError, match=r".*dict.*"):
-            class_generator._is_valid_fn_dict(fn_dict)
-
-        fn_dict = "notadict"
-        with pytest.raises(TypeError, match=r".*dict.*"):
-            class_generator._is_valid_fn_dict(fn_dict)
-
-        fn_dict = {
-            "1": "val",
-            "2": "val"
-        }
-        with pytest.raises(ValueError, match=r".*\"name\".*"):
-            class_generator._is_valid_fn_dict(fn_dict)
-
-        fn_dict = {
-            "name": 4,
-            "args": None
-        }
-        with pytest.raises(TypeError, match=r".*name must be.*"):
-            class_generator._is_valid_fn_dict(fn_dict)
-
-        fn_dict = {
-            "name": "function",
-            "args": "notadict"
-        }
-        with pytest.raises(TypeError):
-            class_generator._is_valid_fn_dict(fn_dict)
-
-        fn_dict = {
-            "name": "function",
-            "notargs": {}
-        }
-        with pytest.raises(ValueError, match=r".*\"args\".*"):
-            class_generator._is_valid_fn_dict(fn_dict)
-
-        fn_dict = {
-            "notname": "function",
-            "args": None
-        }
-        with pytest.raises(ValueError, match=r".*\"name\".*"):
-            class_generator._is_valid_fn_dict(fn_dict)
-
-        fn_dict = {
-            "name": "function",
-            "args": {"param": "val"},
-            "extra": "catchme"
-        }
-        with pytest.raises(ValueError, match=r".*only keys.*"):
-            class_generator._is_valid_fn_dict(fn_dict)
 
     def test_fn_str(self, class_generator):
         fn_dict = {
@@ -620,3 +679,253 @@ class TestClassGenerator:
             "    '''\n",
             "\n"
         ]
+
+
+class TestJsonGenerator:
+    def test_init(self):
+        sys.path.append(os.getcwd())
+        import generators.json_generators as json_generators
+
+        json_gen = json_generators.JsonGenerator(out_file="./tests/files/test_json_generator.json")
+
+        assert json_gen.out_file == "./tests/files/test_json_generator.json"
+        assert json_gen.out.name == "./tests/files/test_json_generator.json"
+        assert json_gen.root == {}
+        assert json_gen.index == json_gen.root
+
+    def test_close(self, json_generator):
+        json_generator._close()
+        assert json_generator.out.closed == True
+
+    def test_indent(self, json_generator):
+        json_generator.root["key"] = {"param": "val"}
+        json_generator._indent("key")
+        assert json_generator.index == {"param": "val"}
+
+        with pytest.warns(UserWarning):
+            json_generator._indent("param")
+
+        json_generator._indent("new_key")
+        assert json_generator.index == {}
+        assert json_generator.root == {
+            "key": {
+                "param": "val",
+                "new_key": {}
+            }
+        }
+
+    def test_unindent(self, json_generator):
+        json_generator._indent("key_1")
+        json_generator._indent("key_2")
+        json_generator._unindent()
+        assert json_generator.root == {
+            "key_1": {
+                "key_2": {}
+            }
+        }
+        assert json_generator.index == json_generator.root
+
+    def test_add_entry(self, json_generator):
+        json_generator.add_entry("key", "value")
+        assert json_generator.index == {
+            "key": "value"
+        }
+
+        json_generator.add_entry("key_2", "value")
+        assert json_generator.index == {
+            "key": "value",
+            "key_2": "value"
+        }
+
+        json_generator.add_entry("key", "new_value")
+        assert json_generator.index == {
+            "key": "new_value",
+            "key_2": "value"
+        }
+
+        json_generator._indent("key_3")
+        json_generator.add_entry("key_4", "value")
+        assert json_generator.index == {
+            "key_4": "value"
+        }
+        assert json_generator.root == {
+            "key": "new_value",
+            "key_2": "value",
+            "key_3": {
+                "key_4": "value"
+            }
+        }
+
+        json_generator._unindent()
+        json_generator.add_entry("key_5", ["value_1"])
+        json_generator.add_entry("key_5", "value_2")
+        assert json_generator.index == {
+            "key": "new_value",
+            "key_2": "value",
+            "key_3": {
+                "key_4": "value"
+            },
+            "key_5": ["value_1", "value_2"]
+        }
+
+    def test_add_fn(self, json_generator):
+        json_generator.add_fn("key", "function")
+        assert json_generator.index == {
+            "key": {
+                "name": "function",
+                "args": None
+            }
+        }
+
+        args = {
+            "param_1": "val_1",
+            "param_2": "val_2"
+        }
+        json_generator.add_fn("key", "function", args)
+        assert json_generator.index == {
+            "key": {
+                "name": "function",
+                "args": {
+                    "param_1": "val_1",
+                    "param_2": "val_2"
+                }
+            }
+        }
+
+    def test_write(self, json_generator):
+        json_generator.add_entry("key", {
+            "param": "val"
+        })
+        json_generator.write()
+
+        json_file_reader = json.load(open("./tests/files/test_json_generator.json"))
+
+        assert json_file_reader == {
+            "key": {
+                "param": "val"
+            }
+        }
+
+
+class TestPipelineJsonGenerator:
+    def test_init(self):
+        sys.path.append(os.getcwd())
+        import generators.json_generators as json_generators
+
+        json_generator = json_generators.PipelineJsonGenerator(
+            out_file="./tests/files/test_json_generator.json")
+
+        assert json_generator.root == {
+            "pipeline": {
+                "dataset": {},
+                "operations": []
+            }
+        }
+
+    def test_add_dataset(self, pipeline_json_generator):
+        pipeline_json_generator.add_dataset("test_dataset")
+        assert pipeline_json_generator.index["dataset"]["label"] == "test_dataset"
+
+    def test_add_operation(self, pipeline_json_generator):
+        pipeline_json_generator.add_operation("op_1")
+        assert pipeline_json_generator.index["operations"] == [
+            {
+                "name": "op_1",
+                "args": None
+            }
+        ]
+
+        args = {
+            "param": "val"
+        }
+        pipeline_json_generator.add_operation("op_2", args)
+        assert pipeline_json_generator.index["operations"] == [
+            {
+                "name": "op_1",
+                "args": None
+            },
+            {
+                "name": "op_2",
+                "args": {
+                    "param": "val"
+                }
+            }
+        ]
+
+
+class TestModelJsonGenerator:
+    def test_init(self):
+        sys.path.append(os.getcwd())
+        import generators.json_generators as json_generators
+        model_json_generator = json_generators.ModelJsonGenerator(
+            out_file="./tests/files/test_json_generator.json")
+
+        assert model_json_generator.root == {
+            "model": {
+                "model": {},
+                "layers": [],
+                "compile": {}
+            }
+        }
+
+    def test_add_model(self, model_json_generator):
+        model_json_generator.add_model("test_model")
+        assert model_json_generator.index["model"]["name"] == "test_model"
+
+    def test_add_layer(self, model_json_generator):
+        model_json_generator.add_layer("flatten")
+        assert model_json_generator.index["layers"] == [
+            {
+                "name": "flatten",
+                "args": None
+            }
+        ]
+
+        args = {
+            "param": "value"
+        }
+        model_json_generator.add_layer("dense", args)
+        assert model_json_generator.index["layers"] == [
+            {
+                "name": "flatten",
+                "args": None
+            },
+            {
+                "name": "dense",
+                "args": {
+                    "param": "value"
+                }
+            }
+        ]
+
+    def test_add_compile(self, model_json_generator):
+        args = {
+            "loss": "crossentropy",
+            "optimizer": {
+                "name": "adam",
+                "args": {
+                    "learning_rate": 0.001
+                }
+            },
+            "metrics": [
+                "accuracy",
+                "mae"
+            ]
+        }
+        model_json_generator.add_compile(args)
+        assert model_json_generator.index["compile"] == {
+            "name": "compile",
+            "args": {
+                "loss": "crossentropy",
+                "optimizer": {
+                    "name": "adam",
+                    "args": {
+                        "learning_rate": 0.001
+                    }
+                },
+                "metrics": [
+                    "accuracy",
+                    "mae"
+                ]
+            }
+        }

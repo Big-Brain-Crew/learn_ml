@@ -15,6 +15,7 @@ from abc import abstractmethod
 import warnings
 import numpy as np
 import pdb
+from generators import generator_utils
 
 
 class PythonGenerator(object):
@@ -183,96 +184,6 @@ class ClassGenerator(PythonGenerator):
         '''
         pass
 
-    def _is_valid_arg_dict(self, arg_dict):
-        ''' Check if arguments are formatted correctly in the dictionary.
-
-        The argument dict must follow the convention of Python function arguments. Args with
-        default parameters must come after args without. All keys must be of type string. 
-        Values may take the forms:
-             string: To represent any object. Will be written without quotes.
-             int/float: To represent a number value.
-             list: A list input.
-             None: This can be used to signify there is no default parameter. 
-
-        This function raises exceptions if any of these rules are not followed.
-
-        Args:
-            arg_dict: A dict of method arguments in the form ("param" : "value"). param must be 
-            string and value may be string or None. arg_dict can be None instead of dict
-            if there are no args
-
-        Raises:
-            TypeError: Arguments must be formatted as a dictionary.
-            ValueError: All None values must come before all string values.
-            TypeError: All keys must be strings and all values must be strings or None.
-        '''
-        # Args must be in a dict
-        if arg_dict:
-            if not isinstance(arg_dict, dict):
-                raise TypeError("Arguments must be formatted as a dictionary.")
-
-            def allowed_val_type(v):
-                return (isinstance(v, str) or
-                        isinstance(v, int) or
-                        isinstance(v, float) or
-                        isinstance(v, list) or
-                        v is None)
-
-            # Check that all keys are strings and all vals are string, int or None
-            all_str_keys = [isinstance(k, str) for k in arg_dict.keys()]
-            all_str_vals = [allowed_val_type(v) for v in arg_dict.values()]
-
-            # Check for default parameters before args w/o default parameters
-            bad_arg_order = False
-            default_param = False
-            for val in arg_dict.values():
-                if val and not default_param:
-                    default_param = True
-                elif not val and default_param:
-                    bad_arg_order = True
-
-            if bad_arg_order:
-                raise ValueError("All None values must come before all string values.")
-            if not np.all(all_str_keys) or not np.all(all_str_vals):
-                raise TypeError("All keys must be strings and all values must be strings, \
-                    int, float, or None.")
-
-    def _is_valid_fn_dict(self, fn_dict):
-        ''' Check if function is formatted correctly in a dictionary.
-
-        The function dictionary must be correctly formatted so it can be parsed. It must have two 
-        keys: "name" and "args". The value of "name" must be a string, and args must be formatted
-        as an arg_dict (see _is_valid_arg_dict for that format). Any input deviating from this will
-        raise an exception.
-
-        Args:
-            fn_dict: A dict containing function details.
-
-        Raises:
-            TypeError: Input must be of type dict.
-            ValueError: Must have a "name" key in the dict.
-            ValueError: Must have an "args" key in the dict.
-            ValueError: The only keys must be "name' and "args".
-            TypeError: Function name must be a string. 
-        '''
-        if not isinstance(fn_dict, dict):
-            raise TypeError("fn_dict must be of type dict.")
-
-        if "name" not in fn_dict:
-            raise ValueError("Must have a \"name\" key in the dict.")
-
-        if "args" not in fn_dict:
-            raise ValueError("Must have an \"args\" key in the dict.")
-
-        for param in fn_dict.keys():
-            if param != "name" and param != "args":
-                raise ValueError("The only keys must be \"name\" and \"args\".")
-
-        if not isinstance(fn_dict["name"], str):
-            raise TypeError("Function name must be a string.")
-
-        self._is_valid_arg_dict(fn_dict["args"])
-
     def _arg_str(self, arg_dict):
         ''' Converts function arguments to a string.
 
@@ -291,7 +202,7 @@ class ClassGenerator(PythonGenerator):
             _arg_str(arg_dict) ; 'param_1, param_2=val_2'
         '''
         # Raise an error if arg dict incorrectly formatted
-        self._is_valid_arg_dict(arg_dict)
+        generator_utils._is_valid_arg_dict(arg_dict)
 
         if not arg_dict:
             return ""
@@ -320,8 +231,8 @@ class ClassGenerator(PythonGenerator):
             _fn_str(fn_dict) ; 'function(param=val)
         '''
         # Raise an exception if formatted incorrectly
-        self._is_valid_fn_dict(fn_dict)
-
+        generator_utils._is_valid_fn_dict(fn_dict)
+        
         return "{fn_name}({args})".format(fn_name=fn_dict["name"],
                                           args=self._arg_str(fn_dict["args"]))
 
@@ -343,7 +254,7 @@ class ClassGenerator(PythonGenerator):
 
         return input_  # Input not in the map
 
-    def _map_fn(self, function):
+    def _map_fn(self, fn_dict):
         ''' Convert the elements of a function dictionary to their real values.
 
         Args:
@@ -362,15 +273,17 @@ class ClassGenerator(PythonGenerator):
             }
             _map_fn(function)
         '''
+        # Raise exception if invalid input format
+        generator_utils._is_valid_fn_dict(fn_dict)
 
         # Create mapped function dict and add name
         mapped_fn = {
-            "name": self._map(function["name"]),
+            "name": self._map(fn_dict["name"]),
             "args": {}
         }
 
         # Map function args; recursively if an arg is a function dict
-        for _param, _value in function["args"].items():
+        for _param, _value in fn_dict["args"].items():
             mapped_fn["args"][self._map(_param)] = self._fn_str(self._map_fn(
                 _value)) if isinstance(_value, dict) else self._map(_value)
 
@@ -419,7 +332,7 @@ class ClassGenerator(PythonGenerator):
             args : A dict of args passed to the method. Don't include "self". Default to None
             docstring : A string to be written as a docstring. Default to None.
         '''
-        self._is_valid_arg_dict(arg_dict)
+        generator_utils._is_valid_arg_dict(arg_dict)
         args = {
             "self" : None,
         }

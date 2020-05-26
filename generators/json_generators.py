@@ -6,7 +6,9 @@ as they would be selected by the user. After these JSONs are generated, the actu
 DatasetPipeline and Model classes can be generated based on the JSONs.
 '''
 import json
-
+import warnings
+import pdb
+import generators.generator_utils as generator_utils
 
 class JsonGenerator(object):
     ''' Base class that adds content to a JSON file.
@@ -28,15 +30,21 @@ class JsonGenerator(object):
     def _indent(self, key):
         '''Set the entry point for writing to the JSON.
 
-        After indenting, new entries will be added to this indented level.
+        After indenting, new entries will be added to this indented level. Indents can only be set 
+        to dictionaries. Will raise a warning if trying to indent to anything else.
 
         Args:
             name : Dictionary key in the JSON. If the key does not already exist in the JSON,
             then it is added with an empty dictionary value.
         '''
-        if key not in self.root:
-            self.root[key] = {}
-        self.index = self.root[key]
+        # pdb.set_trace()
+        if key not in self.index:
+            self.index[key] = {}
+            self.index = self.index[key]
+        elif not isinstance(self.index[key], dict):
+            warnings.warn("Cannot be indented any further", UserWarning)
+        else:
+            self.index = self.index[key]
 
     def _unindent(self):
         ''' Sets the entry point back to the root of the JSON file.
@@ -59,7 +67,7 @@ class JsonGenerator(object):
         else:
             self.index[key] = value
 
-    def add_fn(self, key, fn_name, args):
+    def add_fn(self, key, fn_name, args=None):
         ''' Adds a function to the file.
 
         A function is defined as a dictionary with "name" and "args" keys. The name is a string
@@ -76,41 +84,16 @@ class JsonGenerator(object):
                 "parameter_1" : "value_1",
                 "parameter_2" : [28, 28, 1]
             }
-            add_fn("key", "function" args)
+            add_fn("key", "function", args)
         '''
+        # Raise exceptions if args incorrectly formatted
+        generator_utils._is_valid_arg_dict(args)
 
         _fn = {
             "name": fn_name,
             "args": args
         }
         self.add_entry(key, _fn)
-
-    def create_fn_dict(self, name, args=None):
-        ''' Creates a dictionary representation of a function.
-
-        This function exists so the user doesn't have to worry about the internal representation
-        of a function in the JSON file.
-
-        Args:
-            name : Name of the function.
-            args : A dictionary of function arguments as "parameter" : "value" elements.
-
-        Returns:
-            A dict representing the function.
-
-        Example usage:
-
-            function_name = "flatten"
-            args = {
-                "input_shape" : [28, 28, 1],
-                "parameter" : "value"
-            }
-            fn_dict = create_fn_dict(function_name, args)
-        '''
-        return {
-            "name": name,
-            "args": args if args else None
-        }
 
     def write(self):
         ''' Writes the root dictionary to the JSON file and closes the file.
