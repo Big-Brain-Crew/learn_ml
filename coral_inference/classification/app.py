@@ -5,13 +5,16 @@ from coral_inference.classification import classifier
 import argparse
 
 # Parse arguments
-parser = argparse.ArgumentParser()
-parser.add_argument('-m','--model', help='Path to .tflite model file', required=True)
-args = parser.parse_args()
-
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-m','--model', help='Path to .tflite model file', required=True)
+    args = parser.parse_args()
 
 # Instantiate a Flask app
-app = Flask(__name__)
+if __name__ == '__main__':
+    app = Flask(__name__)
+
+
 
 # Choose the classifier based on the model type
 def choose_classifier(model_type):
