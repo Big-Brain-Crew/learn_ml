@@ -14,7 +14,7 @@ cd docs
 # fi
 
 echo hello
-if { phinx-apidoc -q --implicit-namespaces -f -o 2>&1 >&3 3>&- | grep '^' >&2; } 3>&1; then
+if { sphinx-apidoc -q --implicit-namespaces -f -o 2>&1 >&3 3>&- | grep '^' >&2; } 3>&1; then
   exit 1
 fi
 echo goodbye
