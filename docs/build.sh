@@ -4,7 +4,17 @@
 cd docs
 
 # Build API docs from the docstrings
-sphinx-apidoc -q --implicit-namespaces -f -o . .. ../docs/* || { echo 'sphinx-apidoc failed' ; exit 1; }
+# || { echo 'sphinx-apidoc failed' ; exit 1; }
+before=$(stat -L -c %y /proc/self/fd/2)
+if sphinx-apidoc -q --implicit-namespaces -f -o . .. ../docs/* &&
+ after=$(stat -L -c %y /proc/self/fd/2) &&
+ [ "$after" = "$before" ]
+then echo 'command ok'
+else echo 'command fail'
+fi
+
+
+
 # Generate the html
 make html || { echo 'make html failed' ; exit 1; }
 cd ..
