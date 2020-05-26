@@ -9,8 +9,8 @@ before=$(stat -L -c %y /proc/self/fd/2)
 if sphinx-apidoc --implicit-namespaces -f -o . .. ../docs/* &&
  after=$(stat -L -c %y /proc/self/fd/2) &&
  [ "$after" = "$before" ]
-then echo 'command ok'
-else echo 'command fail'
+then echo 'Docs built successfully!'
+else exit 1
 fi
 
 # echo hello
