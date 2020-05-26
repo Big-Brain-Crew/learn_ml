@@ -12,6 +12,9 @@ Classes:
 import json
 import os
 from abc import abstractmethod
+import warnings
+import numpy as np
+import pdb
 
 
 class PythonGenerator(object):
@@ -55,13 +58,15 @@ class PythonGenerator(object):
 
         Example usage:
 
-            _write("This is a line.")
-            _write(["This is line 1",
-                    "This is line 2"])
+            _write("This is a line.\n")
+            _write(["This is line 1\n",
+                    "This is line 2\n"])
         '''
-
-        self.out.write(self._spaces() + lines) if isinstance(lines, str) \
-            else [(self.out.write(self._spaces() + line)) for line in lines]
+        try:
+            self.out.write(self._spaces() + lines) if isinstance(lines, str) \
+                else [(self.out.write(self._spaces() + line)) for line in lines]
+        except TypeError:
+            warnings.warn("Nothing written - lines arg must be type str or List[str]", UserWarning)
 
     def _write_docstring(self, line=None):
         ''' Writes a line of docstring to the file.
@@ -69,9 +74,13 @@ class PythonGenerator(object):
         Args:
             line: Docstring comment without docstring quotes. Defaults to None and does nothing.
         '''
-        if line:
-            self.out.write(self._spaces() + "'''" + line)
-            self.out.write(self._spaces() + "'''\n\n")
+        if isinstance(line, list):
+            self._write("'''" + line[0] + "\n")
+            self._write(line[1:])
+            self._write("'''\n\n")
+        elif isinstance(line, str):
+            self._write("'''" + line)
+            self._write("'''\n\n")
 
     def _close(self):
         self.out.close()
@@ -80,7 +89,7 @@ class PythonGenerator(object):
         '''Returns the name of the generated Python script.
         '''
 
-        return self.out
+        return self.out_file_name
 
 
 class ClassGenerator(PythonGenerator):
@@ -104,9 +113,9 @@ class ClassGenerator(PythonGenerator):
         '''Check that the config files exist.
         '''
         if not os.path.exists(class_config):
-            raise Exception("ERROR: Cannot find class config file.")
+            raise FileNotFoundError("ERROR: Cannot find class config file.")
         if not os.path.exists(map_config):
-            raise Exception("ERROR : Cannot find map config file.")
+            raise FileNotFoundError("ERROR : Cannot find map config file.")
 
     def _write_imports(self, imports_dict):
         '''Write import statements to file.
@@ -123,6 +132,9 @@ class ClassGenerator(PythonGenerator):
         }
         _write_imports(imports_dict)
         '''
+        if not isinstance(imports_dict, dict):
+            raise TypeError("imports_dict must be a dictionary.")
+
         self._write("# Imports\n")
 
         for _import, _abbrev in imports_dict.items():
@@ -144,30 +156,6 @@ class ClassGenerator(PythonGenerator):
         self._write("class {name}({base}):\n".format(name=name, base=base))
         self._indent()
         self._write_docstring(docstring)
-
-    def _start_method(self, name, args=None, docstring=None):
-        '''Writes the method definition to file.
-
-        Args:
-            name : A string of the method name.
-            args : A dict of args passed to the method. Default to None
-            docstring : A string to be written as a docstring. Default to None.
-        '''
-        _args = ", ".join([arg for arg in args]) if args else ""
-        self._write("def {name}({args}):\n".format(name=name,
-                                                   args=_args))
-        self._indent()
-        self._write_docstring(docstring)
-
-    def _start_class_method(self, name, args=None, docstring=None):
-        '''Writes a class method definition to file.
-
-        Args:
-            name : A string of the method name.
-            args : A dict of args passed to the method. Don't include "self". Default to None
-            docstring : A string to be written as a docstring. Default to None.
-        '''
-        self._start_method(name, ["self"] + args if args else ["self"], docstring)
 
     def _end_class(self):
         ''' Signify end of class and remove indents.
@@ -195,29 +183,101 @@ class ClassGenerator(PythonGenerator):
         '''
         pass
 
-    def _map(self, input_):
-        ''' Converts an input to its language-specific representation.
+    def _is_valid_arg_dict(self, arg_dict):
+        ''' Check if arguments are formatted correctly in the dictionary.
 
-        This function allows the model JSON language to be independent of implementation syntax.
-        For example, the model may have a "dense" layer. The Tensorflow code for this is
-        tf.keras.layers.Dense(). This function returns that language-specific syntax.
+        The argument dict must follow the convention of Python function arguments. Args with
+        default parameters must come after args without. All keys must be of type string. 
+        Values may take the forms:
+             string: To represent any object. Will be written without quotes.
+             int/float: To represent a number value.
+             list: A list input.
+             None: This can be used to signify there is no default parameter. 
+
+        This function raises exceptions if any of these rules are not followed.
 
         Args:
-            input : A string representing the term to be mapped.
+            arg_dict: A dict of method arguments in the form ("param" : "value"). param must be 
+            string and value may be string or None. arg_dict can be None instead of dict
+            if there are no args
+
+        Raises:
+            TypeError: Arguments must be formatted as a dictionary.
+            ValueError: All None values must come before all string values.
+            TypeError: All keys must be strings and all values must be strings or None.
         '''
+        # Args must be in a dict
+        if arg_dict:
+            if not isinstance(arg_dict, dict):
+                raise TypeError("Arguments must be formatted as a dictionary.")
 
-        # Return the mapped output in quotations if it is of type string
-        if isinstance(input_, str) and input_ in self.map:
-            return self.map[input_]["name"] if self.map[input_]["type"] != "string" \
-                else "\"{}\"".format(self.map[input_]["name"])
+            def allowed_val_type(v):
+                return (isinstance(v, str) or
+                        isinstance(v, int) or
+                        isinstance(v, float) or
+                        isinstance(v, list) or
+                        v is None)
 
-        return input_  # Input not in the map
+            # Check that all keys are strings and all vals are string, int or None
+            all_str_keys = [isinstance(k, str) for k in arg_dict.keys()]
+            all_str_vals = [allowed_val_type(v) for v in arg_dict.values()]
+
+            # Check for default parameters before args w/o default parameters
+            bad_arg_order = False
+            default_param = False
+            for val in arg_dict.values():
+                if val and not default_param:
+                    default_param = True
+                elif not val and default_param:
+                    bad_arg_order = True
+
+            if bad_arg_order:
+                raise ValueError("All None values must come before all string values.")
+            if not np.all(all_str_keys) or not np.all(all_str_vals):
+                raise TypeError("All keys must be strings and all values must be strings, \
+                    int, float, or None.")
+
+    def _is_valid_fn_dict(self, fn_dict):
+        ''' Check if function is formatted correctly in a dictionary.
+
+        The function dictionary must be correctly formatted so it can be parsed. It must have two 
+        keys: "name" and "args". The value of "name" must be a string, and args must be formatted
+        as an arg_dict (see _is_valid_arg_dict for that format). Any input deviating from this will
+        raise an exception.
+
+        Args:
+            fn_dict: A dict containing function details.
+
+        Raises:
+            TypeError: Input must be of type dict.
+            ValueError: Must have a "name" key in the dict.
+            ValueError: Must have an "args" key in the dict.
+            ValueError: The only keys must be "name' and "args".
+            TypeError: Function name must be a string. 
+        '''
+        if not isinstance(fn_dict, dict):
+            raise TypeError("fn_dict must be of type dict.")
+
+        if "name" not in fn_dict:
+            raise ValueError("Must have a \"name\" key in the dict.")
+
+        if "args" not in fn_dict:
+            raise ValueError("Must have an \"args\" key in the dict.")
+
+        for param in fn_dict.keys():
+            if param != "name" and param != "args":
+                raise ValueError("The only keys must be \"name\" and \"args\".")
+
+        if not isinstance(fn_dict["name"], str):
+            raise TypeError("Function name must be a string.")
+
+        self._is_valid_arg_dict(fn_dict["args"])
 
     def _arg_str(self, arg_dict):
         ''' Converts function arguments to a string.
 
         Args:
-            arg_dict : A dict of arguments.
+            arg_dict : A dict of arguments. Can be None if there are no args.
 
         Returns:
             A string of the concatenated arguments.
@@ -225,13 +285,23 @@ class ClassGenerator(PythonGenerator):
         Example usage:
 
             arg_dict = {
-                "param_1" : "val_1",
+                "param_1" : None,
                 "param_2" : "val_2"
             }
-            _arg_str(arg_dict) ; 'param_1=val_1, param_2=val_2
+            _arg_str(arg_dict) ; 'param_1, param_2=val_2'
         '''
-        return ', '.join(["{param}={val}".format(param=param, val=val)
-                          for param, val in arg_dict.items()])
+        # Raise an error if arg dict incorrectly formatted
+        self._is_valid_arg_dict(arg_dict)
+
+        if not arg_dict:
+            return ""
+
+        arg_str = []
+        for param, val in arg_dict.items():
+            arg_str.append("{param}={val}".format(param=param, val=val) if val
+                           else "{param}".format(param=param))
+
+        return ", ".join(arg_str)
 
     def _fn_str(self, fn_dict):
         ''' Convert a function from dictionary form to a string.
@@ -249,8 +319,29 @@ class ClassGenerator(PythonGenerator):
             }
             _fn_str(fn_dict) ; 'function(param=val)
         '''
+        # Raise an exception if formatted incorrectly
+        self._is_valid_fn_dict(fn_dict)
+
         return "{fn_name}({args})".format(fn_name=fn_dict["name"],
                                           args=self._arg_str(fn_dict["args"]))
+
+    def _map(self, input_):
+        ''' Converts an input to its language-specific representation.
+
+        This function allows the model JSON language to be independent of implementation syntax.
+        For example, the model may have a "dense" layer. The Tensorflow code for this is
+        tf.keras.layers.Dense(). This function returns that language-specific syntax.
+
+        Args:
+            input : A string representing the term to be mapped.
+        '''
+
+        # Return the mapped output in quotations if it is of type string
+        if isinstance(input_, str) and input_ in self.map:
+            return self.map[input_]["name"] if self.map[input_]["type"] != "string" \
+                else "\"{}\"".format(self.map[input_]["name"])
+
+        return input_  # Input not in the map
 
     def _map_fn(self, function):
         ''' Convert the elements of a function dictionary to their real values.
@@ -278,7 +369,7 @@ class ClassGenerator(PythonGenerator):
             "args": {}
         }
 
-        # Map function args
+        # Map function args; recursively if an arg is a function dict
         for _param, _value in function["args"].items():
             mapped_fn["args"][self._map(_param)] = self._fn_str(self._map_fn(
                 _value)) if isinstance(_value, dict) else self._map(_value)
@@ -305,6 +396,36 @@ class ClassGenerator(PythonGenerator):
             _fn(fn_dict) ; 'mapped_function(mapped_param=mapped_value)
         '''
         return self._fn_str(self._map_fn(fn_dict))
+
+    def _start_method(self, name, args=None, docstring=None):
+        '''Writes the method definition to file.
+
+        Args:
+            name : A string of the method name.
+            args : A dict of args passed to the method. Default to None
+            docstring : A string to be written as a docstring. Default to None.
+        '''
+        # _args = ", ".join([arg for arg in args]) if args else ""
+        self._write("def {name}({args}):\n".format(name=name,
+                                                   args=self._arg_str(args)))
+        self._indent()
+        self._write_docstring(docstring)
+
+    def _start_class_method(self, name, arg_dict=None, docstring=None):
+        '''Writes a class method definition to file.
+
+        Args:
+            name : A string of the method name.
+            args : A dict of args passed to the method. Don't include "self". Default to None
+            docstring : A string to be written as a docstring. Default to None.
+        '''
+        self._is_valid_arg_dict(arg_dict)
+        args = {
+            "self" : None,
+        }
+        if arg_dict : args.update(arg_dict)
+
+        self._start_method(name, args, docstring)
 
 
 class PipelineGenerator(ClassGenerator):
@@ -447,7 +568,9 @@ class ModelGenerator(ClassGenerator):
 
         # Init
         self._start_class_method(name="__init__",
-                                 args=["dataset"])
+                                 args={
+                                     "dataset" : None
+                                 })
 
         self._write([
             "self.ds = dataset\n",

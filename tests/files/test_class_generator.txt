@@ -1,0 +1,4 @@
+def method(self):
+    '''This is docstring.
+    '''
+
