@@ -25,26 +25,6 @@ def class_generator():
 
 
 @pytest.fixture
-def pipeline_generator():
-    sys.path.append(os.getcwd())
-    import generators.python_generators as python_generators
-    pygen = python_generators.PipelineGenerator(class_config="./tests/files/test_class.json",
-                                             map_config="./tests/files/test_map.json",
-                                             out="./tests/files/test_class_generator.txt")
-    return pygen
-
-
-@pytest.fixture
-def model_generator():
-    sys.path.append(os.getcwd())
-    import generators.python_generators as python_generators
-    pygen = python_generators.ModelGenerator(class_config="./tests/files/test_class.json",
-                                             map_config="./tests/files/test_map.json",
-                                             out="./tests/files/test_class_generator.txt")
-    return pygen
-
-
-@pytest.fixture
 def pygen_file_reader():
     return open("./tests/files/test_python_generator.txt", "r")
 
@@ -53,15 +33,6 @@ def pygen_file_reader():
 def class_file_reader():
     return open("./tests/files/test_class_generator.txt", "r")
 
-
-@pytest.fixture
-def pipeline_file_reader():
-    return open("./tests/files/test_pipeline_generator.txt", "r")
-
-
-@pytest.fixture
-def model_file_reader():
-    return open("./tests/files/test_model_generator.txt", "r")
 
 class TestPythonGenerator:
     def test_init(self):
@@ -649,11 +620,3 @@ class TestClassGenerator:
             "    '''\n",
             "\n"
         ]
-
-
-def TestPipelineGenerator:
-    def test_init():
-        pass
-
-    def test_operations():
-        pass
