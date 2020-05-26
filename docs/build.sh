@@ -21,7 +21,7 @@ cd docs
 # else exit 1
 # fi
 
-sphinx-apidoc --implicit-namespaces -f -o . .. ../docs/*,train.py
+sphinx-apidoc --implicit-namespaces -f -o . .. train.py
 
 
 # echo hello
