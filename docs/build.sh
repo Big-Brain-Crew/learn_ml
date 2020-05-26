@@ -3,8 +3,8 @@
 # cd to the docs directory
 cd docs
 
-Build API docs from the docstrings
-|| { echo 'sphinx-apidoc failed' ; exit 1; }
+# Build API docs from the docstrings
+# || { echo 'sphinx-apidoc failed' ; exit 1; }
 before=$(stat -L -c %y /proc/self/fd/2)
 if sphinx-apidoc --implicit-namespaces -f -o . .. ../docs/* &&
  after=$(stat -L -c %y /proc/self/fd/2) &&
