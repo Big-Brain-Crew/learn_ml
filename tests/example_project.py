@@ -4,6 +4,7 @@ sys.path.append(os.getcwd())
 
 import generators.json_generators as json_generators
 import generators.python_generators as python_generators
+import generators.generator_utils as generator_utils
 
 def create_pipeline_json():
     config_gen = json_generators.PipelineJsonGenerator("project/pipeline.json")
@@ -61,7 +62,7 @@ def create_model_json():
     
     args = {
         "loss" : "crossentropy",
-        "optimizer" : config_gen.create_fn_dict("adam", {"learning_rate" : 0.001}),
+        "optimizer" : generator_utils.create_fn_dict("adam", {"learning_rate" : 0.001}),
         "metrics" : ["accuracy"]
     }
     config_gen.add_compile(args)

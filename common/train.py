@@ -17,12 +17,11 @@ from tensorflow.keras.layers import (Conv2D, Dense, Dropout, Flatten,
 
 import tensorflow_datasets as tfds
 import argparse
-    
-from pipeline import DatasetPipeline
-from model import Model
 
 
 def main(args):
+    from pipeline import DatasetPipeline
+    from model import Model
 
     # Load the Dataset Pipeline
     dataset = DatasetPipeline()

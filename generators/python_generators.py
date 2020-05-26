@@ -481,7 +481,7 @@ class ModelGenerator(ClassGenerator):
 
         # Init
         self._start_class_method(name="__init__",
-                                 args={
+                                 arg_dict={
                                      "dataset" : None
                                  })
 
