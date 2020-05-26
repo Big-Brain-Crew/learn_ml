@@ -33,5 +33,5 @@ sphinx-apidoc --implicit-namespaces -f -o . .. ../docs/*
 
 
 # Generate the html
-make html || { echo 'make html failed' ; exit 1; }
+make html O=-W || { echo 'make html failed' ; exit 1; }
 cd ..
