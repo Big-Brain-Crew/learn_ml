@@ -10,11 +10,11 @@ def _is_valid_arg_dict(arg_dict):
     The argument dict must follow the convention of Python function arguments. Args with
     default parameters must come after args without. All keys must be of type string.
     Values may take the forms:
-         string: To represent any object. Will be written without quotes.
-         int/float: To represent a number value.
-         list: A list input.
-         dict: To represent a function as a value.
-         None: This can be used to signify there is no default parameter.
+        string: To represent any object. Will be written without quotes.
+        int/float: To represent a number value.
+        list: A list input.
+        dict: To represent a function as a value.
+        None: This can be used to signify there is no default parameter.
 
     This function raises exceptions if any of these rules are not followed.
 
