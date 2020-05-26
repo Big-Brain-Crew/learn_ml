@@ -13,9 +13,11 @@ cd docs
 # else echo 'command fail'
 # fi
 
+echo hello
 if { phinx-apidoc -q --implicit-namespaces -f -o 2>&1 >&3 3>&- | grep '^' >&2; } 3>&1; then
-  echo there was some output on stderr
+  exit 1
 fi
+echo goodbye
 
 
 
