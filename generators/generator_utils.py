@@ -104,6 +104,14 @@ def create_fn_dict(name, args=None):
 
     Returns:
         A dict representing the function.
+
+    Examples:
+        >>> function_name = "flatten"
+        >>> args = {
+        >>>    "input_shape" : [28, 28, 1],
+        >>>    "parameter" : "value"}
+        >>> fn_dict = create_fn_dict(function_name, args)
+
     '''
     # Raise exceptions if args incorrectly formatted
     _is_valid_arg_dict(args)
