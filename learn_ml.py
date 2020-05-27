@@ -4,7 +4,7 @@ This will launch the learn_ml application to a new project.
 '''
 
 import sys
-from App import LearnML
+from ui.App import LearnML
 from Qt.QtWidgets import QApplication
 
 
