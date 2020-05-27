@@ -15,7 +15,6 @@ def _is_valid_arg_dict(arg_dict):
         list: A list input.
         dict: To represent a function as a value.
         None: This can be used to signify there is no default parameter.
-
     This function raises exceptions if any of these rules are not followed.
 
     Args:
@@ -105,14 +104,6 @@ def create_fn_dict(name, args=None):
 
     Returns:
         A dict representing the function.
-
-    Example usage:
-        function_name = "flatten"
-        args = {
-            "input_shape" : [28, 28, 1],
-            "parameter" : "value"
-        }
-        fn_dict = create_fn_dict(function_name, args)
     '''
     # Raise exceptions if args incorrectly formatted
     _is_valid_arg_dict(args)
