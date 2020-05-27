@@ -1,0 +1,1119 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>learn_ml.tests.test_generators &mdash; learn-ml  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> learn-ml
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">learn_ml</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">learn-ml</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>learn_ml.tests.test_generators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for learn_ml.tests.test_generators</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">pdb</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<div class="viewcode-block" id="python_generator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.python_generator">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">python_generator</span><span class="p">():</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+    <span class="kn">import</span> <span class="nn">generators.python_generators</span> <span class="k">as</span> <span class="nn">python_generators</span>
+
+    <span class="n">pygen</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">PythonGenerator</span><span class="p">(</span><span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_python_generator.txt&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pygen</span></div>
+
+
+<div class="viewcode-block" id="class_generator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.class_generator">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">class_generator</span><span class="p">():</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+    <span class="kn">import</span> <span class="nn">generators.python_generators</span> <span class="k">as</span> <span class="nn">python_generators</span>
+    <span class="n">pygen</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class.json&quot;</span><span class="p">,</span>
+                                             <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_map.json&quot;</span><span class="p">,</span>
+                                             <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pygen</span></div>
+
+
+<div class="viewcode-block" id="pygen_file_reader"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.pygen_file_reader">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">pygen_file_reader</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_python_generator.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="class_file_reader"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.class_file_reader">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">class_file_reader</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="json_generator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.json_generator">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">json_generator</span><span class="p">():</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+    <span class="kn">import</span> <span class="nn">generators.json_generators</span> <span class="k">as</span> <span class="nn">json_generators</span>
+    <span class="n">json_gen</span> <span class="o">=</span> <span class="n">json_generators</span><span class="o">.</span><span class="n">JsonGenerator</span><span class="p">(</span>
+        <span class="n">out_file</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_json_generator.json&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json_gen</span></div>
+
+
+<div class="viewcode-block" id="pipeline_json_generator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.pipeline_json_generator">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">pipeline_json_generator</span><span class="p">():</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+    <span class="kn">import</span> <span class="nn">generators.json_generators</span> <span class="k">as</span> <span class="nn">json_generators</span>
+
+    <span class="n">json_generator</span> <span class="o">=</span> <span class="n">json_generators</span><span class="o">.</span><span class="n">PipelineJsonGenerator</span><span class="p">(</span>
+        <span class="n">out_file</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_json_generator.json&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json_generator</span></div>
+
+
+<div class="viewcode-block" id="model_json_generator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.model_json_generator">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">model_json_generator</span><span class="p">():</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+    <span class="kn">import</span> <span class="nn">generators.json_generators</span> <span class="k">as</span> <span class="nn">json_generators</span>
+    <span class="n">json_generator</span> <span class="o">=</span> <span class="n">json_generators</span><span class="o">.</span><span class="n">ModelJsonGenerator</span><span class="p">(</span>
+        <span class="n">out_file</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_json_generator.json&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json_generator</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator">[docs]</a><span class="k">class</span> <span class="nc">TestPythonGenerator</span><span class="p">:</span>
+<div class="viewcode-block" id="TestPythonGenerator.test_init"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.python_generators</span> <span class="k">as</span> <span class="nn">python_generators</span>
+
+        <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;./tests/files/test_python_generator.txt&quot;</span>
+        <span class="n">pygen</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">PythonGenerator</span><span class="p">(</span><span class="n">out</span><span class="o">=</span><span class="n">file_name</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">pygen</span><span class="o">.</span><span class="n">out_file_name</span> <span class="o">==</span> <span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;Out file name is incorrect&quot;</span>
+        <span class="k">assert</span> <span class="n">pygen</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Indent level not 0&quot;</span>
+        <span class="k">assert</span> <span class="n">pygen</span><span class="o">.</span><span class="n">indent_str</span> <span class="o">==</span> <span class="s2">&quot;    &quot;</span><span class="p">,</span> <span class="s2">&quot;Indent string is wrong&quot;</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_python_generator.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;Out file not opened&quot;</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_indent"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_indent">[docs]</a>    <span class="k">def</span> <span class="nf">test_indent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">()</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;This line is indented.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">python_generator</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Indent level is incorrect&quot;</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pygen_file_reader</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;    This line is indented.</span><span class="se">\n</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_multiple_indent"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_multiple_indent">[docs]</a>    <span class="k">def</span> <span class="nf">test_multiple_indent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;This line is thrice indented.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pygen_file_reader</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;            This line is thrice indented.</span><span class="se">\n</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_unindent"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_unindent">[docs]</a>    <span class="k">def</span> <span class="nf">test_unindent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">()</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_unindent</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">python_generator</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Indent level is wrong&quot;</span>
+
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_unindent</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">python_generator</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Indent level is wrong&quot;</span>
+
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;This line is indented once.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pygen_file_reader</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;    This line is indented once.</span><span class="se">\n</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_spaces"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_spaces">[docs]</a>    <span class="k">def</span> <span class="nf">test_spaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">python_generator</span><span class="o">.</span><span class="n">_spaces</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Wrong number of spaces&quot;</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">python_generator</span><span class="o">.</span><span class="n">_spaces</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;    &quot;</span><span class="p">,</span> <span class="s2">&quot;Wrong number of spaces&quot;</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">python_generator</span><span class="o">.</span><span class="n">_spaces</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;            &quot;</span><span class="p">,</span> <span class="s2">&quot;Wrong number of spaces&quot;</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_write"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_write">[docs]</a>    <span class="k">def</span> <span class="nf">test_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;This is a line of code</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pygen_file_reader</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;This is a line of code</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;Line not written properly&quot;</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_write_multiple_lines"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_write_multiple_lines">[docs]</a>    <span class="k">def</span> <span class="nf">test_write_multiple_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_write</span><span class="p">([</span><span class="s2">&quot;Line 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;Line 2</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;Line 3</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pygen_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;Line 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;Line 2</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;Line 3</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">],</span> <span class="s2">&quot;Lines not written properly&quot;</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_write_nothing"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_write_nothing">[docs]</a>    <span class="k">def</span> <span class="nf">test_write_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">warns</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">):</span>
+            <span class="n">python_generator</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_write_docstring"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_write_docstring">[docs]</a>    <span class="k">def</span> <span class="nf">test_write_docstring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_write_docstring</span><span class="p">(</span><span class="s2">&quot;This is a line of docstring.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pygen_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;&#39;&#39;&#39;This is a line of docstring.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;&#39;&#39;&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">],</span> <span class="s2">&quot;Docstring written incorrectly&quot;</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_write_docstring_none"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_write_docstring_none">[docs]</a>    <span class="k">def</span> <span class="nf">test_write_docstring_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_write_docstring</span><span class="p">()</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pygen_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_write_docstring_multiple_lines"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_write_docstring_multiple_lines">[docs]</a>    <span class="k">def</span> <span class="nf">test_write_docstring_multiple_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_write_docstring</span><span class="p">([</span><span class="s2">&quot;This is the header line.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                           <span class="s2">&quot;This is the description. The description may be &quot;</span> <span class="o">+</span>
+                                           <span class="s2">&quot;multiple lines. It is very descriptive.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pygen_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;&#39;&#39;&#39;This is the header line.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;This is the description. The description may be &quot;</span> <span class="o">+</span>
+                                                 <span class="s2">&quot;multiple lines. It is very descriptive.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;&#39;&#39;&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">],</span> <span class="s2">&quot;Docstring written incorrectly&quot;</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_close"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_close">[docs]</a>    <span class="k">def</span> <span class="nf">test_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">,</span> <span class="n">pygen_file_reader</span><span class="p">):</span>
+        <span class="n">python_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="n">python_generator</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;Test&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestPythonGenerator.test_get_gen_file_name"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPythonGenerator.test_get_gen_file_name">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_gen_file_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_generator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">python_generator</span><span class="o">.</span><span class="n">get_gen_file_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;./tests/files/test_python_generator.txt&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="TestGeneratorUtils"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestGeneratorUtils">[docs]</a><span class="k">class</span> <span class="nc">TestGeneratorUtils</span><span class="p">:</span>
+<div class="viewcode-block" id="TestGeneratorUtils.test_is_valid_arg_dict"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestGeneratorUtils.test_is_valid_arg_dict">[docs]</a>    <span class="k">def</span> <span class="nf">test_is_valid_arg_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.generator_utils</span> <span class="k">as</span> <span class="nn">generator_utils</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;not a dict&quot;</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*formatted as a dictionary.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*None.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_3&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*None.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*None.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*keys must be.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+        <span class="p">}</span>
+        <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+        <span class="p">}</span>
+        <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="mi">4</span>
+        <span class="p">}</span>
+        <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestGeneratorUtils.test_is_valid_fn_dict"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestGeneratorUtils.test_is_valid_fn_dict">[docs]</a>    <span class="k">def</span> <span class="nf">test_is_valid_fn_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.generator_utils</span> <span class="k">as</span> <span class="nn">generator_utils</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*dict.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="s2">&quot;notadict&quot;</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*dict.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*name must be.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="s2">&quot;notadict&quot;</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;notargs&quot;</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*</span><span class="se">\&quot;</span><span class="s2">args</span><span class="se">\&quot;</span><span class="s2">.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;notname&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;catchme&quot;</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*only keys.*&quot;</span><span class="p">):</span>
+            <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestGeneratorUtils.test_create_fn_dict"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestGeneratorUtils.test_create_fn_dict">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_fn_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.generator_utils</span> <span class="k">as</span> <span class="nn">generator_utils</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="n">generator_utils</span><span class="o">.</span><span class="n">create_fn_dict</span><span class="p">(</span><span class="s2">&quot;function&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">fn_dict</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;value_1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;value_2&quot;</span>
+        <span class="p">}</span>
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="n">generator_utils</span><span class="o">.</span><span class="n">create_fn_dict</span><span class="p">(</span><span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">fn_dict</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;value_1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;value_2&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="TestClassGenerator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator">[docs]</a><span class="k">class</span> <span class="nc">TestClassGenerator</span><span class="p">:</span>
+<div class="viewcode-block" id="TestClassGenerator.test_init"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.python_generators</span> <span class="k">as</span> <span class="nn">python_generators</span>
+
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">):</span>
+            <span class="n">pygen</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;notafile&quot;</span><span class="p">,</span>
+                                                     <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_map.json&quot;</span><span class="p">,</span>
+                                                     <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+            <span class="n">pygen</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class.json&quot;</span><span class="p">,</span>
+                                                     <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;notafile&quot;</span><span class="p">,</span>
+                                                     <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+
+            <span class="n">pygen</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class.json&quot;</span><span class="p">,</span>
+                                                     <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_map.json&quot;</span><span class="p">,</span>
+                                                     <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+
+            <span class="k">assert</span> <span class="n">pygen</span><span class="o">.</span><span class="n">class_</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">}</span>
+            <span class="k">assert</span> <span class="n">pygen</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="s2">&quot;map&quot;</span><span class="p">][</span><span class="s2">&quot;sequential&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;tf.keras.models.Sequential&quot;</span><span class="p">,</span>
+                                                      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="TestClassGenerator.test_write_imports"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_write_imports">[docs]</a>    <span class="k">def</span> <span class="nf">test_write_imports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_generator</span><span class="p">,</span> <span class="n">class_file_reader</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">class_generator</span><span class="o">.</span><span class="n">_write_imports</span><span class="p">(</span><span class="s2">&quot;not a dict&quot;</span><span class="p">)</span>
+
+        <span class="n">imports</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;tensorflow&quot;</span><span class="p">:</span> <span class="s2">&quot;tf&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;numpy&quot;</span><span class="p">:</span> <span class="s2">&quot;np&quot;</span>
+        <span class="p">}</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_write_imports</span><span class="p">(</span><span class="n">imports</span><span class="p">)</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">class_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;# Imports</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;import tensorflow as tf</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;import numpy as np</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TestClassGenerator.test_start_class"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_start_class">[docs]</a>    <span class="k">def</span> <span class="nf">test_start_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_generator</span><span class="p">,</span> <span class="n">class_file_reader</span><span class="p">):</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_start_class</span><span class="p">(</span><span class="s2">&quot;TestClass&quot;</span><span class="p">,</span> <span class="s2">&quot;InheritedClass&quot;</span><span class="p">,</span> <span class="s2">&quot;This is a test!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="n">class_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span>
+            <span class="s2">&quot;class TestClass(InheritedClass):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;This is a test!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">]</span></div>
+
+<div class="viewcode-block" id="TestClassGenerator.test_arg_str"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_arg_str">[docs]</a>    <span class="k">def</span> <span class="nf">test_arg_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_generator</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">arg_str</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">arg_str</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+        <span class="p">}</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">arg_str</span> <span class="o">==</span> <span class="s2">&quot;param_1, param_2=val_2&quot;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+        <span class="p">}</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">arg_str</span> <span class="o">==</span> <span class="s2">&quot;param_1=val_1, param_2=val_2&quot;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">arg_str</span> <span class="o">==</span> <span class="s2">&quot;param_1, param_2&quot;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;4&quot;</span>
+        <span class="p">}</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">arg_str</span> <span class="o">==</span> <span class="s2">&quot;param_1, param_2=4&quot;</span></div>
+
+<div class="viewcode-block" id="TestClassGenerator.test_fn_str"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_fn_str">[docs]</a>    <span class="k">def</span> <span class="nf">test_fn_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_generator</span><span class="p">):</span>
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="n">fn_str</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_fn_str</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">fn_str</span> <span class="o">==</span> <span class="s2">&quot;function()&quot;</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">fn_str</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_fn_str</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">fn_str</span> <span class="o">==</span> <span class="s2">&quot;function(param_1=val_1, param_2=val_2)&quot;</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">fn_str</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_fn_str</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">fn_str</span> <span class="o">==</span> <span class="s2">&quot;function(param_1, param_2=val_2)&quot;</span></div>
+
+<div class="viewcode-block" id="TestClassGenerator.test_map"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_map">[docs]</a>    <span class="k">def</span> <span class="nf">test_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_generator</span><span class="p">):</span>
+        <span class="n">input_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">input_</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="ow">is</span> <span class="kc">None</span>
+
+        <span class="n">input_</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">input_</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="mi">4</span>
+
+        <span class="n">input_</span> <span class="o">=</span> <span class="s2">&quot;sequential&quot;</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">input_</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="s2">&quot;tf.keras.models.Sequential&quot;</span>
+
+        <span class="n">input_</span> <span class="o">=</span> <span class="s2">&quot;dense&quot;</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">input_</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">dense_string</span><span class="se">\&quot;</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="TestClassGenerator.test_map_fn"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_map_fn">[docs]</a>    <span class="k">def</span> <span class="nf">test_map_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_generator</span><span class="p">):</span>
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;sequential&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;activation&quot;</span><span class="p">:</span> <span class="s2">&quot;relu&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optim&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_map_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;tf.keras.models.Sequential&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;activation&quot;</span><span class="p">:</span> <span class="s2">&quot;tf.nn.relu&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="s2">&quot;tf.keras.optimizers.Adam&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;compile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;crossentropy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optim&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.001</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s2">&quot;accuracy&quot;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_map_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;compile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;tf.keras.losses.sparse_categorical_crossentropy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="s2">&quot;tf.keras.optimizers.Adam(learning_rate=0.001)&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s2">&quot;accuracy&quot;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;compile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;crossentropy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optim&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;relu&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="mf">0.001</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s2">&quot;accuracy&quot;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_map_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;compile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;tf.keras.losses.sparse_categorical_crossentropy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="s2">&quot;tf.keras.optimizers.Adam(&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;learning_rate=learning_rate(param_1=tf.nn.relu, param_2=0.001))&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s2">&quot;accuracy&quot;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="TestClassGenerator.test_fn"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_fn">[docs]</a>    <span class="k">def</span> <span class="nf">test_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_generator</span><span class="p">):</span>
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;sequential&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;activation&quot;</span><span class="p">:</span> <span class="s2">&quot;relu&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optim&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="s2">&quot;tf.keras.models.Sequential(activation=tf.nn.relu, &quot;</span> <span class="o">+</span> \
+            <span class="s2">&quot;optimizer=tf.keras.optimizers.Adam)&quot;</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;compile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;crossentropy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optim&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.001</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;mae&quot;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="s2">&quot;compile(loss=tf.keras.losses.sparse_categorical_crossentropy, &quot;</span> <span class="o">+</span> \
+            <span class="s2">&quot;optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), &quot;</span> <span class="o">+</span> \
+            <span class="s2">&quot;metrics=[</span><span class="se">\&#39;</span><span class="s2">accuracy</span><span class="se">\&#39;</span><span class="s2">, </span><span class="se">\&#39;</span><span class="s2">mae</span><span class="se">\&#39;</span><span class="s2">])&quot;</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;compile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;crossentropy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optim&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;relu&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="mf">0.001</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s2">&quot;accuracy&quot;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="s2">&quot;compile(loss=tf.keras.losses.sparse_categorical_crossentropy, &quot;</span> <span class="o">+</span> \
+            <span class="s2">&quot;optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate(&quot;</span> <span class="o">+</span> \
+            <span class="s2">&quot;param_1=tf.nn.relu, param_2=0.001)), &quot;</span> <span class="o">+</span> \
+            <span class="s2">&quot;metrics=[</span><span class="se">\&#39;</span><span class="s2">accuracy</span><span class="se">\&#39;</span><span class="s2">])&quot;</span>
+
+        <span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;compile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;dense&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">class_generator</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mapped</span> <span class="o">==</span> <span class="s2">&quot;compile(layer=</span><span class="se">\&quot;</span><span class="s2">dense_string</span><span class="se">\&quot;</span><span class="s2">)&quot;</span></div>
+
+<div class="viewcode-block" id="TestClassGenerator.test_start_method"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_start_method">[docs]</a>    <span class="k">def</span> <span class="nf">test_start_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_file_reader</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.python_generators</span> <span class="k">as</span> <span class="nn">python_generators</span>
+
+        <span class="n">class_generator</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_map.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+        <span class="n">class_file_reader</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_start_method</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">)</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">class_file_reader</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;def method():</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">class_generator</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_map.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+        <span class="n">class_file_reader</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="s2">&quot;This is docstring.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_start_method</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">class_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span>
+            <span class="s2">&quot;def method():</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;This is docstring.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">]</span>
+
+        <span class="n">class_generator</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_map.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+        <span class="n">class_file_reader</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+            <span class="n">class_generator</span><span class="o">.</span><span class="n">_start_method</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+        <span class="n">class_generator</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_map.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+        <span class="n">class_file_reader</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+        <span class="p">}</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="s2">&quot;This is docstring.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_start_method</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">class_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span>
+            <span class="s2">&quot;def method(param_1=val_1, param_2=val_2):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;This is docstring.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">]</span></div>
+
+<div class="viewcode-block" id="TestClassGenerator.test_start_class_method"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestClassGenerator.test_start_class_method">[docs]</a>    <span class="k">def</span> <span class="nf">test_start_class_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.python_generators</span> <span class="k">as</span> <span class="nn">python_generators</span>
+
+        <span class="n">class_generator</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_map.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+        <span class="n">class_file_reader</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+        <span class="p">}</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="s2">&quot;This is docstring.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">class_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span>
+            <span class="s2">&quot;def method(self, param_1=val_1, param_2=val_2):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;This is docstring.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">]</span>
+
+        <span class="n">class_generator</span> <span class="o">=</span> <span class="n">python_generators</span><span class="o">.</span><span class="n">ClassGenerator</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_map.json&quot;</span><span class="p">,</span>
+                                                           <span class="n">out</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">)</span>
+        <span class="n">class_file_reader</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_class_generator.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+        <span class="n">docstring</span> <span class="o">=</span> <span class="s2">&quot;This is docstring.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="n">docstring</span><span class="p">)</span>
+        <span class="n">class_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">class_file_reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span>
+            <span class="s2">&quot;def method(self):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;This is docstring.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    &#39;&#39;&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="TestJsonGenerator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestJsonGenerator">[docs]</a><span class="k">class</span> <span class="nc">TestJsonGenerator</span><span class="p">:</span>
+<div class="viewcode-block" id="TestJsonGenerator.test_init"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestJsonGenerator.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.json_generators</span> <span class="k">as</span> <span class="nn">json_generators</span>
+
+        <span class="n">json_gen</span> <span class="o">=</span> <span class="n">json_generators</span><span class="o">.</span><span class="n">JsonGenerator</span><span class="p">(</span><span class="n">out_file</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_json_generator.json&quot;</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">json_gen</span><span class="o">.</span><span class="n">out_file</span> <span class="o">==</span> <span class="s2">&quot;./tests/files/test_json_generator.json&quot;</span>
+        <span class="k">assert</span> <span class="n">json_gen</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;./tests/files/test_json_generator.json&quot;</span>
+        <span class="k">assert</span> <span class="n">json_gen</span><span class="o">.</span><span class="n">root</span> <span class="o">==</span> <span class="p">{}</span>
+        <span class="k">assert</span> <span class="n">json_gen</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">json_gen</span><span class="o">.</span><span class="n">root</span></div>
+
+<div class="viewcode-block" id="TestJsonGenerator.test_close"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestJsonGenerator.test_close">[docs]</a>    <span class="k">def</span> <span class="nf">test_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_generator</span><span class="p">):</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">closed</span> <span class="o">==</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="TestJsonGenerator.test_indent"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestJsonGenerator.test_indent">[docs]</a>    <span class="k">def</span> <span class="nf">test_indent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_generator</span><span class="p">):</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">root</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span><span class="p">}</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span><span class="p">}</span>
+
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">warns</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">):</span>
+            <span class="n">json_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="s2">&quot;param&quot;</span><span class="p">)</span>
+
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="s2">&quot;new_key&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">{}</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">root</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;new_key&quot;</span><span class="p">:</span> <span class="p">{}</span>
+            <span class="p">}</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="TestJsonGenerator.test_unindent"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestJsonGenerator.test_unindent">[docs]</a>    <span class="k">def</span> <span class="nf">test_unindent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_generator</span><span class="p">):</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="s2">&quot;key_1&quot;</span><span class="p">)</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="s2">&quot;key_2&quot;</span><span class="p">)</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">_unindent</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">root</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key_1&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;key_2&quot;</span><span class="p">:</span> <span class="p">{}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">root</span></div>
+
+<div class="viewcode-block" id="TestJsonGenerator.test_add_entry"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestJsonGenerator.test_add_entry">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_generator</span><span class="p">):</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+        <span class="p">}</span>
+
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;key_2&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;key_2&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+        <span class="p">}</span>
+
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="s2">&quot;new_value&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;new_value&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;key_2&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+        <span class="p">}</span>
+
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="s2">&quot;key_3&quot;</span><span class="p">)</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;key_4&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key_4&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+        <span class="p">}</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">root</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;new_value&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;key_2&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;key_3&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;key_4&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">_unindent</span><span class="p">()</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;key_5&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;value_1&quot;</span><span class="p">])</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;key_5&quot;</span><span class="p">,</span> <span class="s2">&quot;value_2&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;new_value&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;key_2&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;key_3&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;key_4&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;key_5&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;value_1&quot;</span><span class="p">,</span> <span class="s2">&quot;value_2&quot;</span><span class="p">]</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="TestJsonGenerator.test_add_fn"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestJsonGenerator.test_add_fn">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_generator</span><span class="p">):</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">add_fn</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="s2">&quot;function&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+        <span class="p">}</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">add_fn</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;param_1&quot;</span><span class="p">:</span> <span class="s2">&quot;val_1&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;param_2&quot;</span><span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="TestJsonGenerator.test_write"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestJsonGenerator.test_write">[docs]</a>    <span class="k">def</span> <span class="nf">test_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_generator</span><span class="p">):</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span>
+        <span class="p">})</span>
+        <span class="n">json_generator</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+        <span class="n">json_file_reader</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./tests/files/test_json_generator.json&quot;</span><span class="p">))</span>
+
+        <span class="k">assert</span> <span class="n">json_file_reader</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="TestPipelineJsonGenerator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPipelineJsonGenerator">[docs]</a><span class="k">class</span> <span class="nc">TestPipelineJsonGenerator</span><span class="p">:</span>
+<div class="viewcode-block" id="TestPipelineJsonGenerator.test_init"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPipelineJsonGenerator.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.json_generators</span> <span class="k">as</span> <span class="nn">json_generators</span>
+
+        <span class="n">json_generator</span> <span class="o">=</span> <span class="n">json_generators</span><span class="o">.</span><span class="n">PipelineJsonGenerator</span><span class="p">(</span>
+            <span class="n">out_file</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_json_generator.json&quot;</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">json_generator</span><span class="o">.</span><span class="n">root</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;pipeline&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;dataset&quot;</span><span class="p">:</span> <span class="p">{},</span>
+                <span class="s2">&quot;operations&quot;</span><span class="p">:</span> <span class="p">[]</span>
+            <span class="p">}</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="TestPipelineJsonGenerator.test_add_dataset"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPipelineJsonGenerator.test_add_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline_json_generator</span><span class="p">):</span>
+        <span class="n">pipeline_json_generator</span><span class="o">.</span><span class="n">add_dataset</span><span class="p">(</span><span class="s2">&quot;test_dataset&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">pipeline_json_generator</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;test_dataset&quot;</span></div>
+
+<div class="viewcode-block" id="TestPipelineJsonGenerator.test_add_operation"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestPipelineJsonGenerator.test_add_operation">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline_json_generator</span><span class="p">):</span>
+        <span class="n">pipeline_json_generator</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;op_1&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">pipeline_json_generator</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;op_1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span>
+        <span class="p">}</span>
+        <span class="n">pipeline_json_generator</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;op_2&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">pipeline_json_generator</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;op_1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;op_2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;val&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="TestModelJsonGenerator"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestModelJsonGenerator">[docs]</a><span class="k">class</span> <span class="nc">TestModelJsonGenerator</span><span class="p">:</span>
+<div class="viewcode-block" id="TestModelJsonGenerator.test_init"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestModelJsonGenerator.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="kn">import</span> <span class="nn">generators.json_generators</span> <span class="k">as</span> <span class="nn">json_generators</span>
+        <span class="n">model_json_generator</span> <span class="o">=</span> <span class="n">json_generators</span><span class="o">.</span><span class="n">ModelJsonGenerator</span><span class="p">(</span>
+            <span class="n">out_file</span><span class="o">=</span><span class="s2">&quot;./tests/files/test_json_generator.json&quot;</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">model_json_generator</span><span class="o">.</span><span class="n">root</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="p">{},</span>
+                <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;compile&quot;</span><span class="p">:</span> <span class="p">{}</span>
+            <span class="p">}</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="TestModelJsonGenerator.test_add_model"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestModelJsonGenerator.test_add_model">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_json_generator</span><span class="p">):</span>
+        <span class="n">model_json_generator</span><span class="o">.</span><span class="n">add_model</span><span class="p">(</span><span class="s2">&quot;test_model&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">model_json_generator</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;test_model&quot;</span></div>
+
+<div class="viewcode-block" id="TestModelJsonGenerator.test_add_layer"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestModelJsonGenerator.test_add_layer">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_json_generator</span><span class="p">):</span>
+        <span class="n">model_json_generator</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="s2">&quot;flatten&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">model_json_generator</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="s2">&quot;layers&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;flatten&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+        <span class="p">}</span>
+        <span class="n">model_json_generator</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="s2">&quot;dense&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">model_json_generator</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="s2">&quot;layers&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;flatten&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;dense&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">]</span></div>
+
+<div class="viewcode-block" id="TestModelJsonGenerator.test_add_compile"><a class="viewcode-back" href="../../../learn_ml.tests.html#learn_ml.tests.test_generators.TestModelJsonGenerator.test_add_compile">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_compile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_json_generator</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;crossentropy&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.001</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mae&quot;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">model_json_generator</span><span class="o">.</span><span class="n">add_compile</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">model_json_generator</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="s2">&quot;compile&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;compile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;crossentropy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.001</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;mae&quot;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Alexander Barnett, Swapnil Pande, Alexander Stephens
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

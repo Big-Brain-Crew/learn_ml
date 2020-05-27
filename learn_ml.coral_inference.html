@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="learn_ml.coral_inference.classification package" href="learn_ml.coral_inference.classification.html" />
-    <link rel="prev" title="learn_ml namespace" href="learn_ml.html" /> 
+    <link rel="prev" title="learn_ml.common namespace" href="learn_ml.common.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,13 +85,13 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">learn_ml</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="learn_ml.html">learn_ml namespace</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="learn_ml.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="learn_ml.common.html">learn_ml.common namespace</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">learn_ml.coral_inference package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="learn_ml.generators.html">learn_ml.generators package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="learn_ml.tests.html">learn_ml.tests namespace</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="learn_ml.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#learn-ml-train-module">learn_ml.train module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="learn_ml.html#module-learn_ml.train_mnist">learn_ml.train_mnist module</a></li>
 </ul>
 </li>
@@ -173,7 +173,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="learn_ml.coral_inference.classification.html">learn_ml.coral_inference.classification package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="learn_ml.coral_inference.classification.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="learn_ml.coral_inference.classification.html#learn-ml-coral-inference-classification-app-module">learn_ml.coral_inference.classification.app module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learn_ml.coral_inference.classification.html#module-learn_ml.coral_inference.classification.app">learn_ml.coral_inference.classification.app module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="learn_ml.coral_inference.classification.html#module-learn_ml.coral_inference.classification.base_classifier">learn_ml.coral_inference.classification.base_classifier module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="learn_ml.coral_inference.classification.html#module-learn_ml.coral_inference.classification.classifier">learn_ml.coral_inference.classification.classifier module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="learn_ml.coral_inference.classification.html#module-learn_ml.coral_inference.classification.mnist_inference">learn_ml.coral_inference.classification.mnist_inference module</a></li>
@@ -206,10 +206,40 @@
 </div>
 <div class="section" id="module-learn_ml.coral_inference.deploy">
 <span id="learn-ml-coral-inference-deploy-module"></span><h2>learn_ml.coral_inference.deploy module<a class="headerlink" href="#module-learn_ml.coral_inference.deploy" title="Permalink to this headline">¶</a></h2>
+<p>Provides a command-line interface and python API for deploying a model to the Google Coral board.</p>
+<p>Currently, this script is setup to deploy the model via ssh. Therefore, it requires the address of the coral board
+and that you have a key or password to access it. Once the model is deployed to the coral, it will also publish
+a web server to display the results. The deploy script also only handles classification problems, support for more
+model types is in the pipeline. The python API exposes a deploy function. If called from the command line, you must
+pass a model (using -m argument), the address of the coral (-a), and EITHER an identity file (-i) OR a password (-p).</p>
+<blockquote>
+<div><p>Typical usage example:</p>
+<p>python3 deploy.py -m foo/model_quantized.tflite -a x.x.x.x -i ~/id_rsa</p>
+</div></blockquote>
 <dl class="py function">
 <dt id="learn_ml.coral_inference.deploy.deploy">
 <code class="sig-prename descclassname">learn_ml.coral_inference.deploy.</code><code class="sig-name descname">deploy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">address</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">identity_file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">password</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/coral_inference/deploy.html#deploy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.coral_inference.deploy.deploy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deploys the a model to the Coral Board.</p>
+<p>Connects to the coral board via ssh to deploy the model. You must pass a tflite model.
+For maximum performance, you should pass a quantized tflite model, which can be generated
+using the convert_to_edgetpu module. After deploying the model, the function will start
+a webserver publishing the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> – Address of the coral board</p></li>
+<li><p><strong>model</strong> – Path to the tflite model to deploy</p></li>
+<li><p><strong>identity_file</strong> – [Optional] Path to the identity file. Identity file must be provided
+if password is not provided.</p></li>
+<li><p><strong>password</strong> – [Optional] Password to use for ssh authentication. Password must be provided
+if identity_file is not provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-learn_ml.coral_inference">
@@ -228,7 +258,7 @@
         <a href="learn_ml.coral_inference.classification.html" class="btn btn-neutral float-right" title="learn_ml.coral_inference.classification package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="learn_ml.html" class="btn btn-neutral float-left" title="learn_ml namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="learn_ml.common.html" class="btn btn-neutral float-left" title="learn_ml.common namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

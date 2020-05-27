@@ -4,18 +4,18 @@ learn\_ml.tests namespace
 Submodules
 ----------
 
-learn\_ml.tests.test\_pipeline\_config\_generator module
---------------------------------------------------------
+learn\_ml.tests.example\_project module
+---------------------------------------
 
-.. automodule:: learn_ml.tests.test_pipeline_config_generator
+.. automodule:: learn_ml.tests.example_project
    :members:
    :undoc-members:
    :show-inheritance:
 
-learn\_ml.tests.test\_pipeline\_generator module
-------------------------------------------------
+learn\_ml.tests.test\_generators module
+---------------------------------------
 
-.. automodule:: learn_ml.tests.test_pipeline_generator
+.. automodule:: learn_ml.tests.test_generators
    :members:
    :undoc-members:
    :show-inheritance:
