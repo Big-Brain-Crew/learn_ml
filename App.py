@@ -10,6 +10,11 @@ EDITOR_TARGET_FPS = 60
 
 
 class LearnML(QMainWindow):
+    ''' Defines UI element of the Learn ML project.
+
+        This class extends the QMainWindow class and serves as the entry point for the application.
+        It will contain all of the main UI elements used to interact with our application.
+    '''
     def __init__(self, parent=None):
         super(LearnML, self).__init__(parent=parent)
         # Use a strong focus policy
@@ -65,6 +70,11 @@ class LearnML(QMainWindow):
 
 
     def set_title(self):
+        ''' Sets the title of the application.
+
+        The title will be Learn ML - {Current Project Name}.If the project has been modified,
+        there will be an asterisk following the project name.
+        '''
         label = "Untitled"
         if self.current_file_name is not None:
             if os.path.isdir(self.current_file_name):
@@ -75,6 +85,12 @@ class LearnML(QMainWindow):
         self.setWindowTitle("{} - {}".format(self.title_name, label))
 
     def populateMenu(self):
+        ''' Adds all of the options to the menu bar.
+
+        Currently, the only available options are the File option, which contains
+        options to create a new project or open an existing project.
+        '''
+
         fileMenu = self.menuBar.addMenu("File")
 
         # Define new project action
@@ -128,6 +144,12 @@ class LearnML(QMainWindow):
         # helpMenu.addAction("Docs").triggered.connect(lambda _=False, url="https://pyflow.readthedocs.io/en/latest/": QtGui.QDesktopServices.openUrl(url))
 
     def load(self):
+        ''' Opens the file dialog window to allow the user to load a project.
+
+        This is currently configured to select a project directory. There are no checks performed
+        to ensure that the project directory is valid.
+        '''
+
         # We can define a filter to filter the acceptable file names
         # Simpler way to create a FileDialog if we have a file at some point
         #name_filter = "Graph files (*.pygraph)"
@@ -146,12 +168,16 @@ class LearnML(QMainWindow):
         else:
             path = project_dir
         if path != '':
-            self.loadFromFile(path)
+            self.load_from_file(path)
 
         # Update the title with the newly opened project directory
         self.set_title()
 
-    def loadFromFile(self, project_dir):
+    def load_from_file(self, project_dir):
+        ''' Contains operations to execute when a project is loaded
+
+        Currently, the only operation performed is updating the current_file_name property.
+        '''
         self.current_file_name = project_dir
         # with open(filePath, 'r') as f:
         #     data = json.load(f)
@@ -160,12 +186,22 @@ class LearnML(QMainWindow):
         #     EditorHistory().saveState("Open {}".format(os.path.basename(self.currentFileName)))
 
     @staticmethod
-    def instance(parent=None, software=""):
-        assert(software != ""), "Invalid arguments. Please pass you software name as second argument!"
+    def instance(parent=None):
+        ''' Creates a new instance of the LearnML Main Window.
+
+        This will configure the LearnML window and return the object
+
+        Args:
+            parent: [Optional] The parent window, if this instance is a child of another window
+
+        Returns:
+            LearnML: A configured instance of the LearnML window
+        '''
+        #assert(software != ""), "Invalid arguments. Please pass you software name as second argument!"
 
         instance = LearnML(parent)
         instance.showMaximized()
-        instance.currentSoftware = software
+        #instance.currentSoftware = software
 
         #TODO What does this do
         # SessionDescriptor().software = instance.currentSoftware

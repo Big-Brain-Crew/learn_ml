@@ -6,7 +6,7 @@ from Qt.QtWidgets import QApplication
 def main():
     app = QApplication(sys.argv)
 
-    instance = LearnML.instance(software="standalone")
+    instance = LearnML.instance()
     if instance is not None:
         app.setActiveWindow(instance)
         instance.show()
