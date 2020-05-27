@@ -7,3 +7,5 @@ tensorflow_datasets
 flask
 Pillow
 opencv-python
+PySide2
+Qt.py
