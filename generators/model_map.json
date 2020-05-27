@@ -1,0 +1,32 @@
+{
+    "map": {
+        "sequential": {
+            "name" : "tf.keras.models.Sequential",
+            "type" : "object"
+        },
+        "dense": {
+            "name" : "tf.keras.layers.Dense",
+            "type" : "object"
+        },
+        "flatten": {
+            "name" : "tf.keras.layers.Flatten",
+            "type" : "object"
+        },
+        "relu" : {
+            "name" : "tf.nn.relu",
+            "type" : "object"
+        },
+        "softmax" : {
+            "name" : "tf.nn.softmax",
+            "type" : "object"
+        },
+        "adam" : {
+            "name" : "tf.keras.optimizers.Adam",
+            "type" : "object"
+        },
+        "crossentropy" : {
+            "name" : "tf.keras.losses.sparse_categorical_crossentropy",
+            "type" : "object"
+        }
+    }
+}
