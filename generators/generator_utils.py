@@ -21,7 +21,6 @@ def _is_valid_arg_dict(arg_dict):
         list of strings, ints, or floats: When an arg requires multiple values.
         dict: To represent a function being passed as a value.
         None: This can be used to signify there is no default parameter.
-
     This function raises exceptions if any of these rules are not followed.
 
     Args:
@@ -102,8 +101,8 @@ def _is_valid_fn_dict(fn_dict):
 
 
 def create_fn_dict(name, args=None):
-    ''' Creates a dictionary representation of a function.
-
+''' Creates a dictionary representation of a function.
+    
     This function exists so the user doesn't have to worry about the internal representation
     of a function in the JSON file.
 
@@ -132,6 +131,7 @@ def create_fn_dict(name, args=None):
 
     '''
     
+
     # Raise exceptions if args incorrectly formatted
     _is_valid_arg_dict(args)
 
