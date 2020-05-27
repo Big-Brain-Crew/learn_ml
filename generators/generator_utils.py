@@ -101,34 +101,34 @@ def _is_valid_fn_dict(fn_dict):
 
 
 def create_fn_dict(name, args=None):
-''' Creates a dictionary representation of a function.
-    
-    This function exists so the user doesn't have to worry about the internal representation
-    of a function in the JSON file.
+    ''' Creates a dictionary representation of a function.
+        
+        This function exists so the user doesn't have to worry about the internal representation
+        of a function in the JSON file.
 
-    Args:
-        name (str): Name of the function.
-        args (dict): Function arguments as {"parameter" : "value"} elements. Refer to
-            _is_valid_arg_dict() docstring for formatting.
+        Args:
+            name (str): Name of the function.
+            args (dict): Function arguments as {"parameter" : "value"} elements. Refer to
+                _is_valid_arg_dict() docstring for formatting.
 
-    Returns:
-        dict: The formatted function.
+        Returns:
+            dict: The formatted function.
 
-    Example:
-        >>> function_name = "flatten"
-        >>> args = {
-        >>>    "input_shape" : [28, 28, 1],
-        >>>    "parameter" : "value"
-        >>> }
-        >>> print(create_fn_dict(function_name, args))
-        ::
-            {
-                "name" : "flatten",
-                "args" : {
-                    "input_shape" : [28, 28, 1],
-                    "parameter" : "value"
+        Example:
+            >>> function_name = "flatten"
+            >>> args = {
+            >>>    "input_shape" : [28, 28, 1],
+            >>>    "parameter" : "value"
+            >>> }
+            >>> print(create_fn_dict(function_name, args))
+            ::
+                {
+                    "name" : "flatten",
+                    "args" : {
+                        "input_shape" : [28, 28, 1],
+                        "parameter" : "value"
+                    }
                 }
-            }
 
     '''
     
