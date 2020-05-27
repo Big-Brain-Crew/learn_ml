@@ -121,17 +121,17 @@ def create_fn_dict(name, args=None):
         >>>    "parameter" : "value"
         >>> }
         >>> print(create_fn_dict(function_name, args))
-        {
-            "name" : "flatten",
-            "args" : {
-                "input_shape" : [28, 28, 1],
-                "parameter" : "value"
+        ::
+            {
+                "name" : "flatten",
+                "args" : {
+                    "input_shape" : [28, 28, 1],
+                    "parameter" : "value"
+                }
             }
-        }
 
     '''
     
-
     # Raise exceptions if args incorrectly formatted
     _is_valid_arg_dict(args)
 
