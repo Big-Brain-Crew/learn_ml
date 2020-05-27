@@ -1,14 +1,16 @@
-''' Defines classes that generate Python scripts based off JSON files.
+''' Classes to generate Python scripts based off JSON configuration files.
 
 The purpose of these classes is to generate a class-based Python script based off parameters
 set by a user stored in a JSON file. The layout is as follows:
 
-Classes:
-    PythonGenerator: Base class with writing methods.
-    ClassGenerator: Adds in generic class formatting for code generation.
+Classes::
+    PythonGenerator: Base class with python script writing methods.
+    ClassGenerator: Includes methods for writing class definitions and methods.
     PipelineGenerator: Generates a dataset pipeline object script.
     ModelGenerator: Generates a machine learning model object script.
+
 '''
+
 import json
 import os
 from abc import abstractmethod
@@ -21,33 +23,42 @@ from generators import generator_utils
 class PythonGenerator(object):
     '''Generates a Python script and writes code to it.
 
-    This class is not very useful by itself. It can be used to write to a python file and
+    This class can be used to write lines of code to a python file and 
     keep track of indent levels.
+
+    Attributes:
+        out_file_name (str): Name of the file to write to.
+        out: File object used to write to file.
+        indent_level (int): Keep track of current writing indentation.
+        indent_str (str): 4 spaces to represent a single indent.
+
     '''
 
     def __init__(self, out):
+        ''' Opens the python file to write to and sets writing indentation.
+
+        Args:
+            out (str): The file to be written to.
+        '''
 
         self.out_file_name = out
-        self.out = open(self.out_file_name, "w+")  # Code is written to this file
+        self.out = open(self.out_file_name, "w+")
 
-        self.indent_level = 0  # Keeps track of current indentation
-        self.indent_str = "    "  # Standard 4-space indents
+        self.indent_level = 0
+        self.indent_str = "    "
 
     def _indent(self, inc=1):
-        ''' Increments the indent level of the output string.
-        '''
+        ''' Increments the indent level of the output string.'''
 
         self.indent_level += inc
 
     def _unindent(self, dec=1):
-        ''' Decrements the indent level of the output string.
-        '''
+        ''' Decrements the indent level of the output string.'''
 
         self.indent_level -= dec
 
     def _spaces(self):
-        '''Returns a string of the correct number of spaces for the current indent level.
-        '''
+        '''Returns a string of the correct number of spaces for the current indent level.'''
 
         return self.indent_str * self.indent_level
 
@@ -55,13 +66,20 @@ class PythonGenerator(object):
         ''' Writes lines of code to the file.
 
         Args:
-            lines: A string or list of strings.
+            lines (str, List[str]): Line or lines to be written to the file.
 
-        Example usage:
+        Example:
+            >>> pygen = PythonGenerator("out.py")
+            >>> pygen._write("This is a line.\n")
+            >>> pygen._indent()
+            >>> pygen._write(["This is line 1\n",
+            >>>               "This is line 2\n"])
 
-            _write("This is a line.\n")
-            _write(["This is line 1\n",
-                    "This is line 2\n"])
+        In out.py::
+            This is a line.
+                This is line 1
+                This is line 2.
+
         '''
         try:
             self.out.write(self._spaces() + lines) if isinstance(lines, str) \
@@ -73,8 +91,11 @@ class PythonGenerator(object):
         ''' Writes a line of docstring to the file.
 
         Args:
-            line: Docstring comment without docstring quotes. Defaults to None and does nothing.
+            line (str, optional): Docstring comment without docstring quotes.
+                Defaults to None and will do nothing.
+
         '''
+
         if isinstance(line, list):
             self._write("'''" + line[0] + "\n")
             self._write(line[1:])
@@ -87,32 +108,42 @@ class PythonGenerator(object):
         self.out.close()
 
     def get_gen_file_name(self):
-        '''Returns the name of the generated Python script.
-        '''
+        '''Returns the name of the generated Python script.'''
 
         return self.out_file_name
 
 
 class ClassGenerator(PythonGenerator):
     ''' Abstract class that defines methods for writing object-oriented strings to a python file.
+
+    Attributes:
+        class_ (dict): Class data loaded from the JSON file.
+        map (dict): A mapping from class dict representations to their actual values. For example,
+            a "dense" value in the class may be mapped to "tf.keras.layers.Dense".   
+
     '''
 
     def __init__(self, class_config, map_config, out):
+        ''' Load the JSON class and map configuration files.'''
 
         self._check_configs(class_config, map_config)
 
         super(ClassGenerator, self).__init__(out)
 
-        # Load config files
-        config_file = open(class_config)  # JSON defining the class
-        mapping_file = open(map_config)  # JSON defining terms specific to the interpreting language
+        config_file = open(class_config)
+        mapping_file = open(map_config)
         self.class_ = json.load(config_file)
         self.map = json.load(mapping_file)["map"]
 
     # TODO: Would be nice if this also checked for json file structure being valid.
     def _check_configs(self, class_config, map_config):
         '''Check that the config files exist.
+        
+        Raises:
+            FileNotFoundError: The class or map config files cannot be found.
+
         '''
+
         if not os.path.exists(class_config):
             raise FileNotFoundError("ERROR: Cannot find class config file.")
         if not os.path.exists(map_config):
@@ -122,17 +153,24 @@ class ClassGenerator(PythonGenerator):
         '''Write import statements to file.
 
         Args:
-            import_dict: A dictionary of strings containing the import packages and their
-            abbreviations.
+            import_dict (dict): A dictionary of strings containing the import packages and their
+                abbreviations. Currently, an abbreviation must be specified.
+        Example:
+            >>> imports_dict = {
+            >>>    "tensorflow" : "tf",
+            >>>    "numpy" : "np"
+            >>> }
+            >>> _write_imports(imports_dict)
 
-        Example usage:
+            In out file::
+                import tensorflow as tf
+                import numpy as np
 
-        imports_dict = {
-            "tensorflow" : "tf",
-            "numpy" : "np"
-        }
-        _write_imports(imports_dict)
+        Raises:
+            TypeError: imports_dict is not of type dictionary.
+
         '''
+
         if not isinstance(imports_dict, dict):
             raise TypeError("imports_dict must be a dictionary.")
 
@@ -146,12 +184,10 @@ class ClassGenerator(PythonGenerator):
     def _start_class(self, name, base="object", docstring=None):
         '''Write the class definition to file.
 
-        Defines the class and writes docstring to file.
-
         Args:
-            name : A string of the class name.
-            base : A string of the base class. Default is "object".
-            docstring : A string to be written as a docstring. Default is None.
+            name (str): The class name.
+            base (str): The base class. Default is "object".
+            docstring (str, List[str], optional): The docstring.
 
         '''
         self._write("class {name}({base}):\n".format(name=name, base=base))
@@ -159,48 +195,51 @@ class ClassGenerator(PythonGenerator):
         self._write_docstring(docstring)
 
     def _end_class(self):
-        ''' Signify end of class and remove indents.
-        '''
+        ''' Signify end of class and remove indents.'''
+
         self._unindent()
 
     def _end_method(self):
-        '''Signify end of method and remove indents.
-        '''
+        ''' Signify end of method and remove indents.'''
 
         self._write("\n\n")
         self._unindent()
 
     @abstractmethod
     def _imports(self):
-        ''' Write imports to file.
-        '''
+        ''' Write imports to file.'''
+
         pass
 
     @abstractmethod
     def _class_def(self):
         ''' Define a class.
 
-        This method should call _start_class() and should include an __init__ method.
+        This method should call _start_class() and should define an __init__ method.
+
         '''
+
         pass
 
     def _arg_str(self, arg_dict):
         ''' Converts function arguments to a string.
 
         Args:
-            arg_dict : A dict of arguments. Can be None if there are no args.
+            arg_dict (dict): The function arguments. Can be None if there are no args.
 
         Returns:
-            A string of the concatenated arguments.
+            str: Arguments formatted as they would be passed into a function.
 
         Example usage:
+            >>> arg_dict = {
+            >>>     "param_1" : None,
+            >>>     "param_2" : "val_2"
+            >>> }
+            >>> print(_arg_str(arg_dict))
+            "param_1, param_2=val_2"
 
-            arg_dict = {
-                "param_1" : None,
-                "param_2" : "val_2"
-            }
-            _arg_str(arg_dict) ; 'param_1, param_2=val_2'
         '''
+
         # Raise an error if arg dict incorrectly formatted
         generator_utils._is_valid_arg_dict(arg_dict)
 
@@ -218,18 +257,20 @@ class ClassGenerator(PythonGenerator):
         ''' Convert a function from dictionary form to a string.
 
         Args:
-            fn_dict : A dict representing a function.
+            fn_dict (dict): The function.
 
         Example usage:
+            >>> fn_dict = {
+            >>>     "name" : "function",
+            >>>     "args" : {
+            >>>         "param" : "val"
+            >>>     }
+            >>> }
+            >>> print(_fn_str(fn_dict))
+            "function(param=val)"
 
-            fn_dict = {
-                "name" : "function",
-                "args" : {
-                    "param" : "val"
-                }
-            }
-            _fn_str(fn_dict) ; 'function(param=val)
         '''
+
         # Raise an exception if formatted incorrectly
         generator_utils._is_valid_fn_dict(fn_dict)
         
@@ -244,7 +285,8 @@ class ClassGenerator(PythonGenerator):
         tf.keras.layers.Dense(). This function returns that language-specific syntax.
 
         Args:
-            input : A string representing the term to be mapped.
+            input (str): The term to be mapped.
+
         '''
 
         # Return the mapped output in quotations if it is of type string
@@ -257,22 +299,32 @@ class ClassGenerator(PythonGenerator):
     def _map_fn(self, fn_dict):
         ''' Convert the elements of a function dictionary to their real values.
 
+        The function name, arg param, and arg value can be mapped if they have a mapping 
+        defined in the map JSON config file.
+
         Args:
-            function : A dict representing a function
+            fn_dict (dict): The function.
 
         Returns:
-            A mapped dictionary of the same form as the input.
+            dict: A mapped dictionary of the same form as the input.
 
         Example usage:
-
-            function = {
-                "name" : "function"
+            >>> function = {
+            >>>     "name" : "function"
+            >>>     "args" : {
+            >>>         "param" : "value"
+            >>>     }
+            >>> }
+            >>> print(_map_fn(function))
+            {
+                "name" : "mapped_function",
                 "args" : {
-                    "param" : "value"
+                    "mapped_param" : "mapped_value"
                 }
             }
-            _map_fn(function)
+
         '''
+
         # Raise exception if invalid input format
         generator_utils._is_valid_fn_dict(fn_dict)
 
@@ -293,32 +345,35 @@ class ClassGenerator(PythonGenerator):
         ''' Maps a function dictionary and returns it as a string.
 
         Args:
-            fn_dict : A dict representing a function.
+            fn_dict (dict): The function.
 
         Returns:
-            A mapped dictionary of the same form as the input.
+            dict: A mapped dictionary of the same form as the input.
 
         Example usage:
+            >>> fn_dict = {
+            >>>     "name" : "function",
+            >>>     "args" : {
+            >>>         "param" : "value"
+            >>>     }
+            >>> }
+            >>> print(_fn(fn_dict))
+            "mapped_function(mapped_param=mapped_value)"
 
-            fn_dict = {
-                "name" : "function",
-                "args" : {
-                    "param" : "value"
-                }
-            }
-            _fn(fn_dict) ; 'mapped_function(mapped_param=mapped_value)
         '''
+
         return self._fn_str(self._map_fn(fn_dict))
 
     def _start_method(self, name, args=None, docstring=None):
         '''Writes the method definition to file.
 
         Args:
-            name : A string of the method name.
-            args : A dict of args passed to the method. Default to None
-            docstring : A string to be written as a docstring. Default to None.
+            name (str): The method name.
+            args (dict, optional): The args passed to the method.
+            docstring (str, List[str], optional): The docstring.
+
         '''
-        # _args = ", ".join([arg for arg in args]) if args else ""
+
         self._write("def {name}({args}):\n".format(name=name,
                                                    args=self._arg_str(args)))
         self._indent()
@@ -328,10 +383,12 @@ class ClassGenerator(PythonGenerator):
         '''Writes a class method definition to file.
 
         Args:
-            name : A string of the method name.
-            args : A dict of args passed to the method. Don't include "self". Default to None
-            docstring : A string to be written as a docstring. Default to None.
+            name (str): The method name.
+            args (dict, optional): The args passed to the method. Don't include "self".
+            docstring (str, List[str], optional): The docstring.
+        
         '''
+
         generator_utils._is_valid_arg_dict(arg_dict)
         args = {
             "self" : None,
@@ -343,6 +400,17 @@ class ClassGenerator(PythonGenerator):
 
 class PipelineGenerator(ClassGenerator):
     '''Generates a dataset preprocessing pipeline based off a JSON config file.
+
+    Most of the class methods are internal and do not need to be modified. All changes should be
+    made to the JSON pipeline file used for configuration. Call gen_pipeline() to write the script.
+    
+    The pipeline is represented as a Pipeline object with dataset and preprocessing operations in 
+    its internal state.
+
+    Attributes:
+        pipeline (dict): The pipeline configuration loaded from the JSON.
+        dataset (dict) : A subset of the pipeline config that represents the dataset options.
+
     '''
 
     def __init__(self, pipeline_config="generators/pipeline.json",
@@ -357,8 +425,8 @@ class PipelineGenerator(ClassGenerator):
         self.dataset = self.pipeline["dataset"]["label"]  # Label for dataset being used
 
     def _imports(self):
-        ''' Generate import statements.
-        '''
+        ''' Generate import statements.'''
+
         imports = {
             "tensorflow": "tf",
             "tensorflow_datasets": "tfds",
@@ -367,8 +435,7 @@ class PipelineGenerator(ClassGenerator):
         self._write_imports(imports)
 
     def _class_def(self):
-        ''' Generate DatasetPipeline class definition.
-        '''
+        ''' Generate DatasetPipeline class definition.'''
 
         self._start_class(name="DatasetPipeline",
                           base="object",
@@ -385,8 +452,7 @@ class PipelineGenerator(ClassGenerator):
         self._end_method()
 
     def _load_dataset(self):
-        '''Generate code for loading the dataset.
-        '''
+        '''Generate code for loading the dataset.'''
 
         self._start_class_method(name="load_dataset",
                                  docstring="Load the dataset from Tensorflow Datasets.\n")
@@ -401,8 +467,7 @@ class PipelineGenerator(ClassGenerator):
         self._end_method()
 
     def _operations(self):
-        ''' Generate code for all preprocessing operations.
-        '''
+        ''' Generate code for all preprocessing operations.'''
 
         self._start_class_method(name="preprocess",
                                  docstring="Apply data preprocessing operations.\n")
@@ -413,8 +478,7 @@ class PipelineGenerator(ClassGenerator):
         self._end_method()
 
     def _helper_funcs(self):
-        ''' Generates get/set helper functions.
-        '''
+        ''' Generates get/set helper functions.'''
 
         # def get_training_dataset()
         self._start_class_method(name="get_training_dataset",
@@ -429,8 +493,7 @@ class PipelineGenerator(ClassGenerator):
         self._end_method()
 
     def gen_pipeline(self):
-        ''' Generate all code part of the dataset pipeline.
-        '''
+        ''' Generate all code part of the dataset pipeline.'''
 
         self._imports()
         self._class_def()
@@ -445,6 +508,14 @@ class PipelineGenerator(ClassGenerator):
 
 class ModelGenerator(ClassGenerator):
     '''Generates a machine learning model based off a JSON config file.
+
+    Use gen_model() to create the model. The model is stored as Model class with its layers
+    and compilations features as its internal state.
+    
+    Attributes:
+        model (dict): Model configuration loaded from the JSON.
+        model_name (str): The name that represents the model type.
+
     '''
 
     def __init__(self,
@@ -460,8 +531,7 @@ class ModelGenerator(ClassGenerator):
         self.model_name = self._map(self.model["model"]["name"])  # Model type
 
     def _imports(self):
-        ''' Generate import statements.
-        '''
+        ''' Generate import statements.'''
 
         imports = {
             "tensorflow": "tf",
@@ -471,8 +541,7 @@ class ModelGenerator(ClassGenerator):
         self._write_imports(imports)
 
     def _class_def(self):
-        ''' Generate Model class definition.
-        '''
+        ''' Generate Model class definition.'''
 
         # DatasetPipeline class
         self._start_class(name="Model",
@@ -493,8 +562,7 @@ class ModelGenerator(ClassGenerator):
         self._end_method()
 
     def _build_model(self):
-        '''Generate code for building the model.
-        '''
+        '''Generate code for building the model.'''
 
         self._start_class_method(name="build",
                                  docstring="Build the MNIST model.\n")
@@ -509,8 +577,7 @@ class ModelGenerator(ClassGenerator):
         self._end_method()
 
     def _compile_model(self):
-        '''Generate code for the model compiler.
-        '''
+        '''Generate code for the model compiler.'''
 
         self._start_class_method(name="compile",
                                  docstring="Compile the MNIST model.\n")
@@ -521,8 +588,7 @@ class ModelGenerator(ClassGenerator):
         self._end_method()
 
     def _train(self):
-        ''' Generate code to train the model.
-        '''
+        ''' Generate code to train the model.'''
 
         self._start_class_method(name="train",
                                  docstring="Train the model.\n")
@@ -531,13 +597,12 @@ class ModelGenerator(ClassGenerator):
         self._end_method()
 
     def _helper_funcs(self):
-        ''' Generates get/set helper functions.
-        '''
+        ''' Generates get/set helper functions.'''
+
         pass  # None for now
 
     def gen_model(self):
-        ''' Generate all code for the Model class.
-        '''
+        ''' Generate all code for the Model class.'''
 
         self._imports()
         self._class_def()

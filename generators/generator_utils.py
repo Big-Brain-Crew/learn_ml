@@ -1,34 +1,40 @@
 ''' Utility functions for code generators.
+
+These functions help with using object formats that were created specifically for 
+the PythonGenerator and JsonGenerator class hierarchies. 
+
 '''
 
 import numpy as np
 
 
 def _is_valid_arg_dict(arg_dict):
-    ''' Check if arguments are formatted correctly in the dictionary.
+    ''' Check if arguments are formatted correctly in the argument dictionary.
 
-    The argument dict must follow the convention of Python function arguments. Args with
-    default parameters must come after args without. All keys must be of type string.
-    Values may take the forms:
-        string: To represent any object. Will be written without quotes.
+    An arg dict defines all arguments to a function as param:value paries. They must follow the 
+    rules of standard Python arguments. Args with default parameters must come after args without. 
+    All keys in the dict must be of type string.
+
+    Values may take the forms::
+        string: To represent any object. Will be generated as code, not a string.
         int/float: To represent a number value.
-        list: A list input.
-        dict: To represent a function as a value.
+        list of strings, ints, or floats: When an arg requires multiple values.
+        dict: To represent a function being passed as a value.
         None: This can be used to signify there is no default parameter.
 
     This function raises exceptions if any of these rules are not followed.
 
     Args:
-        arg_dict: A dict of method arguments in the form ("param" : "value"). param must be
-        string and value may be string or None. arg_dict can be None instead of dict
-        if there are no args
+        arg_dict (dict): Method arguments in the form {"param" : "value"}. Refer to above for how
+            to format an argument dictionary.
 
     Raises:
         TypeError: Arguments must be formatted as a dictionary.
         ValueError: All None values must come before all string values.
         TypeError: All keys must be strings and all values must be strings or None.
+
     '''
-    # Args must be in a dict
+
     if arg_dict:
         if not isinstance(arg_dict, dict):
             raise TypeError("Arguments must be formatted as a dictionary.")
@@ -65,7 +71,7 @@ def _is_valid_fn_dict(fn_dict):
     raise an exception.
 
     Args:
-        fn_dict: A dict containing function details.
+        fn_dict (dict): Represents a function name and its arguments.
 
     Raises:
         TypeError: Input must be of type dict.
@@ -73,7 +79,9 @@ def _is_valid_fn_dict(fn_dict):
         ValueError: Must have an "args" key in the dict.
         ValueError: The only keys must be "name' and "args".
         TypeError: Function name must be a string.
+
     '''
+
     if not isinstance(fn_dict, dict):
         raise TypeError("fn_dict must be of type dict.")
 
@@ -100,20 +108,30 @@ def create_fn_dict(name, args=None):
     of a function in the JSON file.
 
     Args:
-        name : Name of the function.
-        args : A dictionary of function arguments as "parameter" : "value" elements.
+        name (str): Name of the function.
+        args (dict): Function arguments as {"parameter" : "value"} elements. Refer to
+            _is_valid_arg_dict() docstring for formatting.
 
     Returns:
-        A dict representing the function.
+        dict: The formatted function.
 
-    Example usage:
-        function_name = "flatten"
-        args = {
-            "input_shape" : [28, 28, 1],
-            "parameter" : "value"
+    Example:
+        >>> function_name = "flatten"
+        >>> args = {
+        >>>    "input_shape" : [28, 28, 1],
+        >>>    "parameter" : "value"
+        >>> }
+        >>> print(create_fn_dict(function_name, args))
+        {
+            "name" : "flatten",
+            "args" : {
+                "input_shape" : [28, 28, 1],
+                "parameter" : "value"
+            }
         }
-        fn_dict = create_fn_dict(function_name, args)
+
     '''
+    
     # Raise exceptions if args incorrectly formatted
     _is_valid_arg_dict(args)
 
