@@ -23,7 +23,7 @@ from learn_ml.generators import generator_utils
 class PythonGenerator(object):
     '''Generates a Python script and writes code to it.
 
-    This class can be used to write lines of code to a python file and 
+    This class can be used to write lines of code to a python file and
     keep track of indent levels.
 
     Attributes:
@@ -70,15 +70,14 @@ class PythonGenerator(object):
 
         Example:
             >>> pygen = PythonGenerator("out.py")
-            >>> pygen._write("This is a line.\n")
+            >>> pygen._write("This is a line.\\n")
             >>> pygen._indent()
-            >>> pygen._write(["This is line 1\n",
-            >>>               "This is line 2\n"])
-
-        In out.py::
-            This is a line.
-                This is line 1
-                This is line 2.
+            >>> pygen._write(["This is line 1\\n",
+            >>>               "This is line 2\\n"])
+            In out.py:
+                This is a line.
+                    This is line 1
+                    This is line 2
 
         '''
         try:
@@ -119,7 +118,7 @@ class ClassGenerator(PythonGenerator):
     Attributes:
         class_ (dict): Class data loaded from the JSON file.
         map (dict): A mapping from class dict representations to their actual values. For example,
-            a "dense" value in the class may be mapped to "tf.keras.layers.Dense".   
+            a "dense" value in the class may be mapped to "tf.keras.layers.Dense".
 
     '''
 
@@ -138,7 +137,7 @@ class ClassGenerator(PythonGenerator):
     # TODO: Would be nice if this also checked for json file structure being valid.
     def _check_configs(self, class_config, map_config):
         '''Check that the config files exist.
-        
+
         Raises:
             FileNotFoundError: The class or map config files cannot be found.
 
@@ -273,7 +272,7 @@ class ClassGenerator(PythonGenerator):
 
         # Raise an exception if formatted incorrectly
         generator_utils._is_valid_fn_dict(fn_dict)
-        
+
         return "{fn_name}({args})".format(fn_name=fn_dict["name"],
                                           args=self._arg_str(fn_dict["args"]))
 
@@ -299,7 +298,7 @@ class ClassGenerator(PythonGenerator):
     def _map_fn(self, fn_dict):
         ''' Convert the elements of a function dictionary to their real values.
 
-        The function name, arg param, and arg value can be mapped if they have a mapping 
+        The function name, arg param, and arg value can be mapped if they have a mapping
         defined in the map JSON config file.
 
         Args:
@@ -386,7 +385,7 @@ class ClassGenerator(PythonGenerator):
             name (str): The method name.
             args (dict, optional): The args passed to the method. Don't include "self".
             docstring (str, List[str], optional): The docstring.
-        
+
         '''
 
         generator_utils._is_valid_arg_dict(arg_dict)
@@ -403,8 +402,8 @@ class PipelineGenerator(ClassGenerator):
 
     Most of the class methods are internal and do not need to be modified. All changes should be
     made to the JSON pipeline file used for configuration. Call gen_pipeline() to write the script.
-    
-    The pipeline is represented as a Pipeline object with dataset and preprocessing operations in 
+
+    The pipeline is represented as a Pipeline object with dataset and preprocessing operations in
     its internal state.
 
     Attributes:
@@ -511,7 +510,7 @@ class ModelGenerator(ClassGenerator):
 
     Use gen_model() to create the model. The model is stored as Model class with its layers
     and compilations features as its internal state.
-    
+
     Attributes:
         model (dict): Model configuration loaded from the JSON.
         model_name (str): The name that represents the model type.

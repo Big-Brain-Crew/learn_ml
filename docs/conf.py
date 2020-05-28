@@ -36,6 +36,7 @@ extensions = [
     "sphinx.ext.viewcode",
     'sphinx.ext.napoleon'
 ]
+napoleon_include_private_with_doc = True
 
 autodoc_mock_imports = ["tflite_runtime"]
 
