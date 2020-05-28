@@ -21,7 +21,7 @@ cd docs
 # else exit 1
 # fi
 
-sphinx-apidoc --implicit-namespaces -f -o . .. ../docs/*
+sphinx-apidoc --implicit-namespaces -f -o . ../learn_ml/ ../docs/*
 
 
 # echo hello

@@ -15,7 +15,7 @@ Classes::
 import json
 import warnings
 import pdb
-import generators.generator_utils as generator_utils
+import learn_ml.generators.generator_utils as generator_utils
 
 class JsonGenerator(object):
     ''' Base class that adds content to a JSON file.

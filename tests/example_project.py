@@ -2,9 +2,9 @@ import os
 import sys
 sys.path.append(os.getcwd())
 
-import generators.json_generators as json_generators
-import generators.python_generators as python_generators
-import generators.generator_utils as generator_utils
+import learn_ml.generators.json_generators as json_generators
+import learn_ml.generators.python_generators as python_generators
+import learn_ml.generators.generator_utils as generator_utils
 
 def create_pipeline_json():
     config_gen = json_generators.PipelineJsonGenerator("project/pipeline.json")
@@ -71,12 +71,12 @@ def create_model_json():
 
 def create_pipeline():
     pipe_gen = python_generators.PipelineGenerator(pipeline_config="project/pipeline.json",
-                                                   map_config="generators/pipeline_map.json")
+                                                   map_config="learn_ml/generators/pipeline_map.json")
     pipe_gen.gen_pipeline()
 
 def create_model():
     pipe_gen = python_generators.ModelGenerator(model_config="project/model.json",
-                                 map_config="generators/model_map.json")
+                                 map_config="learn_ml/generators/model_map.json")
     pipe_gen.gen_model()
 
 

@@ -9,7 +9,7 @@ import json
 @pytest.fixture
 def python_generator():
     sys.path.append(os.getcwd())
-    import generators.python_generators as python_generators
+    import learn_ml.generators.python_generators as python_generators
 
     pygen = python_generators.PythonGenerator(out="./tests/files/test_python_generator.txt")
     return pygen
@@ -18,7 +18,7 @@ def python_generator():
 @pytest.fixture
 def class_generator():
     sys.path.append(os.getcwd())
-    import generators.python_generators as python_generators
+    import learn_ml.generators.python_generators as python_generators
     pygen = python_generators.ClassGenerator(class_config="./tests/files/test_class.json",
                                              map_config="./tests/files/test_map.json",
                                              out="./tests/files/test_class_generator.txt")
@@ -38,7 +38,7 @@ def class_file_reader():
 @pytest.fixture
 def json_generator():
     sys.path.append(os.getcwd())
-    import generators.json_generators as json_generators
+    import learn_ml.generators.json_generators as json_generators
     json_gen = json_generators.JsonGenerator(
         out_file="./tests/files/test_json_generator.json")
     return json_gen
@@ -47,7 +47,7 @@ def json_generator():
 @pytest.fixture
 def pipeline_json_generator():
     sys.path.append(os.getcwd())
-    import generators.json_generators as json_generators
+    import learn_ml.generators.json_generators as json_generators
 
     json_generator = json_generators.PipelineJsonGenerator(
         out_file="./tests/files/test_json_generator.json")
@@ -57,7 +57,7 @@ def pipeline_json_generator():
 @pytest.fixture
 def model_json_generator():
     sys.path.append(os.getcwd())
-    import generators.json_generators as json_generators
+    import learn_ml.generators.json_generators as json_generators
     json_generator = json_generators.ModelJsonGenerator(
         out_file="./tests/files/test_json_generator.json")
     return json_generator
@@ -65,7 +65,7 @@ def model_json_generator():
 class TestPythonGenerator:
     def test_init(self):
         sys.path.append(os.getcwd())
-        import generators.python_generators as python_generators
+        import learn_ml.generators.python_generators as python_generators
 
         file_name = "./tests/files/test_python_generator.txt"
         pygen = python_generators.PythonGenerator(out=file_name)
@@ -163,7 +163,7 @@ class TestPythonGenerator:
 class TestGeneratorUtils:
     def test_is_valid_arg_dict(self):
         sys.path.append(os.getcwd())
-        import generators.generator_utils as generator_utils
+        import learn_ml.generators.generator_utils as generator_utils
 
         args = None
         arg_str = generator_utils._is_valid_arg_dict(args)
@@ -230,7 +230,7 @@ class TestGeneratorUtils:
 
     def test_is_valid_fn_dict(self):
         sys.path.append(os.getcwd())
-        import generators.generator_utils as generator_utils
+        import learn_ml.generators.generator_utils as generator_utils
 
         fn_dict = None
         with pytest.raises(TypeError, match=r".*dict.*"):
@@ -285,7 +285,7 @@ class TestGeneratorUtils:
 
     def test_create_fn_dict(self):
         sys.path.append(os.getcwd())
-        import generators.generator_utils as generator_utils
+        import learn_ml.generators.generator_utils as generator_utils
 
         fn_dict = generator_utils.create_fn_dict("function")
         assert fn_dict == {
@@ -310,7 +310,7 @@ class TestGeneratorUtils:
 class TestClassGenerator:
     def test_init(self):
         sys.path.append(os.getcwd())
-        import generators.python_generators as python_generators
+        import learn_ml.generators.python_generators as python_generators
 
         with pytest.raises(FileNotFoundError):
             pygen = python_generators.ClassGenerator(class_config="notafile",
@@ -586,7 +586,7 @@ class TestClassGenerator:
 
     def test_start_method(self, class_file_reader):
         sys.path.append(os.getcwd())
-        import generators.python_generators as python_generators
+        import learn_ml.generators.python_generators as python_generators
 
         class_generator = python_generators.ClassGenerator(class_config="./tests/files/test_class.json",
                                                            map_config="./tests/files/test_map.json",
@@ -644,7 +644,7 @@ class TestClassGenerator:
 
     def test_start_class_method(self):
         sys.path.append(os.getcwd())
-        import generators.python_generators as python_generators
+        import learn_ml.generators.python_generators as python_generators
 
         class_generator = python_generators.ClassGenerator(class_config="./tests/files/test_class.json",
                                                            map_config="./tests/files/test_map.json",
@@ -684,7 +684,7 @@ class TestClassGenerator:
 class TestJsonGenerator:
     def test_init(self):
         sys.path.append(os.getcwd())
-        import generators.json_generators as json_generators
+        import learn_ml.generators.json_generators as json_generators
 
         json_gen = json_generators.JsonGenerator(out_file="./tests/files/test_json_generator.json")
 
@@ -810,7 +810,7 @@ class TestJsonGenerator:
 class TestPipelineJsonGenerator:
     def test_init(self):
         sys.path.append(os.getcwd())
-        import generators.json_generators as json_generators
+        import learn_ml.generators.json_generators as json_generators
 
         json_generator = json_generators.PipelineJsonGenerator(
             out_file="./tests/files/test_json_generator.json")
@@ -856,7 +856,7 @@ class TestPipelineJsonGenerator:
 class TestModelJsonGenerator:
     def test_init(self):
         sys.path.append(os.getcwd())
-        import generators.json_generators as json_generators
+        import learn_ml.generators.json_generators as json_generators
         model_json_generator = json_generators.ModelJsonGenerator(
             out_file="./tests/files/test_json_generator.json")
 

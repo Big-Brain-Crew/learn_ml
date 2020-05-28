@@ -17,7 +17,7 @@ from abc import abstractmethod
 import warnings
 import numpy as np
 import pdb
-from generators import generator_utils
+from learn_ml.generators import generator_utils
 
 
 class PythonGenerator(object):
