@@ -33,6 +33,9 @@ def main(args):
     # Train
     model.train()
 
+    # Save the model
+    model.save("./project/model")
+
 if __name__ == "__main__":
     # Parse arguments
     args=None

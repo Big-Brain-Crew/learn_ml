@@ -598,7 +598,13 @@ class ModelGenerator(ClassGenerator):
     def _helper_funcs(self):
         ''' Generates get/set helper functions.'''
 
-        pass  # None for now
+        self._start_class_method(name="save",
+                                 arg_dict= {
+                                     "filepath" : "\"./project/model\""
+                                 },
+                                 docstring="Save the model in Tensorflow format.\n")
+        self._write("self.model.save(filepath)\n")
+        self._end_method()
 
     def gen_model(self):
         ''' Generate all code for the Model class.'''
