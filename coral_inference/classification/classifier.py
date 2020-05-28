@@ -1,6 +1,6 @@
 import os
 import cv2
-from coral_inference.classification.base_classifier import BaseClassifier
+from base_classifier import BaseClassifier
 import time
 
 import tflite_runtime.interpreter as tflite

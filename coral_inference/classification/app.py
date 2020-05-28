@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, Response
 import cv2
-from coral_inference.classification import classifier
+import classifier
 import argparse
 
 if __name__ == '__main__':

@@ -15,7 +15,7 @@ of inputs in the same shape as you pass to the model.
 import tensorflow as tf
 import numpy as np
 import os
-
+import argparse
 import sys
 
 
@@ -40,36 +40,55 @@ def _representative_dataset_gen_factory(dataset_dir):
     def representative_dataset_gen():
         for i in range(input_data.shape[0]):
             # Get sample input data as a numpy array in a method of your choosing.
-            yield [np.expand_dims(input_data[i], axis = 0).astype("float32")]
+            yield [np.expand_dims(input_data[i], axis=0).astype("float32")]
 
     return representative_dataset_gen
 
 
-def _convert_to_tflite(saved_model_dir, reprentative_dataset_dir):
+def _convert_to_tflite(saved_model_dir, representative_dataset_dir, use_tf1=False):
     """ Converts the model to a fully 8-bit integer quantized tflite model.
 
-    Uses the tf1 converter to convert the model to a tflite model. This uses the
+    By default, uses the tf2 converter to convert the model to a tflite model. This uses the
     post-training quantization scheme, which requires a representative dataset to
-    quantize the model.
+    quantize the model. If specified, it will use the tf1 converter
 
     Args:
         saved_model_dir: Path to directory containing the tf2 saved model
         representative_dataset_dir: Path to the .npy file containing the
             representative dataset. This np array should contain multiple
             input examples.
+        use_tf1 (optional): True to use the tf1 converter. False will use the tf2 converter.
     Returns:
         A tflite_quantized model, which must be written to a file
+
     """
-    # Instantiate a tf lite converter object to convert the saved model to a quantized uint8 tflite model
-    converter = tf.compat.v1.lite.TFLiteConverter.from_saved_model(saved_model_dir)
-    converter.optimizations = [tf.lite.Optimize.DEFAULT]
-    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
-    converter.inference_input_type = tf.uint8
-    converter.inference_output_type = tf.uint8
-    converter.representative_dataset = _representative_dataset_gen_factory(reprentative_dataset_dir)
-    tflite_quant_model = converter.convert()
+
+    if use_tf1:
+        converter = tf.compat.v1.lite.TFLiteConverter.from_saved_model(saved_model_dir)
+        converter.optimizations = [tf.lite.Optimize.DEFAULT]
+        converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+        converter.inference_input_type = tf.uint8
+        converter.inference_output_type = tf.uint8
+        converter.representative_dataset = _representative_dataset_gen_factory(representative_dataset_dir)
+        tflite_quant_model = converter.convert()
+
+    else:
+        converter = tf.lite.TFLiteConverter.from_saved_model(saved_model_dir)
+
+        # This enables quantization
+        converter.optimizations = [tf.lite.Optimize.DEFAULT]
+        converter.target_spec.supported_types = [tf.int8]
+
+        # This ensures that if any ops can't be quantized, the converter throws an error
+        converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+        
+        # This sets the representative dataset so we can quantize the activations
+        converter.representative_dataset = _representative_dataset_gen_factory(
+            representative_dataset_dir)
+        tflite_quant_model = converter.convert()
 
     return tflite_quant_model
+
 
 def _edgetpu_compile(tflite_model_path):
     """ Run the edgetpu_compile script for the quantized tflite model.
@@ -84,7 +103,8 @@ def _edgetpu_compile(tflite_model_path):
     """
     os.system("edgetpu_compiler {}".format(tflite_model_path))
 
-def convert_and_compile(saved_model_dir, reprentative_dataset_dir):
+
+def convert_and_compile(saved_model_dir, representative_dataset_dir, use_tf1=False):
     """ Converts the model to tflite and compiles for edgetpu.
 
     This function will convert a tf2 saved model to a model compiled for the edgetpu.
@@ -95,6 +115,7 @@ def convert_and_compile(saved_model_dir, reprentative_dataset_dir):
         representative_dataset_dir: Path to the .npy file containing the
             representative dataset. This np array should contain multiple
             input examples.
+        use_tf1 (optional): True to use the tf1 converter. False will use the tf2 converter.
     Returns:
         None
     """
@@ -105,7 +126,7 @@ def convert_and_compile(saved_model_dir, reprentative_dataset_dir):
         tf.config.experimental.set_memory_growth(gpu, True)
 
     # Convert model to a tflite model
-    tflite_quant_model = _convert_to_tflite(saved_model_dir, reprentative_dataset_dir)
+    tflite_quant_model = _convert_to_tflite(saved_model_dir, representative_dataset_dir, use_tf1)
     tflite_quant_model_path = "{}.tflite".format(saved_model_dir)
     open(tflite_quant_model_path, "wb").write(tflite_quant_model)
 
@@ -114,17 +135,15 @@ def convert_and_compile(saved_model_dir, reprentative_dataset_dir):
 
 
 if __name__ == "__main__":
-    # Parse command line arguments
-    # The model save directory should be passed as an argument
-    if(len(sys.argv) > 2):
-        saved_model_dir = str(sys.argv[1])
-        reprentative_dataset_dir = str(sys.argv[2])
-    else:
-        raise Exception("Must pass the saved model directory and the path to the representative dataset .npy file")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--model", help="Path to model folder.", required=True, type=str)
+    parser.add_argument("-r", "--representative", help="Path to representative dataset numpy file.",
+                        required=True, type=str)
+    parser.add_argument("-t", "--use_tf1", help="Bool; Whether to use the TF2 or TF1 converter",
+                        default=False, type=bool)
+    args = parser.parse_args()
+    saved_model_dir = args.model
+    representative_dataset_dir = args.representative
+    use_tf1 = args.use_tf1
 
-    convert_and_compile(saved_model_dir, reprentative_dataset_dir)
-
-
-
-
-
+    convert_and_compile(saved_model_dir, representative_dataset_dir, use_tf1)

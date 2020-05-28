@@ -38,7 +38,7 @@ def main():
         image = representative_batch[0][i]
         representative_input.append(image)
     np.save("representative_dataset.npy", representative_input)
-    x
+    
     # Testing pipeline
     ds_test = ds_test.map(normalize_img, num_parallel_calls=tf.data.experimental.AUTOTUNE)
     ds_test = ds_test.batch(128)
