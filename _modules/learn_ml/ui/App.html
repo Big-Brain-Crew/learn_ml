@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>learn_ml.ui.App &mdash; learn-ml  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> learn-ml
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">learn_ml</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">learn-ml</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>learn_ml.ui.App</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for learn_ml.ui.App</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">Qt</span> <span class="kn">import</span> <span class="n">QtGui</span>
+<span class="kn">from</span> <span class="nn">Qt</span> <span class="kn">import</span> <span class="n">QtCore</span>
+<span class="kn">from</span> <span class="nn">Qt.QtWidgets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1">#from ui.utils.stylesheet import editableStyleSheet</span>
+
+
+<span class="n">EDITOR_TARGET_FPS</span> <span class="o">=</span> <span class="mi">60</span>
+
+
+<div class="viewcode-block" id="LearnML"><a class="viewcode-back" href="../../../learn_ml.ui.html#learn_ml.ui.App.LearnML">[docs]</a><span class="k">class</span> <span class="nc">LearnML</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Defines UI element of the Learn ML project.</span>
+
+<span class="sd">        This class extends the QMainWindow class and serves as the entry point for the application.</span>
+<span class="sd">        It will contain all of the main UI elements used to interact with our application.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LearnML</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="c1"># Use a strong focus policy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+
+        <span class="c1"># Flag storing whether the current project has been modified</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modified</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Set title</span>
+        <span class="c1"># App name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title_name</span> <span class="o">=</span> <span class="s2">&quot;Learn ML&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_file_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_title</span><span class="p">()</span>
+        <span class="c1">#self.setContentsMargins(1, 1, 1, 1)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span> <span class="o">=</span> <span class="n">QMenuBar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">863</span><span class="p">,</span> <span class="mi">21</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;menu_bar&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMenuBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="p">)</span>
+
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMouseTracking</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">EDITOR_TARGET_FPS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tick_timer</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QTimer</span><span class="p">()</span>
+
+
+
+    <span class="c1"># def startMainLoop(self):</span>
+    <span class="c1">#     self.tick_timer.timeout.connect(self.mainLoop)</span>
+    <span class="c1">#     self.tick_timer.start(1000 / EDITOR_TARGET_FPS)</span>
+
+    <span class="c1"># def stopMainLoop(self):</span>
+    <span class="c1">#     self.tick_timer.stop()</span>
+    <span class="c1">#     self.tick_timer.timeout.disconnect()</span>
+
+    <span class="c1"># def mainLoop(self):</span>
+    <span class="c1">#     deltaTime = currentProcessorTime() - self._lastClock</span>
+    <span class="c1">#     ds = (deltaTime * 1000.0)</span>
+    <span class="c1">#     if ds &gt; 0:</span>
+    <span class="c1">#         self.fps = int(1000.0 / ds)</span>
+
+    <span class="c1">#     # Tick all graphs</span>
+    <span class="c1">#     # each graph will tick owning raw nodes</span>
+    <span class="c1">#     # each raw node will tick it&#39;s ui wrapper if it exists</span>
+    <span class="c1">#     self.graphManager.get().Tick(deltaTime)</span>
+
+    <span class="c1">#     # Tick canvas. Update ui only stuff such animation etc.</span>
+    <span class="c1">#     self.canvasWidget.Tick(deltaTime)</span>
+
+    <span class="c1">#     self._lastClock = currentProcessorTime()</span>
+
+
+<div class="viewcode-block" id="LearnML.set_title"><a class="viewcode-back" href="../../../learn_ml.ui.html#learn_ml.ui.App.LearnML.set_title">[docs]</a>    <span class="k">def</span> <span class="nf">set_title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Sets the title of the application.</span>
+
+<span class="sd">        The title will be Learn ML - {Current Project Name}.If the project has been modified,</span>
+<span class="sd">        there will be an asterisk following the project name.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Untitled&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_file_name</span><span class="p">):</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_file_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">modified</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">+=</span> <span class="s2">&quot;*&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> - </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="LearnML.populateMenu"><a class="viewcode-back" href="../../../learn_ml.ui.html#learn_ml.ui.App.LearnML.populateMenu">[docs]</a>    <span class="k">def</span> <span class="nf">populateMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Adds all of the options to the menu bar.</span>
+
+<span class="sd">        Currently, the only available options are the File option, which contains</span>
+<span class="sd">        options to create a new project or open an existing project.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">fileMenu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;File&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Define new project action</span>
+        <span class="n">new_project_action</span> <span class="o">=</span> <span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;New Project&quot;</span><span class="p">)</span>
+        <span class="c1"># newFileAction.setIcon(QtGui.QIcon(&quot;:/new_file_icon.png&quot;))</span>
+        <span class="c1"># newFileAction.triggered.connect(self.newFile)</span>
+
+        <span class="c1"># Define open project option</span>
+        <span class="n">load_project_action</span> <span class="o">=</span> <span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;Open Project&quot;</span><span class="p">)</span>
+        <span class="c1"># loadAction.setIcon(QtGui.QIcon(&quot;:/folder_open_icon.png&quot;))</span>
+        <span class="n">load_project_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">)</span></div>
+
+        <span class="c1"># saveAction = fileMenu.addAction(&quot;Save&quot;)</span>
+        <span class="c1"># saveAction.setIcon(QtGui.QIcon(&quot;:/save_icon.png&quot;))</span>
+        <span class="c1"># saveAction.triggered.connect(self.save)</span>
+
+        <span class="c1"># saveAsAction = fileMenu.addAction(&quot;Save as&quot;)</span>
+        <span class="c1"># saveAsAction.setIcon(QtGui.QIcon(&quot;:/save_as_icon.png&quot;))</span>
+        <span class="c1"># saveAsAction.triggered.connect(lambda: self.save(True))</span>
+
+        <span class="c1"># IOMenu = fileMenu.addMenu(&quot;Custom IO&quot;)</span>
+        <span class="c1"># for packageName, package in GET_PACKAGES().items():</span>
+        <span class="c1">#     # exporters</span>
+        <span class="c1">#     exporters = None</span>
+        <span class="c1">#     try:</span>
+        <span class="c1">#         exporters = package.GetExporters()</span>
+        <span class="c1">#     except:</span>
+        <span class="c1">#         continue</span>
+        <span class="c1">#     pkgMenu = IOMenu.addMenu(packageName)</span>
+        <span class="c1">#     for exporterName, exporterClass in exporters.items():</span>
+        <span class="c1">#         fileFormatMenu = pkgMenu.addMenu(exporterClass.displayName())</span>
+        <span class="c1">#         fileFormatMenu.setToolTip(exporterClass.toolTip())</span>
+        <span class="c1">#         if exporterClass.createExporterMenu():</span>
+        <span class="c1">#             exportAction = fileFormatMenu.addAction(&quot;Export&quot;)</span>
+        <span class="c1">#             exportAction.triggered.connect(lambda checked=False, app=self, exporter=exporterClass: exporter.doExport(app))</span>
+        <span class="c1">#         if exporterClass.createImporterMenu():</span>
+        <span class="c1">#             importAction = fileFormatMenu.addAction(&quot;Import&quot;)</span>
+        <span class="c1">#             importAction.triggered.connect(lambda checked=False, app=self, exporter=exporterClass: exporter.doImport(app))</span>
+
+        <span class="c1"># editMenu = self.menuBar.addMenu(&quot;Edit&quot;)</span>
+        <span class="c1"># preferencesAction = editMenu.addAction(&quot;Preferences&quot;)</span>
+        <span class="c1"># preferencesAction.setIcon(QtGui.QIcon(&quot;:/options_icon.png&quot;))</span>
+        <span class="c1"># preferencesAction.triggered.connect(self.showPreferencesWindow)</span>
+
+        <span class="c1"># pluginsMenu = self.menuBar.addMenu(&quot;Plugins&quot;)</span>
+        <span class="c1"># packagePlugin = pluginsMenu.addAction(&quot;Create package...&quot;)</span>
+        <span class="c1"># packagePlugin.triggered.connect(PackageWizard.run)</span>
+
+        <span class="c1"># helpMenu = self.menuBar.addMenu(&quot;Help&quot;)</span>
+        <span class="c1"># helpMenu.addAction(&quot;Homepage&quot;).triggered.connect(lambda _=False, url=&quot;https://wonderworks-software.github.io/PyFlow/&quot;: QtGui.QDesktopServices.openUrl(url))</span>
+        <span class="c1"># helpMenu.addAction(&quot;Docs&quot;).triggered.connect(lambda _=False, url=&quot;https://pyflow.readthedocs.io/en/latest/&quot;: QtGui.QDesktopServices.openUrl(url))</span>
+
+<div class="viewcode-block" id="LearnML.load"><a class="viewcode-back" href="../../../learn_ml.ui.html#learn_ml.ui.App.LearnML.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Opens the file dialog window to allow the user to load a project.</span>
+
+<span class="sd">        This is currently configured to select a project directory. There are no checks performed</span>
+<span class="sd">        to ensure that the project directory is valid.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># We can define a filter to filter the acceptable file names</span>
+        <span class="c1"># Simpler way to create a FileDialog if we have a file at some point</span>
+        <span class="c1">#name_filter = &quot;Graph files (*.pygraph)&quot;</span>
+        <span class="c1">#savepath = QFileDialog.getOpenFileName(filter=name_filter)</span>
+
+        <span class="c1"># Create File Dialog and configure to select a directory</span>
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">Directory</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">setViewMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">Detail</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">():</span>
+            <span class="n">project_dir</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">project_dir</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">project_dir</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="c1"># Update the title with the newly opened project directory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_title</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="LearnML.load_from_file"><a class="viewcode-back" href="../../../learn_ml.ui.html#learn_ml.ui.App.LearnML.load_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Contains operations to execute when a project is loaded</span>
+
+<span class="sd">        Currently, the only operation performed is updating the current_file_name property.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_file_name</span> <span class="o">=</span> <span class="n">project_dir</span></div>
+        <span class="c1"># with open(filePath, &#39;r&#39;) as f:</span>
+        <span class="c1">#     data = json.load(f)</span>
+        <span class="c1">#     self.loadFromData(data, clearHistory=True)</span>
+        <span class="c1">#     self.currentFileName = filePath</span>
+        <span class="c1">#     EditorHistory().saveState(&quot;Open {}&quot;.format(os.path.basename(self.currentFileName)))</span>
+
+<div class="viewcode-block" id="LearnML.instance"><a class="viewcode-back" href="../../../learn_ml.ui.html#learn_ml.ui.App.LearnML.instance">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Creates a new instance of the LearnML Main Window.</span>
+
+<span class="sd">        This will configure the LearnML window and return the object</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent: [Optional] The parent window, if this instance is a child of another window</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LearnML: A configured instance of the LearnML window</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1">#assert(software != &quot;&quot;), &quot;Invalid arguments. Please pass you software name as second argument!&quot;</span>
+
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">LearnML</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">showMaximized</span><span class="p">()</span>
+        <span class="c1">#instance.currentSoftware = software</span>
+
+        <span class="c1">#TODO What does this do</span>
+        <span class="c1"># SessionDescriptor().software = instance.currentSoftware</span>
+
+        <span class="c1"># if software == &quot;standalone&quot;:</span>
+        <span class="c1">#     editableStyleSheet(instance)</span>
+
+        <span class="c1"># instance.startMainLoop()</span>
+
+        <span class="c1"># populate tools</span>
+        <span class="c1"># canvas = instance.getCanvas()</span>
+        <span class="c1"># toolbar = instance.getToolbar()</span>
+
+        <span class="c1"># populate menus</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">populateMenu</span><span class="p">()</span>
+
+        <span class="c1"># geo = settings.value(&#39;Editor/geometry&#39;)</span>
+        <span class="c1"># if geo is not None:</span>
+        <span class="c1">#     instance.restoreGeometry(geo)</span>
+        <span class="c1"># state = settings.value(&#39;Editor/state&#39;)</span>
+        <span class="c1"># if state is not None:</span>
+        <span class="c1">#     instance.restoreState(state)</span>
+        <span class="c1"># settings.beginGroup(&quot;Tools&quot;)</span>
+        <span class="c1"># for packageName, registeredToolSet in GET_TOOLS().items():</span>
+        <span class="c1">#     for ToolClass in registeredToolSet:</span>
+        <span class="c1">#         if issubclass(ToolClass, ShelfTool):</span>
+        <span class="c1">#             ToolInstance = ToolClass()</span>
+        <span class="c1">#             # prevent to be garbage collected</span>
+        <span class="c1">#             instance.registerToolInstance(ToolInstance)</span>
+        <span class="c1">#             ToolInstance.setAppInstance(instance)</span>
+        <span class="c1">#             action = QAction(instance)</span>
+        <span class="c1">#             action.setIcon(ToolInstance.getIcon())</span>
+        <span class="c1">#             action.setText(ToolInstance.name())</span>
+        <span class="c1">#             action.setToolTip(ToolInstance.toolTip())</span>
+        <span class="c1">#             action.setObjectName(ToolInstance.name())</span>
+        <span class="c1">#             action.triggered.connect(ToolInstance.do)</span>
+        <span class="c1">#             # check if context menu data available</span>
+        <span class="c1">#             menuBuilder = ToolInstance.contextMenuBuilder()</span>
+        <span class="c1">#             if menuBuilder:</span>
+        <span class="c1">#                 menuGenerator = ContextMenuGenerator(menuBuilder)</span>
+        <span class="c1">#                 menu = menuGenerator.generate()</span>
+        <span class="c1">#                 action.setMenu(menu)</span>
+        <span class="c1">#             toolbar.addAction(action)</span>
+
+        <span class="c1">#             # step to ShelfTools/ToolName group and pass settings inside</span>
+        <span class="c1">#             settings.beginGroup(&quot;ShelfTools&quot;)</span>
+        <span class="c1">#             settings.beginGroup(ToolClass.name())</span>
+        <span class="c1">#             ToolInstance.restoreState(settings)</span>
+        <span class="c1">#             settings.endGroup()</span>
+        <span class="c1">#             settings.endGroup()</span>
+
+        <span class="c1">#         if issubclass(ToolClass, DockTool):</span>
+        <span class="c1">#             menus = instance.menuBar.findChildren(QMenu)</span>
+        <span class="c1">#             pluginsMenuAction = [m for m in menus if m.title() == &quot;Plugins&quot;][0].menuAction()</span>
+        <span class="c1">#             toolsMenu = getOrCreateMenu(instance.menuBar, &quot;Tools&quot;)</span>
+        <span class="c1">#             instance.menuBar.insertMenu(pluginsMenuAction, toolsMenu)</span>
+        <span class="c1">#             packageSubMenu = getOrCreateMenu(toolsMenu, packageName)</span>
+        <span class="c1">#             toolsMenu.addMenu(packageSubMenu)</span>
+        <span class="c1">#             showToolAction = packageSubMenu.addAction(ToolClass.name())</span>
+        <span class="c1">#             icon = ToolClass.getIcon()</span>
+        <span class="c1">#             if icon:</span>
+        <span class="c1">#                 showToolAction.setIcon(icon)</span>
+        <span class="c1">#             showToolAction.triggered.connect(lambda pkgName=packageName, toolName=ToolClass.name(): instance.invokeDockToolByName(pkgName, toolName))</span>
+
+        <span class="c1">#             settings.beginGroup(&quot;DockTools&quot;)</span>
+        <span class="c1">#             childGroups = settings.childGroups()</span>
+        <span class="c1">#             for dockToolGroupName in childGroups:</span>
+        <span class="c1">#                 # This dock tool data been saved on last shutdown</span>
+        <span class="c1">#                 settings.beginGroup(dockToolGroupName)</span>
+        <span class="c1">#                 if dockToolGroupName in [t.uniqueName() for t in instance._tools]:</span>
+        <span class="c1">#                     settings.endGroup()</span>
+        <span class="c1">#                     continue</span>
+        <span class="c1">#                 toolName = dockToolGroupName.split(&quot;::&quot;)[0]</span>
+        <span class="c1">#                 instance.invokeDockToolByName(packageName, toolName, settings)</span>
+        <span class="c1">#                 settings.endGroup()</span>
+        <span class="c1">#             settings.endGroup()</span>
+
+        <span class="c1"># LearnML.appInstance = instance</span>
+        <span class="c1"># EditorHistory().saveState(&quot;New file&quot;)</span>
+
+        <span class="c1"># for name, package in GET_PACKAGES().items():</span>
+        <span class="c1">#     prefsWidgets = package.PrefsWidgets()</span>
+        <span class="c1">#     if prefsWidgets is not None:</span>
+        <span class="c1">#         for categoryName, widgetClass in prefsWidgets.items():</span>
+        <span class="c1">#             PreferencesWindow().addCategory(categoryName, widgetClass())</span>
+        <span class="c1">#         PreferencesWindow().selectByName(&quot;General&quot;)</span>
+        <span class="k">return</span> <span class="n">instance</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Alexander Barnett, Swapnil Pande, Alexander Stephens
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

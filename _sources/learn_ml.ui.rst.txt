@@ -1,5 +1,5 @@
-learn\_ml package
-=================
+learn\_ml.ui package
+====================
 
 Subpackages
 -----------
@@ -7,17 +7,15 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   learn_ml.coral_inference
-   learn_ml.generators
-   learn_ml.ui
+   learn_ml.ui.utils
 
 Submodules
 ----------
 
-learn\_ml.learn\_ml module
---------------------------
+learn\_ml.ui.App module
+-----------------------
 
-.. automodule:: learn_ml.learn_ml
+.. automodule:: learn_ml.ui.App
    :members:
    :undoc-members:
    :show-inheritance:
@@ -26,7 +24,7 @@ learn\_ml.learn\_ml module
 Module contents
 ---------------
 
-.. automodule:: learn_ml
+.. automodule:: learn_ml.ui
    :members:
    :undoc-members:
    :show-inheritance:

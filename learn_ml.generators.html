@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="learn_ml.tests namespace" href="learn_ml.tests.html" />
+    <link rel="next" title="learn_ml.ui package" href="learn_ml.ui.html" />
     <link rel="prev" title="learn_ml.coral_inference.classification package" href="learn_ml.coral_inference.classification.html" /> 
 </head>
 
@@ -83,16 +83,16 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">learn_ml</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="learn_ml.html">learn_ml namespace</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="learn_ml.html">learn_ml package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="learn_ml.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="learn_ml.common.html">learn_ml.common namespace</a></li>
 <li class="toctree-l4"><a class="reference internal" href="learn_ml.coral_inference.html">learn_ml.coral_inference package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">learn_ml.generators package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="learn_ml.tests.html">learn_ml.tests namespace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="learn_ml.ui.html">learn_ml.ui package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="learn_ml.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#module-learn_ml.train_mnist">learn_ml.train_mnist module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#module-learn_ml.learn_ml">learn_ml.learn_ml module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#module-learn_ml">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -144,7 +144,7 @@
         
           <li><a href="modules.html">learn_ml</a> &raquo;</li>
         
-          <li><a href="learn_ml.html">learn_ml namespace</a> &raquo;</li>
+          <li><a href="learn_ml.html">learn_ml package</a> &raquo;</li>
         
       <li>learn_ml.generators package</li>
     
@@ -175,6 +175,61 @@
 <p>Utility functions for code generators.</p>
 <p>These functions help with using object formats that were created specifically for
 the PythonGenerator and JsonGenerator class hierarchies.</p>
+<dl class="py function">
+<dt id="learn_ml.generators.generator_utils._is_valid_arg_dict">
+<code class="sig-prename descclassname">learn_ml.generators.generator_utils.</code><code class="sig-name descname">_is_valid_arg_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">arg_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/generator_utils.html#_is_valid_arg_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.generator_utils._is_valid_arg_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if arguments are formatted correctly in the argument dictionary.</p>
+<p>An arg dict defines all arguments to a function as param:value paries. They must follow the
+rules of standard Python arguments. Args with default parameters must come after args without.
+All keys in the dict must be of type string.</p>
+<dl class="simple">
+<dt>Values may take the forms::</dt><dd><p>string: To represent any object. Will be generated as code, not a string.
+int/float: To represent a number value.
+list of strings, ints, or floats: When an arg requires multiple values.
+dict: To represent a function being passed as a value.
+None: This can be used to signify there is no default parameter.</p>
+</dd>
+</dl>
+<p>This function raises exceptions if any of these rules are not followed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>arg_dict</strong> (<em>dict</em>) – Method arguments in the form {“param” : “value”}. Refer to above for how
+to format an argument dictionary.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – Arguments must be formatted as a dictionary.</p></li>
+<li><p><strong>ValueError</strong> – All None values must come before all string values.</p></li>
+<li><p><strong>TypeError</strong> – All keys must be strings and all values must be strings or None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="learn_ml.generators.generator_utils._is_valid_fn_dict">
+<code class="sig-prename descclassname">learn_ml.generators.generator_utils.</code><code class="sig-name descname">_is_valid_fn_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fn_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/generator_utils.html#_is_valid_fn_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.generator_utils._is_valid_fn_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if function is formatted correctly in a dictionary.</p>
+<p>The function dictionary must be correctly formatted so it can be parsed. It must have two
+keys: “name” and “args”. The value of “name” must be a string, and args must be formatted
+as an arg_dict (see _is_valid_arg_dict for that format). Any input deviating from this will
+raise an exception.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn_dict</strong> (<em>dict</em>) – Represents a function name and its arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – Input must be of type dict.</p></li>
+<li><p><strong>ValueError</strong> – Must have a “name” key in the dict.</p></li>
+<li><p><strong>ValueError</strong> – Must have an “args” key in the dict.</p></li>
+<li><p><strong>ValueError</strong> – The only keys must be “name’ and “args”.</p></li>
+<li><p><strong>TypeError</strong> – Function name must be a string.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt id="learn_ml.generators.generator_utils.create_fn_dict">
 <code class="sig-prename descclassname">learn_ml.generators.generator_utils.</code><code class="sig-name descname">create_fn_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">args</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/generator_utils.html#create_fn_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.generator_utils.create_fn_dict" title="Permalink to this definition">¶</a></dt>
@@ -271,6 +326,32 @@ ModelJsonGenerator: Writes JSON entries specific to the Model class.</p>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.json_generators.JsonGenerator._close">
+<code class="sig-name descname">_close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#JsonGenerator._close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.JsonGenerator._close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the file object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.json_generators.JsonGenerator._indent">
+<code class="sig-name descname">_indent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#JsonGenerator._indent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.JsonGenerator._indent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the entry point for writing to the JSON.</p>
+<p>After indenting, new entries will be added to this indented level. Indents can only be set
+to dictionaries. Will raise a warning if trying to indent to anything else.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Dictionary key in the JSON. If the key does not already exist in the JSON,
+then it is added with an empty dictionary value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.json_generators.JsonGenerator._unindent">
+<code class="sig-name descname">_unindent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#JsonGenerator._unindent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.JsonGenerator._unindent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the entry point back to the root of the JSON file.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -535,6 +616,250 @@ a “dense” value in the class may be mapped to “tf.keras.layers.Dense”.</
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._arg_str">
+<code class="sig-name descname">_arg_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">arg_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._arg_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._arg_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts function arguments to a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>arg_dict</strong> (<em>dict</em>) – The function arguments. Can be None if there are no args.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Arguments formatted as they would be passed into a function.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<dl>
+<dt>Example usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arg_dict</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;param_1&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;param_2&quot;</span> <span class="p">:</span> <span class="s2">&quot;val_2&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">))</span>
+<span class="go">&quot;param_1, param_2=val_2&quot;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._check_configs">
+<code class="sig-name descname">_check_configs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">class_config</span></em>, <em class="sig-param"><span class="n">map_config</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._check_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._check_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the config files exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>FileNotFoundError</strong> – The class or map config files cannot be found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._class_def">
+<em class="property">abstract </em><code class="sig-name descname">_class_def</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._class_def"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._class_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a class.</p>
+<p>This method should call _start_class() and should define an __init__ method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._end_class">
+<code class="sig-name descname">_end_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._end_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._end_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signify end of class and remove indents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._end_method">
+<code class="sig-name descname">_end_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._end_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._end_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signify end of method and remove indents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._fn">
+<code class="sig-name descname">_fn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fn_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._fn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a function dictionary and returns it as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn_dict</strong> (<em>dict</em>) – The function.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A mapped dictionary of the same form as the input.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<dl>
+<dt>Example usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;args&quot;</span> <span class="p">:</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;param&quot;</span> <span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">))</span>
+<span class="go">&quot;mapped_function(mapped_param=mapped_value)&quot;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._fn_str">
+<code class="sig-name descname">_fn_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fn_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._fn_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._fn_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a function from dictionary form to a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn_dict</strong> (<em>dict</em>) – The function.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;args&quot;</span> <span class="p">:</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;param&quot;</span> <span class="p">:</span> <span class="s2">&quot;val&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_fn_str</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">))</span>
+<span class="go">&quot;function(param=val)&quot;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._imports">
+<em class="property">abstract </em><code class="sig-name descname">_imports</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._imports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._imports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write imports to file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._map">
+<code class="sig-name descname">_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an input to its language-specific representation.</p>
+<p>This function allows the model JSON language to be independent of implementation syntax.
+For example, the model may have a “dense” layer. The Tensorflow code for this is
+tf.keras.layers.Dense(). This function returns that language-specific syntax.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>str</em>) – The term to be mapped.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._map_fn">
+<code class="sig-name descname">_map_fn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fn_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._map_fn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._map_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the elements of a function dictionary to their real values.</p>
+<p>The function name, arg param, and arg value can be mapped if they have a mapping
+defined in the map JSON config file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn_dict</strong> (<em>dict</em>) – The function.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A mapped dictionary of the same form as the input.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<dl>
+<dt>Example usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">function</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;function&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;args&quot;</span> <span class="p">:</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;param&quot;</span> <span class="p">:</span> <span class="s2">&quot;value&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_map_fn</span><span class="p">(</span><span class="n">function</span><span class="p">))</span>
+<span class="go">{</span>
+<span class="go">    &quot;name&quot; : &quot;mapped_function&quot;,</span>
+<span class="go">    &quot;args&quot; : {</span>
+<span class="go">        &quot;mapped_param&quot; : &quot;mapped_value&quot;</span>
+<span class="go">    }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._start_class">
+<code class="sig-name descname">_start_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">base</span><span class="o">=</span><span class="default_value">'object'</span></em>, <em class="sig-param"><span class="n">docstring</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._start_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._start_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the class definition to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The class name.</p></li>
+<li><p><strong>base</strong> (<em>str</em>) – The base class. Default is “object”.</p></li>
+<li><p><strong>docstring</strong> (<em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The docstring.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._start_class_method">
+<code class="sig-name descname">_start_class_method</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">arg_dict</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">docstring</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._start_class_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._start_class_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a class method definition to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The method name.</p></li>
+<li><p><strong>args</strong> (<em>dict</em><em>, </em><em>optional</em>) – The args passed to the method. Don’t include “self”.</p></li>
+<li><p><strong>docstring</strong> (<em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The docstring.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._start_method">
+<code class="sig-name descname">_start_method</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">args</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">docstring</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._start_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._start_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the method definition to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The method name.</p></li>
+<li><p><strong>args</strong> (<em>dict</em><em>, </em><em>optional</em>) – The args passed to the method.</p></li>
+<li><p><strong>docstring</strong> (<em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The docstring.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ClassGenerator._write_imports">
+<code class="sig-name descname">_write_imports</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imports_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ClassGenerator._write_imports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ClassGenerator._write_imports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write import statements to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>import_dict</strong> (<em>dict</em>) – A dictionary of strings containing the import packages and their
+abbreviations. Currently, an abbreviation must be specified.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">imports_dict</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="s2">&quot;tensorflow&quot;</span> <span class="p">:</span> <span class="s2">&quot;tf&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="s2">&quot;numpy&quot;</span> <span class="p">:</span> <span class="s2">&quot;np&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_write_imports</span><span class="p">(</span><span class="n">imports_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>In out file::</dt><dd><p>import tensorflow as tf
+import numpy as np</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – imports_dict is not of type dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -564,6 +889,42 @@ and compilations features as its internal state.</p>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ModelGenerator._build_model">
+<code class="sig-name descname">_build_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ModelGenerator._build_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ModelGenerator._build_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate code for building the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ModelGenerator._class_def">
+<code class="sig-name descname">_class_def</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ModelGenerator._class_def"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ModelGenerator._class_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate Model class definition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ModelGenerator._compile_model">
+<code class="sig-name descname">_compile_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ModelGenerator._compile_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ModelGenerator._compile_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate code for the model compiler.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ModelGenerator._helper_funcs">
+<code class="sig-name descname">_helper_funcs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ModelGenerator._helper_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ModelGenerator._helper_funcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates get/set helper functions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ModelGenerator._imports">
+<code class="sig-name descname">_imports</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ModelGenerator._imports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ModelGenerator._imports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate import statements.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.ModelGenerator._train">
+<code class="sig-name descname">_train</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ModelGenerator._train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ModelGenerator._train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate code to train the model.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -603,6 +964,36 @@ its internal state.</p>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PipelineGenerator._class_def">
+<code class="sig-name descname">_class_def</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator._class_def"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator._class_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate DatasetPipeline class definition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PipelineGenerator._helper_funcs">
+<code class="sig-name descname">_helper_funcs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator._helper_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator._helper_funcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates get/set helper functions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PipelineGenerator._imports">
+<code class="sig-name descname">_imports</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator._imports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator._imports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate import statements.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PipelineGenerator._load_dataset">
+<code class="sig-name descname">_load_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator._load_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator._load_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate code for loading the dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PipelineGenerator._operations">
+<code class="sig-name descname">_operations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator._operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator._operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate code for all preprocessing operations.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -660,6 +1051,59 @@ keep track of indent levels.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="learn_ml.generators.python_generators.PythonGenerator._indent">
+<code class="sig-name descname">_indent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inc</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PythonGenerator._indent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PythonGenerator._indent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increments the indent level of the output string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PythonGenerator._spaces">
+<code class="sig-name descname">_spaces</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PythonGenerator._spaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PythonGenerator._spaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string of the correct number of spaces for the current indent level.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PythonGenerator._unindent">
+<code class="sig-name descname">_unindent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dec</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PythonGenerator._unindent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PythonGenerator._unindent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrements the indent level of the output string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PythonGenerator._write">
+<code class="sig-name descname">_write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lines</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PythonGenerator._write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PythonGenerator._write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes lines of code to the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lines</strong> (<em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em>) – Line or lines to be written to the file.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pygen</span> <span class="o">=</span> <span class="n">PythonGenerator</span><span class="p">(</span><span class="s2">&quot;out.py&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pygen</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;This is a line.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pygen</span><span class="o">.</span><span class="n">_indent</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pygen</span><span class="o">.</span><span class="n">_write</span><span class="p">([</span><span class="s2">&quot;This is line 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="s2">&quot;This is line 2</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">])</span>
+<span class="go">In out.py:</span>
+<span class="go">    This is a line.</span>
+<span class="go">        This is line 1</span>
+<span class="go">        This is line 2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PythonGenerator._write_docstring">
+<code class="sig-name descname">_write_docstring</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PythonGenerator._write_docstring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PythonGenerator._write_docstring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a line of docstring to the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>line</strong> (<em>str</em><em>, </em><em>optional</em>) – Docstring comment without docstring quotes.
+Defaults to None and will do nothing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="learn_ml.generators.python_generators.PythonGenerator.get_gen_file_name">
 <code class="sig-name descname">get_gen_file_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PythonGenerator.get_gen_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PythonGenerator.get_gen_file_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the name of the generated Python script.</p>
@@ -681,7 +1125,7 @@ keep track of indent levels.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="learn_ml.tests.html" class="btn btn-neutral float-right" title="learn_ml.tests namespace" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="learn_ml.ui.html" class="btn btn-neutral float-right" title="learn_ml.ui package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="learn_ml.coral_inference.classification.html" class="btn btn-neutral float-left" title="learn_ml.coral_inference.classification package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -146,19 +146,19 @@
   <h1>Source code for learn_ml.generators.generator_utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39; Utility functions for code generators.</span>
 
-<span class="sd">These functions help with using object formats that were created specifically for </span>
-<span class="sd">the PythonGenerator and JsonGenerator class hierarchies. </span>
+<span class="sd">These functions help with using object formats that were created specifically for</span>
+<span class="sd">the PythonGenerator and JsonGenerator class hierarchies.</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<span class="k">def</span> <span class="nf">_is_valid_arg_dict</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="_is_valid_arg_dict"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.generator_utils._is_valid_arg_dict">[docs]</a><span class="k">def</span> <span class="nf">_is_valid_arg_dict</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Check if arguments are formatted correctly in the argument dictionary.</span>
 
-<span class="sd">    An arg dict defines all arguments to a function as param:value paries. They must follow the </span>
-<span class="sd">    rules of standard Python arguments. Args with default parameters must come after args without. </span>
+<span class="sd">    An arg dict defines all arguments to a function as param:value paries. They must follow the</span>
+<span class="sd">    rules of standard Python arguments. Args with default parameters must come after args without.</span>
 <span class="sd">    All keys in the dict must be of type string.</span>
 
 <span class="sd">    Values may take the forms::</span>
@@ -167,6 +167,7 @@
 <span class="sd">        list of strings, ints, or floats: When an arg requires multiple values.</span>
 <span class="sd">        dict: To represent a function being passed as a value.</span>
 <span class="sd">        None: This can be used to signify there is no default parameter.</span>
+
 <span class="sd">    This function raises exceptions if any of these rules are not followed.</span>
 
 <span class="sd">    Args:</span>
@@ -204,10 +205,10 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All None values must come before all string values.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">all_str_keys</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">all_str_vals</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;All keys must be strings and all values must be strings, </span><span class="se">\</span>
-<span class="s2">                    int, float, or None.&quot;</span><span class="p">)</span>
+<span class="s2">                    int, float, or None.&quot;</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="_is_valid_fn_dict"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.generator_utils._is_valid_fn_dict">[docs]</a><span class="k">def</span> <span class="nf">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Check if function is formatted correctly in a dictionary.</span>
 
 <span class="sd">    The function dictionary must be correctly formatted so it can be parsed. It must have two</span>
@@ -243,12 +244,12 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Function name must be a string.&quot;</span><span class="p">)</span>
 
-    <span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">])</span>
+    <span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="create_fn_dict"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.generator_utils.create_fn_dict">[docs]</a><span class="k">def</span> <span class="nf">create_fn_dict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Creates a dictionary representation of a function.</span>
-<span class="sd">        </span>
+
 <span class="sd">        This function exists so the user doesn&#39;t have to worry about the internal representation</span>
 <span class="sd">        of a function in the JSON file.</span>
 
@@ -277,7 +278,7 @@
 <span class="sd">                }</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
-    
+
     <span class="c1"># Raise exceptions if args incorrectly formatted</span>
     <span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 

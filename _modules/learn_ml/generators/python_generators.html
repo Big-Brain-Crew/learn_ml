@@ -163,13 +163,13 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pdb</span>
-<span class="kn">from</span> <span class="nn">generators</span> <span class="kn">import</span> <span class="n">generator_utils</span>
+<span class="kn">from</span> <span class="nn">learn_ml.generators</span> <span class="kn">import</span> <span class="n">generator_utils</span>
 
 
 <div class="viewcode-block" id="PythonGenerator"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PythonGenerator">[docs]</a><span class="k">class</span> <span class="nc">PythonGenerator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Generates a Python script and writes code to it.</span>
 
-<span class="sd">    This class can be used to write lines of code to a python file and </span>
+<span class="sd">    This class can be used to write lines of code to a python file and</span>
 <span class="sd">    keep track of indent levels.</span>
 
 <span class="sd">    Attributes:</span>
@@ -193,22 +193,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">indent_str</span> <span class="o">=</span> <span class="s2">&quot;    &quot;</span>
 
-    <span class="k">def</span> <span class="nf">_indent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="PythonGenerator._indent"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PythonGenerator._indent">[docs]</a>    <span class="k">def</span> <span class="nf">_indent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Increments the indent level of the output string.&#39;&#39;&#39;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">+=</span> <span class="n">inc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">+=</span> <span class="n">inc</span></div>
 
-    <span class="k">def</span> <span class="nf">_unindent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="PythonGenerator._unindent"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PythonGenerator._unindent">[docs]</a>    <span class="k">def</span> <span class="nf">_unindent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Decrements the indent level of the output string.&#39;&#39;&#39;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">-=</span> <span class="n">dec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">-=</span> <span class="n">dec</span></div>
 
-    <span class="k">def</span> <span class="nf">_spaces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PythonGenerator._spaces"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PythonGenerator._spaces">[docs]</a>    <span class="k">def</span> <span class="nf">_spaces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Returns a string of the correct number of spaces for the current indent level.&#39;&#39;&#39;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_str</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_level</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_str</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_level</span></div>
 
-    <span class="k">def</span> <span class="nf">_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+<div class="viewcode-block" id="PythonGenerator._write"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PythonGenerator._write">[docs]</a>    <span class="k">def</span> <span class="nf">_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Writes lines of code to the file.</span>
 
 <span class="sd">        Args:</span>
@@ -216,24 +216,23 @@
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; pygen = PythonGenerator(&quot;out.py&quot;)</span>
-<span class="sd">            &gt;&gt;&gt; pygen._write(&quot;This is a line.\n&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; pygen._write(&quot;This is a line.\\n&quot;)</span>
 <span class="sd">            &gt;&gt;&gt; pygen._indent()</span>
-<span class="sd">            &gt;&gt;&gt; pygen._write([&quot;This is line 1\n&quot;,</span>
-<span class="sd">            &gt;&gt;&gt;               &quot;This is line 2\n&quot;])</span>
-
-<span class="sd">        In out.py::</span>
-<span class="sd">            This is a line.</span>
-<span class="sd">                This is line 1</span>
-<span class="sd">                This is line 2.</span>
+<span class="sd">            &gt;&gt;&gt; pygen._write([&quot;This is line 1\\n&quot;,</span>
+<span class="sd">            &gt;&gt;&gt;               &quot;This is line 2\\n&quot;])</span>
+<span class="sd">            In out.py:</span>
+<span class="sd">                This is a line.</span>
+<span class="sd">                    This is line 1</span>
+<span class="sd">                    This is line 2</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spaces</span><span class="p">()</span> <span class="o">+</span> <span class="n">lines</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> \
                 <span class="k">else</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spaces</span><span class="p">()</span> <span class="o">+</span> <span class="n">line</span><span class="p">))</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Nothing written - lines arg must be type str or List[str]&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Nothing written - lines arg must be type str or List[str]&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_write_docstring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PythonGenerator._write_docstring"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PythonGenerator._write_docstring">[docs]</a>    <span class="k">def</span> <span class="nf">_write_docstring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Writes a line of docstring to the file.</span>
 
 <span class="sd">        Args:</span>
@@ -248,7 +247,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;&#39;&#39;&#39;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;&#39;&#39;&#39;&quot;</span> <span class="o">+</span> <span class="n">line</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;&#39;&#39;&#39;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;&#39;&#39;&#39;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -265,7 +264,7 @@
 <span class="sd">    Attributes:</span>
 <span class="sd">        class_ (dict): Class data loaded from the JSON file.</span>
 <span class="sd">        map (dict): A mapping from class dict representations to their actual values. For example,</span>
-<span class="sd">            a &quot;dense&quot; value in the class may be mapped to &quot;tf.keras.layers.Dense&quot;.   </span>
+<span class="sd">            a &quot;dense&quot; value in the class may be mapped to &quot;tf.keras.layers.Dense&quot;.</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -282,9 +281,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">map</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">mapping_file</span><span class="p">)[</span><span class="s2">&quot;map&quot;</span><span class="p">]</span>
 
     <span class="c1"># TODO: Would be nice if this also checked for json file structure being valid.</span>
-    <span class="k">def</span> <span class="nf">_check_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_config</span><span class="p">,</span> <span class="n">map_config</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._check_configs"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._check_configs">[docs]</a>    <span class="k">def</span> <span class="nf">_check_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_config</span><span class="p">,</span> <span class="n">map_config</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Check that the config files exist.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Raises:</span>
 <span class="sd">            FileNotFoundError: The class or map config files cannot be found.</span>
 
@@ -293,9 +292,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">class_config</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;ERROR: Cannot find class config file.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">map_config</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;ERROR : Cannot find map config file.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;ERROR : Cannot find map config file.&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_write_imports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imports_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._write_imports"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._write_imports">[docs]</a>    <span class="k">def</span> <span class="nf">_write_imports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imports_dict</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Write import statements to file.</span>
 
 <span class="sd">        Args:</span>
@@ -325,9 +324,9 @@
         <span class="k">for</span> <span class="n">_import</span><span class="p">,</span> <span class="n">_abbrev</span> <span class="ow">in</span> <span class="n">imports_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;import </span><span class="si">{import_}</span><span class="s2"> as </span><span class="si">{abbrev_}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">import_</span><span class="o">=</span><span class="n">_import</span><span class="p">,</span>
                                                                  <span class="n">abbrev_</span><span class="o">=</span><span class="n">_abbrev</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_start_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._start_class"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._start_class">[docs]</a>    <span class="k">def</span> <span class="nf">_start_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Write the class definition to file.</span>
 
 <span class="sd">        Args:</span>
@@ -338,26 +337,26 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;class </span><span class="si">{name}</span><span class="s2">(</span><span class="si">{base}</span><span class="s2">):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">base</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write_docstring</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_docstring</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_end_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._end_class"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._end_class">[docs]</a>    <span class="k">def</span> <span class="nf">_end_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Signify end of class and remove indents.&#39;&#39;&#39;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_unindent</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unindent</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_end_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._end_method"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._end_method">[docs]</a>    <span class="k">def</span> <span class="nf">_end_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Signify end of method and remove indents.&#39;&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_unindent</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unindent</span><span class="p">()</span></div>
 
-    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="ClassGenerator._imports"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._imports">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_imports</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Write imports to file.&#39;&#39;&#39;</span>
 
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
-    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="ClassGenerator._class_def"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._class_def">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_class_def</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Define a class.</span>
 
@@ -365,9 +364,9 @@
 
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">_arg_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._arg_str"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._arg_str">[docs]</a>    <span class="k">def</span> <span class="nf">_arg_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg_dict</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Converts function arguments to a string.</span>
 
 <span class="sd">        Args:</span>
@@ -397,9 +396,9 @@
             <span class="n">arg_str</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{param}</span><span class="s2">=</span><span class="si">{val}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">val</span><span class="p">)</span> <span class="k">if</span> <span class="n">val</span>
                            <span class="k">else</span> <span class="s2">&quot;</span><span class="si">{param}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">arg_str</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">arg_str</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_fn_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._fn_str"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._fn_str">[docs]</a>    <span class="k">def</span> <span class="nf">_fn_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn_dict</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Convert a function from dictionary form to a string.</span>
 
 <span class="sd">        Args:</span>
@@ -419,11 +418,11 @@
 
         <span class="c1"># Raise an exception if formatted incorrectly</span>
         <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_fn_dict</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">)</span>
-        
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{fn_name}</span><span class="s2">(</span><span class="si">{args}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn_name</span><span class="o">=</span><span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-                                          <span class="n">args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]))</span>
 
-    <span class="k">def</span> <span class="nf">_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{fn_name}</span><span class="s2">(</span><span class="si">{args}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn_name</span><span class="o">=</span><span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                                          <span class="n">args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="ClassGenerator._map"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._map">[docs]</a>    <span class="k">def</span> <span class="nf">_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Converts an input to its language-specific representation.</span>
 
 <span class="sd">        This function allows the model JSON language to be independent of implementation syntax.</span>
@@ -440,12 +439,12 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">input_</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">input_</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;string&quot;</span> \
                 <span class="k">else</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">input_</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">input_</span>  <span class="c1"># Input not in the map</span>
+        <span class="k">return</span> <span class="n">input_</span>  <span class="c1"># Input not in the map</span></div>
 
-    <span class="k">def</span> <span class="nf">_map_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._map_fn"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._map_fn">[docs]</a>    <span class="k">def</span> <span class="nf">_map_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn_dict</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Convert the elements of a function dictionary to their real values.</span>
 
-<span class="sd">        The function name, arg param, and arg value can be mapped if they have a mapping </span>
+<span class="sd">        The function name, arg param, and arg value can be mapped if they have a mapping</span>
 <span class="sd">        defined in the map JSON config file.</span>
 
 <span class="sd">        Args:</span>
@@ -485,9 +484,9 @@
             <span class="n">mapped_fn</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">_param</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map_fn</span><span class="p">(</span>
                 <span class="n">_value</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">_value</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">mapped_fn</span>
+        <span class="k">return</span> <span class="n">mapped_fn</span></div>
 
-    <span class="k">def</span> <span class="nf">_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._fn"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._fn">[docs]</a>    <span class="k">def</span> <span class="nf">_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn_dict</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Maps a function dictionary and returns it as a string.</span>
 
 <span class="sd">        Args:</span>
@@ -508,9 +507,9 @@
 
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map_fn</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">_start_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._start_method"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._start_method">[docs]</a>    <span class="k">def</span> <span class="nf">_start_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Writes the method definition to file.</span>
 
 <span class="sd">        Args:</span>
@@ -523,16 +522,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;def </span><span class="si">{name}</span><span class="s2">(</span><span class="si">{args}</span><span class="s2">):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                                                    <span class="n">args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_arg_str</span><span class="p">(</span><span class="n">args</span><span class="p">)))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write_docstring</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_docstring</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_start_class_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">arg_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassGenerator._start_class_method"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ClassGenerator._start_class_method">[docs]</a>    <span class="k">def</span> <span class="nf">_start_class_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">arg_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Writes a class method definition to file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The method name.</span>
 <span class="sd">            args (dict, optional): The args passed to the method. Don&#39;t include &quot;self&quot;.</span>
 <span class="sd">            docstring (str, List[str], optional): The docstring.</span>
-<span class="sd">        </span>
+
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">)</span>
@@ -541,7 +540,7 @@
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">arg_dict</span> <span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start_method</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_method</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PipelineGenerator"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator">[docs]</a><span class="k">class</span> <span class="nc">PipelineGenerator</span><span class="p">(</span><span class="n">ClassGenerator</span><span class="p">):</span>
@@ -549,8 +548,8 @@
 
 <span class="sd">    Most of the class methods are internal and do not need to be modified. All changes should be</span>
 <span class="sd">    made to the JSON pipeline file used for configuration. Call gen_pipeline() to write the script.</span>
-<span class="sd">    </span>
-<span class="sd">    The pipeline is represented as a Pipeline object with dataset and preprocessing operations in </span>
+
+<span class="sd">    The pipeline is represented as a Pipeline object with dataset and preprocessing operations in</span>
 <span class="sd">    its internal state.</span>
 
 <span class="sd">    Attributes:</span>
@@ -570,7 +569,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>  <span class="c1"># Label for dataset being used</span>
 
-    <span class="k">def</span> <span class="nf">_imports</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PipelineGenerator._imports"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator._imports">[docs]</a>    <span class="k">def</span> <span class="nf">_imports</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generate import statements.&#39;&#39;&#39;</span>
 
         <span class="n">imports</span> <span class="o">=</span> <span class="p">{</span>
@@ -578,9 +577,9 @@
             <span class="s2">&quot;tensorflow_datasets&quot;</span><span class="p">:</span> <span class="s2">&quot;tfds&quot;</span><span class="p">,</span>
             <span class="s2">&quot;tf_utils&quot;</span><span class="p">:</span> <span class="s2">&quot;tf_utils&quot;</span>
         <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write_imports</span><span class="p">(</span><span class="n">imports</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_imports</span><span class="p">(</span><span class="n">imports</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_class_def</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PipelineGenerator._class_def"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator._class_def">[docs]</a>    <span class="k">def</span> <span class="nf">_class_def</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generate DatasetPipeline class definition.&#39;&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;DatasetPipeline&quot;</span><span class="p">,</span>
@@ -595,9 +594,9 @@
             <span class="s2">&quot;self.preprocess()</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_load_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PipelineGenerator._load_dataset"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator._load_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">_load_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Generate code for loading the dataset.&#39;&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;load_dataset&quot;</span><span class="p">,</span>
@@ -610,9 +609,9 @@
                     <span class="s2">&quot;as_supervised=True,&quot;</span> <span class="o">+</span>
                     <span class="s2">&quot;with_info = True)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PipelineGenerator._operations"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator._operations">[docs]</a>    <span class="k">def</span> <span class="nf">_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generate code for all preprocessing operations.&#39;&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;preprocess&quot;</span><span class="p">,</span>
@@ -621,9 +620,9 @@
         <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.ds_train = self.ds_train.</span><span class="si">{op}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="n">_op</span><span class="p">)))</span>
          <span class="k">for</span> <span class="n">_op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">]]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_helper_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PipelineGenerator._helper_funcs"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator._helper_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">_helper_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generates get/set helper functions.&#39;&#39;&#39;</span>
 
         <span class="c1"># def get_training_dataset()</span>
@@ -636,7 +635,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_test_dataset&quot;</span><span class="p">,</span>
                                  <span class="n">docstring</span><span class="o">=</span><span class="s2">&quot;Returns the test dataset.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;return self.ds_test</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PipelineGenerator.gen_pipeline"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator.gen_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">gen_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generate all code part of the dataset pipeline.&#39;&#39;&#39;</span>
@@ -657,7 +656,7 @@
 
 <span class="sd">    Use gen_model() to create the model. The model is stored as Model class with its layers</span>
 <span class="sd">    and compilations features as its internal state.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Attributes:</span>
 <span class="sd">        model (dict): Model configuration loaded from the JSON.</span>
 <span class="sd">        model_name (str): The name that represents the model type.</span>
@@ -676,7 +675,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>  <span class="c1"># Root of the json file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>  <span class="c1"># Model type</span>
 
-    <span class="k">def</span> <span class="nf">_imports</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelGenerator._imports"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ModelGenerator._imports">[docs]</a>    <span class="k">def</span> <span class="nf">_imports</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generate import statements.&#39;&#39;&#39;</span>
 
         <span class="n">imports</span> <span class="o">=</span> <span class="p">{</span>
@@ -684,9 +683,9 @@
             <span class="s2">&quot;tf_utils&quot;</span><span class="p">:</span> <span class="s2">&quot;tf_utils&quot;</span>
         <span class="p">}</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write_imports</span><span class="p">(</span><span class="n">imports</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_imports</span><span class="p">(</span><span class="n">imports</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_class_def</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelGenerator._class_def"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ModelGenerator._class_def">[docs]</a>    <span class="k">def</span> <span class="nf">_class_def</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generate Model class definition.&#39;&#39;&#39;</span>
 
         <span class="c1"># DatasetPipeline class</span>
@@ -705,9 +704,9 @@
             <span class="s2">&quot;self.build()</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="s2">&quot;self.compile()</span><span class="se">\n\n</span><span class="s2">&quot;</span>
         <span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelGenerator._build_model"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ModelGenerator._build_model">[docs]</a>    <span class="k">def</span> <span class="nf">_build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Generate code for building the model.&#39;&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;build&quot;</span><span class="p">,</span>
@@ -720,9 +719,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_unindent</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;])</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_compile_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelGenerator._compile_model"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ModelGenerator._compile_model">[docs]</a>    <span class="k">def</span> <span class="nf">_compile_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Generate code for the model compiler.&#39;&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;compile&quot;</span><span class="p">,</span>
@@ -731,21 +730,27 @@
         <span class="n">compile_fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="s2">&quot;compile&quot;</span><span class="p">])</span>  <span class="c1"># Map compile settings to function</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.model.</span><span class="si">{fn}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="n">compile_fn</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelGenerator._train"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ModelGenerator._train">[docs]</a>    <span class="k">def</span> <span class="nf">_train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generate code to train the model.&#39;&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
                                  <span class="n">docstring</span><span class="o">=</span><span class="s2">&quot;Train the model.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.model.fit(self.ds,epochs=5)</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_helper_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelGenerator._helper_funcs"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ModelGenerator._helper_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">_helper_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generates get/set helper functions.&#39;&#39;&#39;</span>
 
-        <span class="k">pass</span>  <span class="c1"># None for now</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;save&quot;</span><span class="p">,</span>
+                                 <span class="n">arg_dict</span><span class="o">=</span> <span class="p">{</span>
+                                     <span class="s2">&quot;filepath&quot;</span> <span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">./project/model</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+                                 <span class="p">},</span>
+                                 <span class="n">docstring</span><span class="o">=</span><span class="s2">&quot;Save the model in Tensorflow format.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.model.save(filepath)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ModelGenerator.gen_model"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ModelGenerator.gen_model">[docs]</a>    <span class="k">def</span> <span class="nf">gen_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generate all code for the Model class.&#39;&#39;&#39;</span>
