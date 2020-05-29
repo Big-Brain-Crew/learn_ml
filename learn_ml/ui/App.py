@@ -5,6 +5,11 @@ from Qt import QtCore
 from Qt.QtWidgets import *
 #from ui.utils.stylesheet import editableStyleSheet
 
+from ui.widgets.DeployMenu import DeployMenu
+
+from deploy import deploy
+from deploy import convert_to_edgetpu
+
 
 EDITOR_TARGET_FPS = 60
 
@@ -34,8 +39,6 @@ class LearnML(QMainWindow):
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 863, 21))
         self.menuBar.setObjectName("menu_bar")
         self.setMenuBar(self.menuBar)
-
-
 
         self.setMouseTracking(True)
 
@@ -91,17 +94,21 @@ class LearnML(QMainWindow):
         options to create a new project or open an existing project.
         '''
 
-        fileMenu = self.menuBar.addMenu("File")
+        file_menu = self.menuBar.addMenu("File")
 
         # Define new project action
-        new_project_action = fileMenu.addAction("New Project")
+        new_project_action = file_menu.addAction("New Project")
         # newFileAction.setIcon(QtGui.QIcon(":/new_file_icon.png"))
         # newFileAction.triggered.connect(self.newFile)
 
         # Define open project option
-        load_project_action = fileMenu.addAction("Open Project")
+        load_project_action = file_menu.addAction("Open Project")
         # loadAction.setIcon(QtGui.QIcon(":/folder_open_icon.png"))
         load_project_action.triggered.connect(self.load)
+
+        # Define deploy project action
+        deploy_project_action = file_menu.addAction("Deploy Project")
+        deploy_project_action.triggered.connect(self.deploy)
 
         # saveAction = fileMenu.addAction("Save")
         # saveAction.setIcon(QtGui.QIcon(":/save_icon.png"))
@@ -185,6 +192,28 @@ class LearnML(QMainWindow):
         #     self.currentFileName = filePath
         #     EditorHistory().saveState("Open {}".format(os.path.basename(self.currentFileName)))
 
+    def deploy(self):
+        ''' Deploys the loaded model to the coral board.
+
+        Currently, deploy can only deploy the compiled model and does not handle converting the model
+        to a tflite edgetpu model. This functionality will be added once USB serial communication with
+        the coral board is achieved.
+
+        '''
+
+        # Instantiate the deploy dialog
+        # Pass a function to deploy the edgetpu model to the coral board
+        deploy_dialog = DeployMenu(self,
+            lambda ip_addr, iden_file : deploy.deploy(
+                ip_addr,
+                os.path.join(self.current_file_name, "model_edgetpu.tflite"),
+                identity_file = iden_file
+            )
+        )
+        val = deploy_dialog.exec_()
+        print(val)
+
+
     @staticmethod
     def instance(parent=None):
         ''' Creates a new instance of the LearnML Main Window.
@@ -196,6 +225,7 @@ class LearnML(QMainWindow):
 
         Returns:
             LearnML: A configured instance of the LearnML window
+
         '''
         #assert(software != ""), "Invalid arguments. Please pass you software name as second argument!"
 

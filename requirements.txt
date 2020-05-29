@@ -2,7 +2,7 @@ scp
 paramiko
 argparse
 matplotlib
-tensorflow
+tensorflow-gpu
 tensorflow_datasets
 flask
 Pillow
@@ -10,3 +10,4 @@ opencv-python
 PySide2
 Qt.py
 nine
+singleton-decorator

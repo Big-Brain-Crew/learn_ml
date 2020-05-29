@@ -14,6 +14,7 @@ pass a model (using -m argument), the address of the coral (-a), and EITHER an i
 from paramiko import SSHClient
 from scp import SCPClient
 import argparse
+import os
 
 
 def deploy(address, model, identity_file=None, password=None):
@@ -58,13 +59,13 @@ def deploy(address, model, identity_file=None, password=None):
     print("Transferring model to Anything Sensor...")
     # SCPCLient takes a paramiko transport as an argument
     with SCPClient(ssh.get_transport()) as scp:
-        scp.put(model, "/home/mendel/learn_ml/coral_inference/classification/" + model)
+        scp.put(model, "/home/mendel/learn_ml/coral_inference/classification/" + os.path.basename(model))
     print("Transfer Successful!")
 
     # Start model execution
     ssh.exec_command("pkill screen")
     ssh.exec_command("cd /home/mendel/learn_ml/coral_inference/classification && screen -d -m python3 "
-                     + "app.py -m " + model)
+                     + "app.py --mnist -m " + os.path.basename(model))
 
     print("Started execution!")
     print("Stream accessible at {}:5000".format(address))

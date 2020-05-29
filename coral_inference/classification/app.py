@@ -8,6 +8,7 @@ if __name__ == '__main__':
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-m','--model', help='Path to .tflite model file', required=True)
+    parser.add_argument("--mnist", required=False, action="store_true")
     args = parser.parse_args()
 
     app = Flask(__name__)
@@ -41,7 +42,8 @@ if __name__ == '__main__':
     def video_feed():
 
         # Choose classifier
-        model_type = args.model.split('/')[-1].split('_')[0]
+        #model_type = args.model.split('/')[-1].split('_')[0]
+        model_type = "mnist" if args.mnist else "other"
         print(model_type)
         classifier_obj = choose_classifier(model_type)
         print(classifier_obj)
