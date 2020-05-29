@@ -330,13 +330,14 @@ class ClassGenerator(PythonGenerator):
         # Create mapped function dict and add name
         mapped_fn = {
             "name": self._map(fn_dict["name"]),
-            "args": {}
+            "args": {} if fn_dict["args"] else None
         }
-
-        # Map function args; recursively if an arg is a function dict
-        for _param, _value in fn_dict["args"].items():
-            mapped_fn["args"][self._map(_param)] = self._fn_str(self._map_fn(
-                _value)) if isinstance(_value, dict) else self._map(_value)
+        
+        if fn_dict["args"]:
+            # Map function args; recursively if an arg is a function dict
+            for _param, _value in fn_dict["args"].items():
+                mapped_fn["args"][self._map(_param)] = self._fn_str(self._map_fn(
+                    _value)) if isinstance(_value, dict) else self._map(_value)
 
         return mapped_fn
 

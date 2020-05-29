@@ -27,6 +27,30 @@
         "crossentropy" : {
             "name" : "tf.keras.losses.sparse_categorical_crossentropy",
             "type" : "object"
+        },
+        "float32" : {
+            "name" : "tf.float32",
+            "type" : "object"
+        },
+        "input": {
+            "name" : "tf.keras.layers.Input",
+            "type" : "object"
+        },
+        "reshape" : {
+            "name" : "tf.keras.layers.Reshape",
+            "type" : "object"
+        },
+        "conv2d" : {
+            "name" : "tf.keras.layers.Conv2D",
+            "type" : "object"
+        },
+        "max_pooling_2d" : {
+            "name" : "tf.keras.layers.MaxPooling2D",
+            "type" : "object"
+        },
+        "dropout" : {
+            "name" : "tf.keras.layers.Dropout",
+            "type" : "object"
         }
     }
 }

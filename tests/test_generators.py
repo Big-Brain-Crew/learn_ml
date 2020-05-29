@@ -439,6 +439,16 @@ class TestClassGenerator:
 
     def test_map_fn(self, class_generator):
         fn_dict = {
+            "name" : "sequential",
+            "args" : None
+        }
+        mapped = class_generator._map_fn(fn_dict)
+        assert mapped == {
+            "name" : "tf.keras.models.Sequential",
+            "args" : None
+        }
+        
+        fn_dict = {
             "name": "sequential",
             "args": {
                 "activation": "relu",
