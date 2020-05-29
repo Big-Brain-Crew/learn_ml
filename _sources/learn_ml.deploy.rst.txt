@@ -1,0 +1,30 @@
+learn\_ml.deploy package
+========================
+
+Submodules
+----------
+
+learn\_ml.deploy.convert\_to\_edgetpu module
+--------------------------------------------
+
+.. automodule:: learn_ml.deploy.convert_to_edgetpu
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+learn\_ml.deploy.deploy module
+------------------------------
+
+.. automodule:: learn_ml.deploy.deploy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: learn_ml.deploy
+   :members:
+   :undoc-members:
+   :show-inheritance:

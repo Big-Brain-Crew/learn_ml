@@ -1,0 +1,357 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>learn_ml.deploy package &mdash; learn-ml  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="learn_ml.generators package" href="learn_ml.generators.html" />
+    <link rel="prev" title="learn_ml package" href="learn_ml.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> learn-ml
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">learn_ml</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="learn_ml.html">learn_ml package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="learn_ml.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">learn_ml.deploy package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="learn_ml.generators.html">learn_ml.generators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="learn_ml.ui.html">learn_ml.ui package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#module-learn_ml.learn_ml">learn_ml.learn_ml module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="learn_ml.html#module-learn_ml">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">learn-ml</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">learn_ml</a> &raquo;</li>
+        
+          <li><a href="learn_ml.html">learn_ml package</a> &raquo;</li>
+        
+      <li>learn_ml.deploy package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/learn_ml.deploy.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="learn-ml-deploy-package">
+<h1>learn_ml.deploy package<a class="headerlink" href="#learn-ml-deploy-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-learn_ml.deploy.convert_to_edgetpu">
+<span id="learn-ml-deploy-convert-to-edgetpu-module"></span><h2>learn_ml.deploy.convert_to_edgetpu module<a class="headerlink" href="#module-learn_ml.deploy.convert_to_edgetpu" title="Permalink to this headline">¶</a></h2>
+<p>API for preparing model to deploy to Google Coral board.</p>
+<p>This script will accept a tf2 saved model and convert it into a quantized tflite model.
+After converting it, it will convert the model using the edge_tpu compiler tool.
+In addition to a command line interface, it also publishes a python API. To quantize the
+model, the script also requires a small, representative dataset to determine the input
+ranges. Tensorflow documentation says the dataset can be as small as 12 examples, but
+we recommend around 100. The dataset is accepted as a .npy file, containing an array
+of inputs in the same shape as you pass to the model.</p>
+<blockquote>
+<div><p>Typical usage example:
+python3 convert_to_edgetpu.py foo/tf2_model bar/repr_dataset.npy</p>
+</div></blockquote>
+<dl class="py function">
+<dt id="learn_ml.deploy.convert_to_edgetpu._convert_to_tflite">
+<code class="sig-prename descclassname">learn_ml.deploy.convert_to_edgetpu.</code><code class="sig-name descname">_convert_to_tflite</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">saved_model_dir</span></em>, <em class="sig-param"><span class="n">representative_dataset_dir</span></em>, <em class="sig-param"><span class="n">use_tf1</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/deploy/convert_to_edgetpu.html#_convert_to_tflite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.deploy.convert_to_edgetpu._convert_to_tflite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the model to a fully 8-bit integer quantized tflite model.</p>
+<p>By default, uses the tf2 converter to convert the model to a tflite model. This uses the
+post-training quantization scheme, which requires a representative dataset to
+quantize the model. If specified, it will use the tf1 converter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>saved_model_dir</strong> – Path to directory containing the tf2 saved model</p></li>
+<li><p><strong>representative_dataset_dir</strong> – Path to the .npy file containing the
+representative dataset. This np array should contain multiple
+input examples.</p></li>
+<li><p><strong>use_tf1</strong> (<em>optional</em>) – True to use the tf1 converter. False will use the tf2 converter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tflite_quantized model, which must be written to a file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="learn_ml.deploy.convert_to_edgetpu._edgetpu_compile">
+<code class="sig-prename descclassname">learn_ml.deploy.convert_to_edgetpu.</code><code class="sig-name descname">_edgetpu_compile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tflite_model_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/deploy/convert_to_edgetpu.html#_edgetpu_compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.deploy.convert_to_edgetpu._edgetpu_compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the edgetpu_compile script for the quantized tflite model.</p>
+<p>The function will write the edgetpu compiled model to [MODEL_NAME]_edgetpu.tflite.
+Currently, this function only works on debian systems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tflite_model_path</strong> – Path to the quantized .tflite model</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="learn_ml.deploy.convert_to_edgetpu._representative_dataset_gen_factory">
+<code class="sig-prename descclassname">learn_ml.deploy.convert_to_edgetpu.</code><code class="sig-name descname">_representative_dataset_gen_factory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/deploy/convert_to_edgetpu.html#_representative_dataset_gen_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.deploy.convert_to_edgetpu._representative_dataset_gen_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a generator for elements of the representative dataset.</p>
+<p>Helper function for creating a generator for the tflite converter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataset_dir</strong> – Path to the .npy file containing the representative dataset.
+This np array should contain multiple input examples.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A generator function that can be passed directly to the tflite converter.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="learn_ml.deploy.convert_to_edgetpu.convert_and_compile">
+<code class="sig-prename descclassname">learn_ml.deploy.convert_to_edgetpu.</code><code class="sig-name descname">convert_and_compile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">saved_model_dir</span></em>, <em class="sig-param"><span class="n">representative_dataset_dir</span></em>, <em class="sig-param"><span class="n">use_tf1</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/deploy/convert_to_edgetpu.html#convert_and_compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.deploy.convert_to_edgetpu.convert_and_compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the model to tflite and compiles for edgetpu.</p>
+<p>This function will convert a tf2 saved model to a model compiled for the edgetpu.
+Once generated, the model will be saved to the file [MODEL NAME]_edgetpu.tflite</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>saved_model_dir</strong> – Path to directory containing the tf2 saved model</p></li>
+<li><p><strong>representative_dataset_dir</strong> – Path to the .npy file containing the
+representative dataset. This np array should contain multiple
+input examples.</p></li>
+<li><p><strong>use_tf1</strong> (<em>optional</em>) – True to use the tf1 converter. False will use the tf2 converter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-learn_ml.deploy.deploy">
+<span id="learn-ml-deploy-deploy-module"></span><h2>learn_ml.deploy.deploy module<a class="headerlink" href="#module-learn_ml.deploy.deploy" title="Permalink to this headline">¶</a></h2>
+<p>Provides a command-line interface and python API for deploying a model to the Google Coral board.</p>
+<p>Currently, this script is setup to deploy the model via ssh. Therefore, it requires the address of the coral board
+and that you have a key or password to access it. Once the model is deployed to the coral, it will also publish
+a web server to display the results. The deploy script also only handles classification problems, support for more
+model types is in the pipeline. The python API exposes a deploy function. If called from the command line, you must
+pass a model (using -m argument), the address of the coral (-a), and EITHER an identity file (-i) OR a password (-p).</p>
+<blockquote>
+<div><p>Typical usage example:</p>
+<p>python3 deploy.py -m foo/model_quantized.tflite -a x.x.x.x -i ~/id_rsa</p>
+</div></blockquote>
+<dl class="py function">
+<dt id="learn_ml.deploy.deploy.deploy">
+<code class="sig-prename descclassname">learn_ml.deploy.deploy.</code><code class="sig-name descname">deploy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">address</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">identity_file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">password</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/deploy/deploy.html#deploy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.deploy.deploy.deploy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deploys the a model to the Coral Board.</p>
+<p>Connects to the coral board via ssh to deploy the model. You must pass a tflite model.
+For maximum performance, you should pass a quantized tflite model, which can be generated
+using the convert_to_edgetpu module. After deploying the model, the function will start
+a webserver publishing the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> – Address of the coral board</p></li>
+<li><p><strong>model</strong> – Path to the tflite model to deploy</p></li>
+<li><p><strong>identity_file</strong> – [Optional] Path to the identity file. Identity file must be provided
+if password is not provided.</p></li>
+<li><p><strong>password</strong> – [Optional] Password to use for ssh authentication. Password must be provided
+if identity_file is not provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-learn_ml.deploy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-learn_ml.deploy" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="learn_ml.generators.html" class="btn btn-neutral float-right" title="learn_ml.generators package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="learn_ml.html" class="btn btn-neutral float-left" title="learn_ml package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Alexander Barnett, Swapnil Pande, Alexander Stephens
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -7,7 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   learn_ml.coral_inference
+   learn_ml.deploy
    learn_ml.generators
    learn_ml.ui
 

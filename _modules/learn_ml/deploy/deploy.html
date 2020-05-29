@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>learn_ml.deploy.deploy &mdash; learn-ml  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> learn-ml
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">learn_ml</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">learn-ml</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>learn_ml.deploy.deploy</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for learn_ml.deploy.deploy</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Provides a command-line interface and python API for deploying a model to the Google Coral board.</span>
+
+<span class="sd">Currently, this script is setup to deploy the model via ssh. Therefore, it requires the address of the coral board</span>
+<span class="sd">and that you have a key or password to access it. Once the model is deployed to the coral, it will also publish</span>
+<span class="sd">a web server to display the results. The deploy script also only handles classification problems, support for more</span>
+<span class="sd">model types is in the pipeline. The python API exposes a deploy function. If called from the command line, you must</span>
+<span class="sd">pass a model (using -m argument), the address of the coral (-a), and EITHER an identity file (-i) OR a password (-p).</span>
+
+<span class="sd">    Typical usage example:</span>
+
+<span class="sd">    python3 deploy.py -m foo/model_quantized.tflite -a x.x.x.x -i ~/id_rsa</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">paramiko</span> <span class="kn">import</span> <span class="n">SSHClient</span>
+<span class="kn">from</span> <span class="nn">scp</span> <span class="kn">import</span> <span class="n">SCPClient</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+
+<div class="viewcode-block" id="deploy"><a class="viewcode-back" href="../../../learn_ml.deploy.html#learn_ml.deploy.deploy.deploy">[docs]</a><span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">identity_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Deploys the a model to the Coral Board.</span>
+
+<span class="sd">    Connects to the coral board via ssh to deploy the model. You must pass a tflite model.</span>
+<span class="sd">    For maximum performance, you should pass a quantized tflite model, which can be generated</span>
+<span class="sd">    using the convert_to_edgetpu module. After deploying the model, the function will start</span>
+<span class="sd">    a webserver publishing the results.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        address: Address of the coral board</span>
+<span class="sd">        model: Path to the tflite model to deploy</span>
+<span class="sd">        identity_file: [Optional] Path to the identity file. Identity file must be provided</span>
+<span class="sd">            if password is not provided.</span>
+<span class="sd">        password: [Optional] Password to use for ssh authentication. Password must be provided</span>
+<span class="sd">            if identity_file is not provided.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Flag for whether or not authenticating with key</span>
+    <span class="n">use_key</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">identity_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">use_key</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>  <span class="c1"># This condition means that neither identity file nor password was passed</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must pass identity file OR password&quot;</span><span class="p">)</span>
+
+    <span class="n">ssh</span> <span class="o">=</span> <span class="n">SSHClient</span><span class="p">()</span>
+    <span class="n">ssh</span><span class="o">.</span><span class="n">load_system_host_keys</span><span class="p">()</span>
+
+    <span class="c1"># Connect to coral</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connecting...&quot;</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">use_key</span><span class="p">):</span>  <span class="c1"># Connect using private key</span>
+        <span class="n">ssh</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;mendel&quot;</span><span class="p">,</span> <span class="n">key_filename</span><span class="o">=</span><span class="n">identity_file</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Connect using password</span>
+        <span class="n">ssh</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;mendel&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Successfully connected to Anything Sensor v1!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Transfer model to coral</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transferring model to Anything Sensor...&quot;</span><span class="p">)</span>
+    <span class="c1"># SCPCLient takes a paramiko transport as an argument</span>
+    <span class="k">with</span> <span class="n">SCPClient</span><span class="p">(</span><span class="n">ssh</span><span class="o">.</span><span class="n">get_transport</span><span class="p">())</span> <span class="k">as</span> <span class="n">scp</span><span class="p">:</span>
+        <span class="n">scp</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;/home/mendel/learn_ml/coral_inference/classification/&quot;</span> <span class="o">+</span> <span class="n">model</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transfer Successful!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Start model execution</span>
+    <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s2">&quot;pkill screen&quot;</span><span class="p">)</span>
+    <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s2">&quot;cd /home/mendel/learn_ml/coral_inference/classification &amp;&amp; screen -d -m python3 &quot;</span>
+                     <span class="o">+</span> <span class="s2">&quot;app.py -m &quot;</span> <span class="o">+</span> <span class="n">model</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Started execution!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stream accessible at </span><span class="si">{}</span><span class="s2">:5000&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">address</span><span class="p">))</span>
+
+    <span class="n">ssh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Parse arguments</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;--model&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to .tflite model file&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;--address&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Address of the coral device&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="s1">&#39;--identity-file&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Identity file to authenticate with&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--password&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Password to login with&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">deploy</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">identity_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">identity_file</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Alexander Barnett, Swapnil Pande, Alexander Stephens
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

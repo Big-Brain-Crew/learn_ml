@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>learn_ml.deploy.convert_to_edgetpu &mdash; learn-ml  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> learn-ml
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">learn_ml</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">learn-ml</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>learn_ml.deploy.convert_to_edgetpu</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for learn_ml.deploy.convert_to_edgetpu</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; API for preparing model to deploy to Google Coral board.</span>
+
+<span class="sd">This script will accept a tf2 saved model and convert it into a quantized tflite model.</span>
+<span class="sd">After converting it, it will convert the model using the edge_tpu compiler tool.</span>
+<span class="sd">In addition to a command line interface, it also publishes a python API. To quantize the</span>
+<span class="sd">model, the script also requires a small, representative dataset to determine the input</span>
+<span class="sd">ranges. Tensorflow documentation says the dataset can be as small as 12 examples, but</span>
+<span class="sd">we recommend around 100. The dataset is accepted as a .npy file, containing an array</span>
+<span class="sd">of inputs in the same shape as you pass to the model.</span>
+
+<span class="sd">    Typical usage example:</span>
+<span class="sd">    python3 convert_to_edgetpu.py foo/tf2_model bar/repr_dataset.npy</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<div class="viewcode-block" id="_representative_dataset_gen_factory"><a class="viewcode-back" href="../../../learn_ml.deploy.html#learn_ml.deploy.convert_to_edgetpu._representative_dataset_gen_factory">[docs]</a><span class="k">def</span> <span class="nf">_representative_dataset_gen_factory</span><span class="p">(</span><span class="n">dataset_dir</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Creates a generator for elements of the representative dataset.</span>
+
+<span class="sd">    Helper function for creating a generator for the tflite converter.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataset_dir: Path to the .npy file containing the representative dataset.</span>
+<span class="sd">            This np array should contain multiple input examples.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        A generator function that can be passed directly to the tflite converter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Open the npy file containing the input data samples</span>
+    <span class="n">input_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dataset_dir</span><span class="p">)</span>
+
+    <span class="c1"># Define the generator function that will feed samples of the input to the converter</span>
+    <span class="c1"># The generator outputs a list containing a numpy array which has a single element of the data input</span>
+    <span class="c1"># Note: The first dimension of the numpy array MUST be 1</span>
+    <span class="k">def</span> <span class="nf">representative_dataset_gen</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="c1"># Get sample input data as a numpy array in a method of your choosing.</span>
+            <span class="k">yield</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">input_data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">representative_dataset_gen</span></div>
+
+
+<div class="viewcode-block" id="_convert_to_tflite"><a class="viewcode-back" href="../../../learn_ml.deploy.html#learn_ml.deploy.convert_to_edgetpu._convert_to_tflite">[docs]</a><span class="k">def</span> <span class="nf">_convert_to_tflite</span><span class="p">(</span><span class="n">saved_model_dir</span><span class="p">,</span> <span class="n">representative_dataset_dir</span><span class="p">,</span> <span class="n">use_tf1</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Converts the model to a fully 8-bit integer quantized tflite model.</span>
+
+<span class="sd">    By default, uses the tf2 converter to convert the model to a tflite model. This uses the</span>
+<span class="sd">    post-training quantization scheme, which requires a representative dataset to</span>
+<span class="sd">    quantize the model. If specified, it will use the tf1 converter</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        saved_model_dir: Path to directory containing the tf2 saved model</span>
+<span class="sd">        representative_dataset_dir: Path to the .npy file containing the</span>
+<span class="sd">            representative dataset. This np array should contain multiple</span>
+<span class="sd">            input examples.</span>
+<span class="sd">        use_tf1 (optional): True to use the tf1 converter. False will use the tf2 converter.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        A tflite_quantized model, which must be written to a file</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">use_tf1</span><span class="p">:</span>
+        <span class="n">converter</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">compat</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">lite</span><span class="o">.</span><span class="n">TFLiteConverter</span><span class="o">.</span><span class="n">from_saved_model</span><span class="p">(</span><span class="n">saved_model_dir</span><span class="p">)</span>
+        <span class="n">converter</span><span class="o">.</span><span class="n">optimizations</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">lite</span><span class="o">.</span><span class="n">Optimize</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">]</span>
+        <span class="n">converter</span><span class="o">.</span><span class="n">target_spec</span><span class="o">.</span><span class="n">supported_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">lite</span><span class="o">.</span><span class="n">OpsSet</span><span class="o">.</span><span class="n">TFLITE_BUILTINS_INT8</span><span class="p">]</span>
+        <span class="n">converter</span><span class="o">.</span><span class="n">inference_input_type</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">uint8</span>
+        <span class="n">converter</span><span class="o">.</span><span class="n">inference_output_type</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">uint8</span>
+        <span class="n">converter</span><span class="o">.</span><span class="n">representative_dataset</span> <span class="o">=</span> <span class="n">_representative_dataset_gen_factory</span><span class="p">(</span><span class="n">representative_dataset_dir</span><span class="p">)</span>
+        <span class="n">tflite_quant_model</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">converter</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">lite</span><span class="o">.</span><span class="n">TFLiteConverter</span><span class="o">.</span><span class="n">from_saved_model</span><span class="p">(</span><span class="n">saved_model_dir</span><span class="p">)</span>
+
+        <span class="c1"># This enables quantization</span>
+        <span class="n">converter</span><span class="o">.</span><span class="n">optimizations</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">lite</span><span class="o">.</span><span class="n">Optimize</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">]</span>
+        <span class="n">converter</span><span class="o">.</span><span class="n">target_spec</span><span class="o">.</span><span class="n">supported_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">int8</span><span class="p">]</span>
+
+        <span class="c1"># This ensures that if any ops can&#39;t be quantized, the converter throws an error</span>
+        <span class="n">converter</span><span class="o">.</span><span class="n">target_spec</span><span class="o">.</span><span class="n">supported_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">lite</span><span class="o">.</span><span class="n">OpsSet</span><span class="o">.</span><span class="n">TFLITE_BUILTINS_INT8</span><span class="p">]</span>
+        
+        <span class="c1"># This sets the representative dataset so we can quantize the activations</span>
+        <span class="n">converter</span><span class="o">.</span><span class="n">representative_dataset</span> <span class="o">=</span> <span class="n">_representative_dataset_gen_factory</span><span class="p">(</span>
+            <span class="n">representative_dataset_dir</span><span class="p">)</span>
+        <span class="n">tflite_quant_model</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">tflite_quant_model</span></div>
+
+
+<div class="viewcode-block" id="_edgetpu_compile"><a class="viewcode-back" href="../../../learn_ml.deploy.html#learn_ml.deploy.convert_to_edgetpu._edgetpu_compile">[docs]</a><span class="k">def</span> <span class="nf">_edgetpu_compile</span><span class="p">(</span><span class="n">tflite_model_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Run the edgetpu_compile script for the quantized tflite model.</span>
+
+<span class="sd">    The function will write the edgetpu compiled model to [MODEL_NAME]_edgetpu.tflite.</span>
+<span class="sd">    Currently, this function only works on debian systems.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tflite_model_path: Path to the quantized .tflite model</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;edgetpu_compiler </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tflite_model_path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="convert_and_compile"><a class="viewcode-back" href="../../../learn_ml.deploy.html#learn_ml.deploy.convert_to_edgetpu.convert_and_compile">[docs]</a><span class="k">def</span> <span class="nf">convert_and_compile</span><span class="p">(</span><span class="n">saved_model_dir</span><span class="p">,</span> <span class="n">representative_dataset_dir</span><span class="p">,</span> <span class="n">use_tf1</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Converts the model to tflite and compiles for edgetpu.</span>
+
+<span class="sd">    This function will convert a tf2 saved model to a model compiled for the edgetpu.</span>
+<span class="sd">    Once generated, the model will be saved to the file [MODEL NAME]_edgetpu.tflite</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        saved_model_dir: Path to directory containing the tf2 saved model</span>
+<span class="sd">        representative_dataset_dir: Path to the .npy file containing the</span>
+<span class="sd">            representative dataset. This np array should contain multiple</span>
+<span class="sd">            input examples.</span>
+<span class="sd">        use_tf1 (optional): True to use the tf1 converter. False will use the tf2 converter.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set memory growth for GPU</span>
+    <span class="n">gpus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">&#39;GPU&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">gpu</span> <span class="ow">in</span> <span class="n">gpus</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">set_memory_growth</span><span class="p">(</span><span class="n">gpu</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Convert model to a tflite model</span>
+    <span class="n">tflite_quant_model</span> <span class="o">=</span> <span class="n">_convert_to_tflite</span><span class="p">(</span><span class="n">saved_model_dir</span><span class="p">,</span> <span class="n">representative_dataset_dir</span><span class="p">,</span> <span class="n">use_tf1</span><span class="p">)</span>
+    <span class="n">tflite_quant_model_path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.tflite&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">saved_model_dir</span><span class="p">)</span>
+    <span class="nb">open</span><span class="p">(</span><span class="n">tflite_quant_model_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tflite_quant_model</span><span class="p">)</span>
+
+    <span class="c1"># Use edgeTPU_compiler to compile model for TPU</span>
+    <span class="n">_edgetpu_compile</span><span class="p">(</span><span class="n">tflite_quant_model_path</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--model&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to model folder.&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-r&quot;</span><span class="p">,</span> <span class="s2">&quot;--representative&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to representative dataset numpy file.&quot;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--use_tf1&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Bool; Whether to use the TF2 or TF1 converter&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">saved_model_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span>
+    <span class="n">representative_dataset_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">representative</span>
+    <span class="n">use_tf1</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">use_tf1</span>
+
+    <span class="n">convert_and_compile</span><span class="p">(</span><span class="n">saved_model_dir</span><span class="p">,</span> <span class="n">representative_dataset_dir</span><span class="p">,</span> <span class="n">use_tf1</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Alexander Barnett, Swapnil Pande, Alexander Stephens
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
