@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>learn_ml.ui.utils package &mdash; learn-ml  documentation</title>
+  <title>learn_ml.ui.widgets package &mdash; learn-ml  documentation</title>
   
 
   
@@ -35,8 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="learn_ml.ui.widgets package" href="learn_ml.ui.widgets.html" />
-    <link rel="prev" title="learn_ml.ui package" href="learn_ml.ui.html" /> 
+    <link rel="prev" title="learn_ml.ui.utils package" href="learn_ml.ui.utils.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -148,13 +147,13 @@
         
           <li><a href="learn_ml.ui.html">learn_ml.ui package</a> &raquo;</li>
         
-      <li>learn_ml.ui.utils package</li>
+      <li>learn_ml.ui.widgets package</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/learn_ml.ui.utils.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/learn_ml.ui.widgets.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -167,10 +166,51 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="learn-ml-ui-utils-package">
-<h1>learn_ml.ui.utils package<a class="headerlink" href="#learn-ml-ui-utils-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-learn_ml.ui.utils">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-learn_ml.ui.utils" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="learn-ml-ui-widgets-package">
+<h1>learn_ml.ui.widgets package<a class="headerlink" href="#learn-ml-ui-widgets-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-learn_ml.ui.widgets.BrowseLineEdit">
+<span id="learn-ml-ui-widgets-browselineedit-module"></span><h2>learn_ml.ui.widgets.BrowseLineEdit module<a class="headerlink" href="#module-learn_ml.ui.widgets.BrowseLineEdit" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="learn_ml.ui.widgets.BrowseLineEdit.BrowseLineEdit">
+<em class="property">class </em><code class="sig-prename descclassname">learn_ml.ui.widgets.BrowseLineEdit.</code><code class="sig-name descname">BrowseLineEdit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/widgets/BrowseLineEdit.html#BrowseLineEdit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.widgets.BrowseLineEdit.BrowseLineEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PySide2.QtWidgets.QWidget</span></code></p>
+<p>Widget similar to QLineEdit that includes a file browse button.</p>
+<p>This method acts very similar to a QLineEdit, except that it also includes a browse file button.
+When a file is selected from the FileDialog, the selected file will automatically populate the LineEdit field.</p>
+<dl class="py method">
+<dt id="learn_ml.ui.widgets.BrowseLineEdit.BrowseLineEdit._browse">
+<code class="sig-name descname">_browse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/widgets/BrowseLineEdit.html#BrowseLineEdit._browse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.widgets.BrowseLineEdit.BrowseLineEdit._browse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens the File Dialog to choose a file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="learn_ml.ui.widgets.BrowseLineEdit.BrowseLineEdit.staticMetaObject">
+<code class="sig-name descname">staticMetaObject</code><em class="property"> = &lt;PySide2.QtCore.QMetaObject object&gt;</em><a class="headerlink" href="#learn_ml.ui.widgets.BrowseLineEdit.BrowseLineEdit.staticMetaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.ui.widgets.BrowseLineEdit.BrowseLineEdit.text">
+<code class="sig-name descname">text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/widgets/BrowseLineEdit.html#BrowseLineEdit.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.widgets.BrowseLineEdit.BrowseLineEdit.text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the text in the field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>String containing the text in the field.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-learn_ml.ui.widgets.DeployMenu">
+<span id="learn-ml-ui-widgets-deploymenu-module"></span><h2>learn_ml.ui.widgets.DeployMenu module<a class="headerlink" href="#module-learn_ml.ui.widgets.DeployMenu" title="Permalink to this headline">¶</a></h2>
+<p>Contains the definition of a DeployMenu widget for deploying the model to the coral board</p>
+</div>
+<div class="section" id="module-learn_ml.ui.widgets">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-learn_ml.ui.widgets" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -182,10 +222,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="learn_ml.ui.widgets.html" class="btn btn-neutral float-right" title="learn_ml.ui.widgets package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="learn_ml.ui.html" class="btn btn-neutral float-left" title="learn_ml.ui package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="learn_ml.ui.utils.html" class="btn btn-neutral float-left" title="learn_ml.ui.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -175,6 +175,13 @@
 <li class="toctree-l2"><a class="reference internal" href="learn_ml.ui.utils.html#module-learn_ml.ui.utils">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="learn_ml.ui.widgets.html">learn_ml.ui.widgets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="learn_ml.ui.widgets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learn_ml.ui.widgets.html#module-learn_ml.ui.widgets.BrowseLineEdit">learn_ml.ui.widgets.BrowseLineEdit module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learn_ml.ui.widgets.html#module-learn_ml.ui.widgets.DeployMenu">learn_ml.ui.widgets.DeployMenu module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learn_ml.ui.widgets.html#module-learn_ml.ui.widgets">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -190,6 +197,15 @@
 <p>Defines UI element of the Learn ML project.</p>
 <p>This class extends the QMainWindow class and serves as the entry point for the application.
 It will contain all of the main UI elements used to interact with our application.</p>
+<dl class="py method">
+<dt id="learn_ml.ui.App.LearnML.deploy">
+<code class="sig-name descname">deploy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/App.html#LearnML.deploy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.App.LearnML.deploy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deploys the loaded model to the coral board.</p>
+<p>Currently, deploy can only deploy the compiled model and does not handle converting the model
+to a tflite edgetpu model. This functionality will be added once USB serial communication with
+the coral board is achieved.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="learn_ml.ui.App.LearnML.instance">
 <em class="property">static </em><code class="sig-name descname">instance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/App.html#LearnML.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.App.LearnML.instance" title="Permalink to this definition">¶</a></dt>

@@ -1,0 +1,30 @@
+learn\_ml.ui.widgets package
+============================
+
+Submodules
+----------
+
+learn\_ml.ui.widgets.BrowseLineEdit module
+------------------------------------------
+
+.. automodule:: learn_ml.ui.widgets.BrowseLineEdit
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+learn\_ml.ui.widgets.DeployMenu module
+--------------------------------------
+
+.. automodule:: learn_ml.ui.widgets.DeployMenu
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: learn_ml.ui.widgets
+   :members:
+   :undoc-members:
+   :show-inheritance:

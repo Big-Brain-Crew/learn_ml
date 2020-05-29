@@ -151,6 +151,11 @@
 <span class="kn">from</span> <span class="nn">Qt.QtWidgets</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="c1">#from ui.utils.stylesheet import editableStyleSheet</span>
 
+<span class="kn">from</span> <span class="nn">ui.widgets.DeployMenu</span> <span class="kn">import</span> <span class="n">DeployMenu</span>
+
+<span class="kn">from</span> <span class="nn">deploy</span> <span class="kn">import</span> <span class="n">deploy</span>
+<span class="kn">from</span> <span class="nn">deploy</span> <span class="kn">import</span> <span class="n">convert_to_edgetpu</span>
+
 
 <span class="n">EDITOR_TARGET_FPS</span> <span class="o">=</span> <span class="mi">60</span>
 
@@ -180,8 +185,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">863</span><span class="p">,</span> <span class="mi">21</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;menu_bar&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setMenuBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="p">)</span>
-
-
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setMouseTracking</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
@@ -237,17 +240,21 @@
 <span class="sd">        options to create a new project or open an existing project.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="n">fileMenu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;File&quot;</span><span class="p">)</span>
+        <span class="n">file_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;File&quot;</span><span class="p">)</span>
 
         <span class="c1"># Define new project action</span>
-        <span class="n">new_project_action</span> <span class="o">=</span> <span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;New Project&quot;</span><span class="p">)</span>
+        <span class="n">new_project_action</span> <span class="o">=</span> <span class="n">file_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;New Project&quot;</span><span class="p">)</span>
         <span class="c1"># newFileAction.setIcon(QtGui.QIcon(&quot;:/new_file_icon.png&quot;))</span>
         <span class="c1"># newFileAction.triggered.connect(self.newFile)</span>
 
         <span class="c1"># Define open project option</span>
-        <span class="n">load_project_action</span> <span class="o">=</span> <span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;Open Project&quot;</span><span class="p">)</span>
+        <span class="n">load_project_action</span> <span class="o">=</span> <span class="n">file_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;Open Project&quot;</span><span class="p">)</span>
         <span class="c1"># loadAction.setIcon(QtGui.QIcon(&quot;:/folder_open_icon.png&quot;))</span>
-        <span class="n">load_project_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">)</span></div>
+        <span class="n">load_project_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">)</span>
+
+        <span class="c1"># Define deploy project action</span>
+        <span class="n">deploy_project_action</span> <span class="o">=</span> <span class="n">file_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;Deploy Project&quot;</span><span class="p">)</span>
+        <span class="n">deploy_project_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deploy</span><span class="p">)</span></div>
 
         <span class="c1"># saveAction = fileMenu.addAction(&quot;Save&quot;)</span>
         <span class="c1"># saveAction.setIcon(QtGui.QIcon(&quot;:/save_icon.png&quot;))</span>
@@ -331,6 +338,28 @@
         <span class="c1">#     self.currentFileName = filePath</span>
         <span class="c1">#     EditorHistory().saveState(&quot;Open {}&quot;.format(os.path.basename(self.currentFileName)))</span>
 
+<div class="viewcode-block" id="LearnML.deploy"><a class="viewcode-back" href="../../../learn_ml.ui.html#learn_ml.ui.App.LearnML.deploy">[docs]</a>    <span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Deploys the loaded model to the coral board.</span>
+
+<span class="sd">        Currently, deploy can only deploy the compiled model and does not handle converting the model</span>
+<span class="sd">        to a tflite edgetpu model. This functionality will be added once USB serial communication with</span>
+<span class="sd">        the coral board is achieved.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Instantiate the deploy dialog</span>
+        <span class="c1"># Pass a function to deploy the edgetpu model to the coral board</span>
+        <span class="n">deploy_dialog</span> <span class="o">=</span> <span class="n">DeployMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">ip_addr</span><span class="p">,</span> <span class="n">iden_file</span> <span class="p">:</span> <span class="n">deploy</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span>
+                <span class="n">ip_addr</span><span class="p">,</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_file_name</span><span class="p">,</span> <span class="s2">&quot;model_edgetpu.tflite&quot;</span><span class="p">),</span>
+                <span class="n">identity_file</span> <span class="o">=</span> <span class="n">iden_file</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">deploy_dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="LearnML.instance"><a class="viewcode-back" href="../../../learn_ml.ui.html#learn_ml.ui.App.LearnML.instance">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Creates a new instance of the LearnML Main Window.</span>
@@ -342,6 +371,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            LearnML: A configured instance of the LearnML window</span>
+
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1">#assert(software != &quot;&quot;), &quot;Invalid arguments. Please pass you software name as second argument!&quot;</span>
 
