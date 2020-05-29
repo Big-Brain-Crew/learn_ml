@@ -476,13 +476,14 @@
         <span class="c1"># Create mapped function dict and add name</span>
         <span class="n">mapped_fn</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]),</span>
-            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{}</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="p">}</span>
-
-        <span class="c1"># Map function args; recursively if an arg is a function dict</span>
-        <span class="k">for</span> <span class="n">_param</span><span class="p">,</span> <span class="n">_value</span> <span class="ow">in</span> <span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">mapped_fn</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">_param</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map_fn</span><span class="p">(</span>
-                <span class="n">_value</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">_value</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]:</span>
+            <span class="c1"># Map function args; recursively if an arg is a function dict</span>
+            <span class="k">for</span> <span class="n">_param</span><span class="p">,</span> <span class="n">_value</span> <span class="ow">in</span> <span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">mapped_fn</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">_param</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map_fn</span><span class="p">(</span>
+                    <span class="n">_value</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">_value</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">mapped_fn</span></div>
 
