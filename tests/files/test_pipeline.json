@@ -1,0 +1,35 @@
+{
+    "pipeline": {
+        "dataset": {
+            "label": "mnist"
+        },
+        "operations": {
+            "train": [
+                {
+                    "name": "map",
+                    "args": {
+                        "map_func": "normalize_img",
+                        "num_parallel_calls": "autotune"
+                    }
+                },
+                {
+                    "name": "cache",
+                    "args": {}
+                }
+            ],
+            "test": [
+                {
+                    "name": "map",
+                    "args": {
+                        "map_func": "normalize_img",
+                        "num_parallel_calls": "autotune"
+                    }
+                },
+                {
+                    "name": "cache",
+                    "args": {}
+                }
+            ]
+        }
+    }
+}

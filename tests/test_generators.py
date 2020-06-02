@@ -26,6 +26,16 @@ def class_generator():
 
 
 @pytest.fixture
+def pipeline_generator():
+    sys.path.append(os.getcwd())
+    import learn_ml.generators.python_generators as python_generators
+    pygen = python_generators.PipelineGenerator(pipeline_config="./tests/files/test_pipeline.json",
+                                                map_config="./tests/files/test_pipeline_map.json",
+                                                out="./tests/files/test_pipeline_generator.txt")
+    return pygen
+
+
+@pytest.fixture
 def pygen_file_reader():
     return open("./tests/files/test_python_generator.txt", "r")
 
@@ -33,6 +43,11 @@ def pygen_file_reader():
 @pytest.fixture
 def class_file_reader():
     return open("./tests/files/test_class_generator.txt", "r")
+
+
+@pytest.fixture
+def pipeline_file_reader():
+    return open("./tests/files/test_pipeline_generator.txt", "r")
 
 
 @pytest.fixture
@@ -62,18 +77,19 @@ def model_json_generator():
         out_file="./tests/files/test_json_generator.json")
     return json_generator
 
+
 class TestPythonGenerator:
     def test_init(self):
         sys.path.append(os.getcwd())
         import learn_ml.generators.python_generators as python_generators
 
-        file_name = "./tests/files/test_python_generator.txt"
+        file_name = "./tests/files/test_python_generator.py"
         pygen = python_generators.PythonGenerator(out=file_name)
 
         assert pygen.out_file_name == file_name, "Out file name is incorrect"
         assert pygen.indent_level == 0, "Indent level not 0"
         assert pygen.indent_str == "    ", "Indent string is wrong"
-        assert os.path.exists("./tests/files/test_python_generator.txt"), "Out file not opened"
+        assert os.path.exists("./tests/files/test_python_generator.py"), "Out file not opened"
 
     def test_indent(self, python_generator, pygen_file_reader):
         python_generator._indent()
@@ -439,15 +455,15 @@ class TestClassGenerator:
 
     def test_map_fn(self, class_generator):
         fn_dict = {
-            "name" : "sequential",
-            "args" : None
+            "name": "sequential",
+            "args": None
         }
         mapped = class_generator._map_fn(fn_dict)
         assert mapped == {
-            "name" : "tf.keras.models.Sequential",
-            "args" : None
+            "name": "tf.keras.models.Sequential",
+            "args": None
         }
-        
+
         fn_dict = {
             "name": "sequential",
             "args": {
@@ -691,6 +707,42 @@ class TestClassGenerator:
         ]
 
 
+class TestPipelineGenerator:
+    def test_init(self):
+        sys.path.append(os.getcwd())
+        import learn_ml.generators.python_generators as python_generators
+
+        pipeline_generator = python_generators.PipelineGenerator(pipeline_config="./tests/files/test_pipeline.json",
+                                                                 map_config="./tests/files/test_pipeline_map.json",
+                                                                 out="./tests/files/test_pipeline_generator.txt")
+
+        assert pipeline_generator.pipeline["dataset"]["label"] == "mnist"
+        assert isinstance(pipeline_generator.pipeline["operations"]["train"], list)
+        assert isinstance(pipeline_generator.pipeline["operations"]["test"], list)
+
+    def test_operations(self, pipeline_generator, pipeline_file_reader):
+        operations = [
+            {
+                "name": "map",
+                "args": {
+                        "map_func": "normalize_img",
+                        "num_parallel_calls": "autotune"
+                }
+            },
+            {
+                "name": "cache",
+                "args": None
+            }
+        ]
+        pipeline_generator._operations("ds_train", operations)
+        pipeline_generator._close()
+        assert pipeline_file_reader.readlines() == [
+            "self.ds_train = self.ds_train.map(map_func=tf_utils.normalize_img, " +
+            "num_parallel_calls=tf.data.experimental.AUTOTUNE)\n",
+            "self.ds_train = self.ds_train.cache()\n"
+        ]
+
+
 class TestJsonGenerator:
     def test_init(self):
         sys.path.append(os.getcwd())
@@ -828,7 +880,10 @@ class TestPipelineJsonGenerator:
         assert json_generator.root == {
             "pipeline": {
                 "dataset": {},
-                "operations": []
+                "operations": {
+                    "train": [],
+                    "test": []
+                }
             }
         }
 
@@ -837,30 +892,142 @@ class TestPipelineJsonGenerator:
         assert pipeline_json_generator.index["dataset"]["label"] == "test_dataset"
 
     def test_add_operation(self, pipeline_json_generator):
-        pipeline_json_generator.add_operation("op_1")
-        assert pipeline_json_generator.index["operations"] == [
-            {
+        pipeline_json_generator._add_operation("key", "op_1")
+        assert pipeline_json_generator.index["operations"] == {
+            "key": {
                 "name": "op_1",
                 "args": None
-            }
-        ]
+            },
+            "train": [],
+            "test": []
+        }
 
         args = {
             "param": "val"
         }
-        pipeline_json_generator.add_operation("op_2", args)
-        assert pipeline_json_generator.index["operations"] == [
-            {
-                "name": "op_1",
-                "args": None
-            },
-            {
-                "name": "op_2",
-                "args": {
-                    "param": "val"
+        del pipeline_json_generator.index["operations"]["key"]
+        pipeline_json_generator._add_operation("train", "op_2", args)
+        assert pipeline_json_generator.index["operations"] == {
+            "train": [
+                {
+                    "name": "op_2",
+                    "args": {
+                        "param": "val"
+                    }
+                },
+            ],
+            "test": []
+        }
+
+        pipeline_json_generator._add_operation("train", "op_3")
+        assert pipeline_json_generator.index["operations"] == {
+            "train": [
+                {
+                    "name": "op_2",
+                    "args": {
+                        "param": "val"
+                    }
+                },
+                {
+                    "name": "op_3",
+                    "args": None
                 }
-            }
-        ]
+            ],
+            "test": []
+        }
+
+        args = {
+            "param": "val"
+        }
+        pipeline_json_generator._add_operation("test", "op_4", args)
+        assert pipeline_json_generator.index["operations"] == {
+            "train": [
+                {
+                    "name": "op_2",
+                    "args": {
+                        "param": "val"
+                    }
+                },
+                {
+                    "name": "op_3",
+                    "args": None
+                }
+            ],
+            "test": [
+                {
+                    "name": "op_4",
+                    "args": {
+                        "param": "val"
+                    }
+                }
+            ]
+        }
+
+    def test_add_train_operation(self, pipeline_json_generator):
+        pipeline_json_generator.add_train_operation("op_1")
+        assert pipeline_json_generator.index["operations"] == {
+            "train": [
+                {
+                    "name": "op_1",
+                    "args": None
+                }
+            ],
+            "test": []
+        }
+
+        args = {
+            "param": "val"
+        }
+        pipeline_json_generator.add_train_operation("op_2", args)
+        assert pipeline_json_generator.index["operations"] == {
+            "train": [
+                {
+                    "name": "op_1",
+                    "args": None
+                },
+                {
+                    "name": "op_2",
+                    "args": {
+                        "param": "val"
+                    }
+                },
+            ],
+            "test": []
+        }
+
+    def test_add_test_operation(self, pipeline_json_generator):
+        args = {
+            "param": "val"
+        }
+        pipeline_json_generator.add_test_operation("op_1", args)
+        assert pipeline_json_generator.index["operations"] == {
+            "train": [],
+            "test": [
+                {
+                    "name": "op_1",
+                    "args": {
+                        "param": "val"
+                    }
+                }
+            ]
+        }
+
+        pipeline_json_generator.add_test_operation("op_2")
+        assert pipeline_json_generator.index["operations"] == {
+            "train": [],
+            "test": [
+                {
+                    "name": "op_1",
+                    "args": {
+                        "param": "val"
+                    }
+                },
+                {
+                    "name": "op_2",
+                    "args": None
+                }
+            ]
+        }
 
 
 class TestModelJsonGenerator:

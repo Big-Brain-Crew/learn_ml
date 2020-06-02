@@ -1,0 +1,2 @@
+self.ds_train = self.ds_train.map(map_func=tf_utils.normalize_img, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+self.ds_train = self.ds_train.cache()

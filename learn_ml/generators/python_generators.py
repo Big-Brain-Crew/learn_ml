@@ -29,6 +29,8 @@ class PythonGenerator(object):
     Attributes:
         out_file_name (str): Name of the file to write to.
         out: File object used to write to file.
+        name (str): An identifier for the file. Taken from the out name.
+            For example, for out = "./project/models/model.py", name = "model"
         indent_level (int): Keep track of current writing indentation.
         indent_str (str): 4 spaces to represent a single indent.
 
@@ -43,7 +45,7 @@ class PythonGenerator(object):
 
         self.out_file_name = out
         self.out = open(self.out_file_name, "w+")
-
+        self.name = self.out_file_name.split('/')[-1].split('.')[0]
         self.indent_level = 0
         self.indent_str = "    "
 
@@ -332,7 +334,7 @@ class ClassGenerator(PythonGenerator):
             "name": self._map(fn_dict["name"]),
             "args": {} if fn_dict["args"] else None
         }
-        
+
         if fn_dict["args"]:
             # Map function args; recursively if an arg is a function dict
             for _param, _value in fn_dict["args"].items():
@@ -391,9 +393,10 @@ class ClassGenerator(PythonGenerator):
 
         generator_utils._is_valid_arg_dict(arg_dict)
         args = {
-            "self" : None,
+            "self": None,
         }
-        if arg_dict : args.update(arg_dict)
+        if arg_dict:
+            args.update(arg_dict)
 
         self._start_method(name, args, docstring)
 
@@ -413,9 +416,10 @@ class PipelineGenerator(ClassGenerator):
 
     '''
 
-    def __init__(self, pipeline_config="generators/pipeline.json",
+    def __init__(self,
+                 pipeline_config="generators/pipeline.json",
                  map_config="generators/pipeline_map.json",
-                 out="project/pipeline.py"):
+                 out="project/pipelines/pipeline.py"):
 
         super(PipelineGenerator, self).__init__(class_config=pipeline_config,
                                                 map_config=map_config,
@@ -466,14 +470,56 @@ class PipelineGenerator(ClassGenerator):
 
         self._end_method()
 
-    def _operations(self):
-        ''' Generate code for all preprocessing operations.'''
+    def _operations(self, variable, operations):
+        ''' Write operation code for a dataset variable and list of operations.
+
+        An operation is a dict that defines a function to be applied to a variable. This method
+        writes a line of code to apply a generic operation to a generic variable. 
+
+        Args:
+            variable (str): The variable the function/operation is called on.
+            operations (list[dict]): The operations to be individually applied to the variable.
+
+        Example:
+            >>> operations = [
+                {
+                    "name" : "map",
+                    "args" : {
+                        "param" : "value"
+                    }
+                },
+                {
+                    "name" : "cache",
+                    "args" : None
+                }
+            ]
+            >>> _operations("dataset", operations)
+            'self.dataset = self.dataset.map(param=value)'
+            'self.dataset = self.dataset.cache()' 
+
+        '''
+
+        [self._write("self.{variable} = self.{variable}.{op}\n".format(variable=variable,
+                                                                       op=self._fn(_op)))
+            for _op in operations]
+
+    def _preprocess(self):
+        ''' Generate code for all preprocessing operations.
+
+        The training and test datasets may have preprocessing operations applied to them.
+        This function will write each operation in the pipeline JSON as an individual line of code.
+
+        '''
 
         self._start_class_method(name="preprocess",
                                  docstring="Apply data preprocessing operations.\n")
 
-        [self._write("self.ds_train = self.ds_train.{op}\n".format(op=self._fn(_op)))
-         for _op in self.pipeline["operations"]]
+        # Training operations
+        self._operations("ds_train", self.pipeline["operations"]["train"])
+        self._write("\n")
+
+        # Test operations
+        self._operations("ds_test", self.pipeline["operations"]["test"])
 
         self._end_method()
 
@@ -498,7 +544,7 @@ class PipelineGenerator(ClassGenerator):
         self._imports()
         self._class_def()
         self._load_dataset()
-        self._operations()
+        self._preprocess()
         self._helper_funcs()
         self._end_class()
         self._close()
@@ -521,7 +567,7 @@ class ModelGenerator(ClassGenerator):
     def __init__(self,
                  model_config="generators/model.json",
                  map_config="generators/model_variable_map.json",
-                 out="project/model.py"):
+                 out="project/models/model.py"):
 
         super(ModelGenerator, self).__init__(class_config=model_config,
                                              map_config=map_config,
@@ -535,7 +581,8 @@ class ModelGenerator(ClassGenerator):
 
         imports = {
             "tensorflow": "tf",
-            "tf_utils": "tf_utils"
+            "tf_utils": "tf_utils",
+            "json" : "json"
         }
 
         self._write_imports(imports)
@@ -551,11 +598,12 @@ class ModelGenerator(ClassGenerator):
         # Init
         self._start_class_method(name="__init__",
                                  arg_dict={
-                                     "dataset" : None
+                                     "dataset": None,
                                  })
 
         self._write([
-            "self.ds = dataset\n",
+            "self.ds_train = dataset.get_training_dataset()\n",
+            "self.ds_test = dataset.get_test_dataset()\n",
             "self.build()\n",
             "self.compile()\n\n"
         ])
@@ -592,20 +640,28 @@ class ModelGenerator(ClassGenerator):
 
         self._start_class_method(name="train",
                                  docstring="Train the model.\n")
-        self._write("self.model.fit(self.ds,epochs=5)\n\n")
+        self._write("self.model.fit(self.ds_train,epochs=1, validation_data=self.ds_test)\n\n")
 
         self._end_method()
 
     def _helper_funcs(self):
         ''' Generates get/set helper functions.'''
 
+        self._start_class_method(name="evaluate",
+                                 docstring="Evaluate the model accuracy.\n")
+        self._write("self.results_dict = self.model.evaluate(self.ds_test, return_dict=True)\n")
+        self._end_method()
+
         self._start_class_method(name="save",
-                                 arg_dict= {
-                                     "filepath" : "\"./project/model\""
+                                 arg_dict={
+                                     "filepath": "\"./project/results/model\""
                                  },
                                  docstring="Save the model in Tensorflow format.\n")
         self._write("self.model.save(filepath)\n")
+        self._write("json.dump(self.results_dict, open(filepath + \"/results.json\", \"w\"))")
         self._end_method()
+
+
 
     def gen_model(self):
         ''' Generate all code for the Model class.'''

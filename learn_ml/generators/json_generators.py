@@ -61,10 +61,12 @@ class JsonGenerator(object):
         else:
             self.index = self.index[key]
 
-    def _unindent(self):
+    def _unindent(self, key=None):
         ''' Sets the entry point back to the root of the JSON file.'''
-
+        
         self.index = self.root
+        if key:
+            self.index = self.root[key]
 
     def add_entry(self, key, value):
         ''' Adds a key-value entry to the file.
@@ -154,7 +156,11 @@ class PipelineJsonGenerator(JsonGenerator):
         # Add the dataset and operations
         self._indent("pipeline")
         self.add_entry("dataset", {})
-        self.add_entry("operations", [])
+        self.add_entry("operations", {})
+        self._indent("operations")
+        self.add_entry("train", [])
+        self.add_entry("test", [])
+        self._unindent("pipeline")
 
     def add_dataset(self, label):
         ''' Add a dataset source.
@@ -169,7 +175,7 @@ class PipelineJsonGenerator(JsonGenerator):
 
         self.add_entry("dataset", {"label": label})
 
-    def add_operation(self, op_name, args=None):
+    def _add_operation(self, key, op_name, args=None):
         ''' Add a preprocessing operation.
 
         A list of all allowable operations can be found as methods for the tf.data.Dataset class
@@ -201,8 +207,19 @@ class PipelineJsonGenerator(JsonGenerator):
                 ]
 
         '''
+        self._indent("operations")
+        self.add_fn(key, op_name, args)
+        self._unindent("pipeline")
 
-        self.add_fn("operations", op_name, args)
+    def add_train_operation(self, op_name, args=None):
+        ''' Add an operation to the training dataset.'''
+
+        self._add_operation("train", op_name, args)
+
+    def add_test_operation(self, op_name, args=None):
+        ''' Add an operation to the test dataset.'''
+        
+        self._add_operation("test", op_name, args)
 
     def get_dataset_list(self):
         '''Return a list of all possible dataset sources.'''
