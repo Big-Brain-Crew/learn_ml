@@ -175,6 +175,8 @@
 <span class="sd">    Attributes:</span>
 <span class="sd">        out_file_name (str): Name of the file to write to.</span>
 <span class="sd">        out: File object used to write to file.</span>
+<span class="sd">        name (str): An identifier for the file. Taken from the out name.</span>
+<span class="sd">            For example, for out = &quot;./project/models/model.py&quot;, name = &quot;model&quot;</span>
 <span class="sd">        indent_level (int): Keep track of current writing indentation.</span>
 <span class="sd">        indent_str (str): 4 spaces to represent a single indent.</span>
 
@@ -189,7 +191,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">out_file_name</span> <span class="o">=</span> <span class="n">out</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_file_name</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">indent_level</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">indent_str</span> <span class="o">=</span> <span class="s2">&quot;    &quot;</span>
 
@@ -478,7 +480,7 @@
             <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]),</span>
             <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="p">}</span>
-        
+
         <span class="k">if</span> <span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]:</span>
             <span class="c1"># Map function args; recursively if an arg is a function dict</span>
             <span class="k">for</span> <span class="n">_param</span><span class="p">,</span> <span class="n">_value</span> <span class="ow">in</span> <span class="n">fn_dict</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -537,9 +539,10 @@
 
         <span class="n">generator_utils</span><span class="o">.</span><span class="n">_is_valid_arg_dict</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">)</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;self&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;self&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="k">if</span> <span class="n">arg_dict</span> <span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">arg_dict</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_method</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span></div></div>
 
@@ -559,9 +562,10 @@
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline_config</span><span class="o">=</span><span class="s2">&quot;generators/pipeline.json&quot;</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">pipeline_config</span><span class="o">=</span><span class="s2">&quot;generators/pipeline.json&quot;</span><span class="p">,</span>
                  <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;generators/pipeline_map.json&quot;</span><span class="p">,</span>
-                 <span class="n">out</span><span class="o">=</span><span class="s2">&quot;project/pipeline.py&quot;</span><span class="p">):</span>
+                 <span class="n">out</span><span class="o">=</span><span class="s2">&quot;project/pipelines/pipeline.py&quot;</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">PipelineGenerator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="n">pipeline_config</span><span class="p">,</span>
                                                 <span class="n">map_config</span><span class="o">=</span><span class="n">map_config</span><span class="p">,</span>
@@ -612,14 +616,56 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PipelineGenerator._operations"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator._operations">[docs]</a>    <span class="k">def</span> <span class="nf">_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Generate code for all preprocessing operations.&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="PipelineGenerator._operations"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator._operations">[docs]</a>    <span class="k">def</span> <span class="nf">_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">operations</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Write operation code for a dataset variable and list of operations.</span>
+
+<span class="sd">        An operation is a dict that defines a function to be applied to a variable. This method</span>
+<span class="sd">        writes a line of code to apply a generic operation to a generic variable. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            variable (str): The variable the function/operation is called on.</span>
+<span class="sd">            operations (list[dict]): The operations to be individually applied to the variable.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; operations = [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;name&quot; : &quot;map&quot;,</span>
+<span class="sd">                    &quot;args&quot; : {</span>
+<span class="sd">                        &quot;param&quot; : &quot;value&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;name&quot; : &quot;cache&quot;,</span>
+<span class="sd">                    &quot;args&quot; : None</span>
+<span class="sd">                }</span>
+<span class="sd">            ]</span>
+<span class="sd">            &gt;&gt;&gt; _operations(&quot;dataset&quot;, operations)</span>
+<span class="sd">            &#39;self.dataset = self.dataset.map(param=value)&#39;</span>
+<span class="sd">            &#39;self.dataset = self.dataset.cache()&#39; </span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.</span><span class="si">{variable}</span><span class="s2"> = self.</span><span class="si">{variable}</span><span class="s2">.</span><span class="si">{op}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span>
+                                                                       <span class="n">op</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="n">_op</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">_op</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="PipelineGenerator._preprocess"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.PipelineGenerator._preprocess">[docs]</a>    <span class="k">def</span> <span class="nf">_preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Generate code for all preprocessing operations.</span>
+
+<span class="sd">        The training and test datasets may have preprocessing operations applied to them.</span>
+<span class="sd">        This function will write each operation in the pipeline JSON as an individual line of code.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;preprocess&quot;</span><span class="p">,</span>
                                  <span class="n">docstring</span><span class="o">=</span><span class="s2">&quot;Apply data preprocessing operations.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.ds_train = self.ds_train.</span><span class="si">{op}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="n">_op</span><span class="p">)))</span>
-         <span class="k">for</span> <span class="n">_op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">]]</span>
+        <span class="c1"># Training operations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span><span class="p">(</span><span class="s2">&quot;ds_train&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">][</span><span class="s2">&quot;train&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Test operations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span><span class="p">(</span><span class="s2">&quot;ds_test&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">][</span><span class="s2">&quot;test&quot;</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
@@ -644,7 +690,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_imports</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_class_def</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_load_dataset</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_helper_funcs</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_class</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
@@ -667,7 +713,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">model_config</span><span class="o">=</span><span class="s2">&quot;generators/model.json&quot;</span><span class="p">,</span>
                  <span class="n">map_config</span><span class="o">=</span><span class="s2">&quot;generators/model_variable_map.json&quot;</span><span class="p">,</span>
-                 <span class="n">out</span><span class="o">=</span><span class="s2">&quot;project/model.py&quot;</span><span class="p">):</span>
+                 <span class="n">out</span><span class="o">=</span><span class="s2">&quot;project/models/model.py&quot;</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">ModelGenerator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">class_config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span>
                                              <span class="n">map_config</span><span class="o">=</span><span class="n">map_config</span><span class="p">,</span>
@@ -681,7 +727,8 @@
 
         <span class="n">imports</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;tensorflow&quot;</span><span class="p">:</span> <span class="s2">&quot;tf&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;tf_utils&quot;</span><span class="p">:</span> <span class="s2">&quot;tf_utils&quot;</span>
+            <span class="s2">&quot;tf_utils&quot;</span><span class="p">:</span> <span class="s2">&quot;tf_utils&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;json&quot;</span> <span class="p">:</span> <span class="s2">&quot;json&quot;</span>
         <span class="p">}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_imports</span><span class="p">(</span><span class="n">imports</span><span class="p">)</span></div>
@@ -697,11 +744,12 @@
         <span class="c1"># Init</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;__init__&quot;</span><span class="p">,</span>
                                  <span class="n">arg_dict</span><span class="o">=</span><span class="p">{</span>
-                                     <span class="s2">&quot;dataset&quot;</span> <span class="p">:</span> <span class="kc">None</span>
+                                     <span class="s2">&quot;dataset&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                                  <span class="p">})</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">([</span>
-            <span class="s2">&quot;self.ds = dataset</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;self.ds_train = dataset.get_training_dataset()</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;self.ds_test = dataset.get_test_dataset()</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="s2">&quot;self.build()</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="s2">&quot;self.compile()</span><span class="se">\n\n</span><span class="s2">&quot;</span>
         <span class="p">])</span>
@@ -738,20 +786,28 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
                                  <span class="n">docstring</span><span class="o">=</span><span class="s2">&quot;Train the model.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.model.fit(self.ds,epochs=5)</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.model.fit(self.ds_train,epochs=1, validation_data=self.ds_test)</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ModelGenerator._helper_funcs"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ModelGenerator._helper_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">_helper_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generates get/set helper functions.&#39;&#39;&#39;</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;evaluate&quot;</span><span class="p">,</span>
+                                 <span class="n">docstring</span><span class="o">=</span><span class="s2">&quot;Evaluate the model accuracy.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.results_dict = self.model.evaluate(self.ds_test, return_dict=True)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_class_method</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;save&quot;</span><span class="p">,</span>
-                                 <span class="n">arg_dict</span><span class="o">=</span> <span class="p">{</span>
-                                     <span class="s2">&quot;filepath&quot;</span> <span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">./project/model</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+                                 <span class="n">arg_dict</span><span class="o">=</span><span class="p">{</span>
+                                     <span class="s2">&quot;filepath&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">./project/results/model</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
                                  <span class="p">},</span>
                                  <span class="n">docstring</span><span class="o">=</span><span class="s2">&quot;Save the model in Tensorflow format.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;self.model.save(filepath)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s2">&quot;json.dump(self.results_dict, open(filepath + </span><span class="se">\&quot;</span><span class="s2">/results.json</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">w</span><span class="se">\&quot;</span><span class="s2">))&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_method</span><span class="p">()</span></div>
+
+
 
 <div class="viewcode-block" id="ModelGenerator.gen_model"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.python_generators.ModelGenerator.gen_model">[docs]</a>    <span class="k">def</span> <span class="nf">gen_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Generate all code for the Model class.&#39;&#39;&#39;</span>

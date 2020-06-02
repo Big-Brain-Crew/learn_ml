@@ -350,7 +350,7 @@ then it is added with an empty dictionary value.</p>
 
 <dl class="py method">
 <dt id="learn_ml.generators.json_generators.JsonGenerator._unindent">
-<code class="sig-name descname">_unindent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#JsonGenerator._unindent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.JsonGenerator._unindent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_unindent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#JsonGenerator._unindent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.JsonGenerator._unindent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the entry point back to the root of the JSON file.</p>
 </dd></dl>
 
@@ -507,23 +507,8 @@ and the args is a dictionary.</p>
 <dd><p>Bases: <a class="reference internal" href="#learn_ml.generators.json_generators.JsonGenerator" title="learn_ml.generators.json_generators.JsonGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">learn_ml.generators.json_generators.JsonGenerator</span></code></a></p>
 <p>Generates a dataset pipeline configuration file based on user selections.</p>
 <dl class="py method">
-<dt id="learn_ml.generators.json_generators.PipelineJsonGenerator.add_dataset">
-<code class="sig-name descname">add_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#PipelineJsonGenerator.add_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.PipelineJsonGenerator.add_dataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a dataset source.</p>
-<dl class="simple">
-<dt>All available datasets can be found in the Tensorflow Datasets catalog.</dt><dd><p>(<a class="reference external" href="https://www.tensorflow.org/datasets/catalog/overview">https://www.tensorflow.org/datasets/catalog/overview</a>)</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – Dataset identifier. Equivalent to the Tensorflow dataset name.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.generators.json_generators.PipelineJsonGenerator.add_operation">
-<code class="sig-name descname">add_operation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">op_name</span></em>, <em class="sig-param"><span class="n">args</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#PipelineJsonGenerator.add_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.PipelineJsonGenerator.add_operation" title="Permalink to this definition">¶</a></dt>
+<dt id="learn_ml.generators.json_generators.PipelineJsonGenerator._add_operation">
+<code class="sig-name descname">_add_operation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">op_name</span></em>, <em class="sig-param"><span class="n">args</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#PipelineJsonGenerator._add_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.PipelineJsonGenerator._add_operation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a preprocessing operation.</p>
 <dl class="simple">
 <dt>A list of all allowable operations can be found as methods for the tf.data.Dataset class</dt><dd><p>(<a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset">https://www.tensorflow.org/api_docs/python/tf/data/Dataset</a>)</p>
@@ -559,6 +544,33 @@ and their representations.</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.json_generators.PipelineJsonGenerator.add_dataset">
+<code class="sig-name descname">add_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#PipelineJsonGenerator.add_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.PipelineJsonGenerator.add_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a dataset source.</p>
+<dl class="simple">
+<dt>All available datasets can be found in the Tensorflow Datasets catalog.</dt><dd><p>(<a class="reference external" href="https://www.tensorflow.org/datasets/catalog/overview">https://www.tensorflow.org/datasets/catalog/overview</a>)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – Dataset identifier. Equivalent to the Tensorflow dataset name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.json_generators.PipelineJsonGenerator.add_test_operation">
+<code class="sig-name descname">add_test_operation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">op_name</span></em>, <em class="sig-param"><span class="n">args</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#PipelineJsonGenerator.add_test_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.PipelineJsonGenerator.add_test_operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an operation to the test dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.json_generators.PipelineJsonGenerator.add_train_operation">
+<code class="sig-name descname">add_train_operation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">op_name</span></em>, <em class="sig-param"><span class="n">args</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/json_generators.html#PipelineJsonGenerator.add_train_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.json_generators.PipelineJsonGenerator.add_train_operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an operation to the training dataset.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -864,7 +876,7 @@ import numpy as np</p>
 
 <dl class="py class">
 <dt id="learn_ml.generators.python_generators.ModelGenerator">
-<em class="property">class </em><code class="sig-prename descclassname">learn_ml.generators.python_generators.</code><code class="sig-name descname">ModelGenerator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_config</span><span class="o">=</span><span class="default_value">'generators/model.json'</span></em>, <em class="sig-param"><span class="n">map_config</span><span class="o">=</span><span class="default_value">'generators/model_variable_map.json'</span></em>, <em class="sig-param"><span class="n">out</span><span class="o">=</span><span class="default_value">'project/model.py'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ModelGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ModelGenerator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">learn_ml.generators.python_generators.</code><code class="sig-name descname">ModelGenerator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_config</span><span class="o">=</span><span class="default_value">'generators/model.json'</span></em>, <em class="sig-param"><span class="n">map_config</span><span class="o">=</span><span class="default_value">'generators/model_variable_map.json'</span></em>, <em class="sig-param"><span class="n">out</span><span class="o">=</span><span class="default_value">'project/models/model.py'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#ModelGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.ModelGenerator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#learn_ml.generators.python_generators.ClassGenerator" title="learn_ml.generators.python_generators.ClassGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">learn_ml.generators.python_generators.ClassGenerator</span></code></a></p>
 <p>Generates a machine learning model based off a JSON config file.</p>
 <p>Use gen_model() to create the model. The model is stored as Model class with its layers
@@ -937,7 +949,7 @@ and compilations features as its internal state.</p>
 
 <dl class="py class">
 <dt id="learn_ml.generators.python_generators.PipelineGenerator">
-<em class="property">class </em><code class="sig-prename descclassname">learn_ml.generators.python_generators.</code><code class="sig-name descname">PipelineGenerator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pipeline_config</span><span class="o">=</span><span class="default_value">'generators/pipeline.json'</span></em>, <em class="sig-param"><span class="n">map_config</span><span class="o">=</span><span class="default_value">'generators/pipeline_map.json'</span></em>, <em class="sig-param"><span class="n">out</span><span class="o">=</span><span class="default_value">'project/pipeline.py'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">learn_ml.generators.python_generators.</code><code class="sig-name descname">PipelineGenerator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pipeline_config</span><span class="o">=</span><span class="default_value">'generators/pipeline.json'</span></em>, <em class="sig-param"><span class="n">map_config</span><span class="o">=</span><span class="default_value">'generators/pipeline_map.json'</span></em>, <em class="sig-param"><span class="n">out</span><span class="o">=</span><span class="default_value">'project/pipelines/pipeline.py'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#learn_ml.generators.python_generators.ClassGenerator" title="learn_ml.generators.python_generators.ClassGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">learn_ml.generators.python_generators.ClassGenerator</span></code></a></p>
 <p>Generates a dataset preprocessing pipeline based off a JSON config file.</p>
 <p>Most of the class methods are internal and do not need to be modified. All changes should be
@@ -992,8 +1004,44 @@ its internal state.</p>
 
 <dl class="py method">
 <dt id="learn_ml.generators.python_generators.PipelineGenerator._operations">
-<code class="sig-name descname">_operations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator._operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator._operations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_operations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variable</span></em>, <em class="sig-param"><span class="n">operations</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator._operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator._operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write operation code for a dataset variable and list of operations.</p>
+<p>An operation is a dict that defines a function to be applied to a variable. This method
+writes a line of code to apply a generic operation to a generic variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variable</strong> (<em>str</em>) – The variable the function/operation is called on.</p></li>
+<li><p><strong>operations</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – The operations to be individually applied to the variable.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;name&quot; : &quot;map&quot;,</span>
+<span class="go">        &quot;args&quot; : {</span>
+<span class="go">            &quot;param&quot; : &quot;value&quot;</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;name&quot; : &quot;cache&quot;,</span>
+<span class="go">        &quot;args&quot; : None</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_operations</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="n">operations</span><span class="p">)</span>
+<span class="go">&#39;self.dataset = self.dataset.map(param=value)&#39;</span>
+<span class="go">&#39;self.dataset = self.dataset.cache()&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="learn_ml.generators.python_generators.PipelineGenerator._preprocess">
+<code class="sig-name descname">_preprocess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/generators/python_generators.html#PipelineGenerator._preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.generators.python_generators.PipelineGenerator._preprocess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate code for all preprocessing operations.</p>
+<p>The training and test datasets may have preprocessing operations applied to them.
+This function will write each operation in the pipeline JSON as an individual line of code.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1026,6 +1074,18 @@ keep track of indent levels.</p>
 <dt id="learn_ml.generators.python_generators.PythonGenerator.out">
 <code class="sig-name descname">out</code><a class="headerlink" href="#learn_ml.generators.python_generators.PythonGenerator.out" title="Permalink to this definition">¶</a></dt>
 <dd><p>File object used to write to file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="learn_ml.generators.python_generators.PythonGenerator.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#learn_ml.generators.python_generators.PythonGenerator.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>An identifier for the file. Taken from the out name.
+For example, for out = “./project/models/model.py”, name = “model”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">

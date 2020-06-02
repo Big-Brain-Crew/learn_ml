@@ -207,10 +207,12 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="JsonGenerator._unindent"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.json_generators.JsonGenerator._unindent">[docs]</a>    <span class="k">def</span> <span class="nf">_unindent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonGenerator._unindent"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.json_generators.JsonGenerator._unindent">[docs]</a>    <span class="k">def</span> <span class="nf">_unindent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Sets the entry point back to the root of the JSON file.&#39;&#39;&#39;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span></div>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+        <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="JsonGenerator.add_entry"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.json_generators.JsonGenerator.add_entry">[docs]</a>    <span class="k">def</span> <span class="nf">add_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Adds a key-value entry to the file.</span>
@@ -300,7 +302,11 @@
         <span class="c1"># Add the dataset and operations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unindent</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PipelineJsonGenerator.add_dataset"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.json_generators.PipelineJsonGenerator.add_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">add_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Add a dataset source.</span>
@@ -315,7 +321,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">label</span><span class="p">})</span></div>
 
-<div class="viewcode-block" id="PipelineJsonGenerator.add_operation"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.json_generators.PipelineJsonGenerator.add_operation">[docs]</a>    <span class="k">def</span> <span class="nf">add_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PipelineJsonGenerator._add_operation"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.json_generators.PipelineJsonGenerator._add_operation">[docs]</a>    <span class="k">def</span> <span class="nf">_add_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Add a preprocessing operation.</span>
 
 <span class="sd">        A list of all allowable operations can be found as methods for the tf.data.Dataset class</span>
@@ -347,8 +353,19 @@
 <span class="sd">                ]</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span><span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_fn</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unindent</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span></div>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_fn</span><span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+<div class="viewcode-block" id="PipelineJsonGenerator.add_train_operation"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.json_generators.PipelineJsonGenerator.add_train_operation">[docs]</a>    <span class="k">def</span> <span class="nf">add_train_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Add an operation to the training dataset.&#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_operation</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PipelineJsonGenerator.add_test_operation"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.json_generators.PipelineJsonGenerator.add_test_operation">[docs]</a>    <span class="k">def</span> <span class="nf">add_test_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Add an operation to the test dataset.&#39;&#39;&#39;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_operation</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PipelineJsonGenerator.get_dataset_list"><a class="viewcode-back" href="../../../learn_ml.generators.html#learn_ml.generators.json_generators.PipelineJsonGenerator.get_dataset_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Return a list of all possible dataset sources.&#39;&#39;&#39;</span>
