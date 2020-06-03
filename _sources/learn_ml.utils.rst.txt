@@ -1,0 +1,22 @@
+learn\_ml.utils package
+=======================
+
+Submodules
+----------
+
+learn\_ml.utils.log\_configurator module
+----------------------------------------
+
+.. automodule:: learn_ml.utils.log_configurator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: learn_ml.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
