@@ -10,6 +10,8 @@ from ui.widgets.DeployMenu import DeployMenu
 from deploy import deploy
 from deploy import convert_to_edgetpu
 
+from utils.log_configurator import LogConfigurator
+
 
 EDITOR_TARGET_FPS = 60
 
@@ -22,6 +24,13 @@ class LearnML(QMainWindow):
     '''
     def __init__(self, parent=None):
         super(LearnML, self).__init__(parent=parent)
+
+        # Configure the LogConfigurator and instantiate logger for this module
+        self.logConfig = LogConfigurator()
+        self.logger = self.logConfig.get_logger(__name__)
+
+        self.logger.info("Starting application")
+
         # Use a strong focus policy
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
 
@@ -78,6 +87,7 @@ class LearnML(QMainWindow):
         The title will be Learn ML - {Current Project Name}.If the project has been modified,
         there will be an asterisk following the project name.
         '''
+
         label = "Untitled"
         if self.current_file_name is not None:
             if os.path.isdir(self.current_file_name):
