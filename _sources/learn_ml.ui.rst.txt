@@ -13,10 +13,10 @@ Subpackages
 Submodules
 ----------
 
-learn\_ml.ui.App module
------------------------
+learn\_ml.ui.NavigationButton module
+------------------------------------
 
-.. automodule:: learn_ml.ui.App
+.. automodule:: learn_ml.ui.NavigationButton
    :members:
    :undoc-members:
    :show-inheritance:

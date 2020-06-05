@@ -189,76 +189,25 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-learn_ml.ui.App">
-<span id="learn-ml-ui-app-module"></span><h2>learn_ml.ui.App module<a class="headerlink" href="#module-learn_ml.ui.App" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-learn_ml.ui.NavigationButton">
+<span id="learn-ml-ui-navigationbutton-module"></span><h2>learn_ml.ui.NavigationButton module<a class="headerlink" href="#module-learn_ml.ui.NavigationButton" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="learn_ml.ui.App.LearnML">
-<em class="property">class </em><code class="sig-prename descclassname">learn_ml.ui.App.</code><code class="sig-name descname">LearnML</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/App.html#LearnML"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.App.LearnML" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PySide2.QtWidgets.QMainWindow</span></code></p>
-<p>Defines UI element of the Learn ML project.</p>
-<p>This class extends the QMainWindow class and serves as the entry point for the application.
-It will contain all of the main UI elements used to interact with our application.</p>
+<dt id="learn_ml.ui.NavigationButton.NavigationButton">
+<em class="property">class </em><code class="sig-prename descclassname">learn_ml.ui.NavigationButton.</code><code class="sig-name descname">NavigationButton</code><a class="reference internal" href="_modules/learn_ml/ui/NavigationButton.html#NavigationButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.NavigationButton.NavigationButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PySide2.QtCore.QObject</span></code></p>
 <dl class="py method">
-<dt id="learn_ml.ui.App.LearnML.deploy">
-<code class="sig-name descname">deploy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/App.html#LearnML.deploy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.App.LearnML.deploy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deploys the loaded model to the coral board.</p>
-<p>Currently, deploy can only deploy the compiled model and does not handle converting the model
-to a tflite edgetpu model. This functionality will be added once USB serial communication with
-the coral board is achieved.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.ui.App.LearnML.instance">
-<em class="property">static </em><code class="sig-name descname">instance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/App.html#LearnML.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.App.LearnML.instance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new instance of the LearnML Main Window.</p>
-<p>This will configure the LearnML window and return the object</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>parent</strong> – [Optional] The parent window, if this instance is a child of another window</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A configured instance of the LearnML window</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#learn_ml.ui.App.LearnML" title="learn_ml.ui.App.LearnML">LearnML</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.ui.App.LearnML.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/App.html#LearnML.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.App.LearnML.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Opens the file dialog window to allow the user to load a project.</p>
-<p>This is currently configured to select a project directory. There are no checks performed
-to ensure that the project directory is valid.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.ui.App.LearnML.load_from_file">
-<code class="sig-name descname">load_from_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">project_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/App.html#LearnML.load_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.App.LearnML.load_from_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Contains operations to execute when a project is loaded</p>
-<p>Currently, the only operation performed is updating the current_file_name property.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.ui.App.LearnML.populateMenu">
-<code class="sig-name descname">populateMenu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/App.html#LearnML.populateMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.App.LearnML.populateMenu" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds all of the options to the menu bar.</p>
-<p>Currently, the only available options are the File option, which contains
-options to create a new project or open an existing project.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="learn_ml.ui.App.LearnML.set_title">
-<code class="sig-name descname">set_title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/App.html#LearnML.set_title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.App.LearnML.set_title" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the title of the application.</p>
-<p>The title will be Learn ML - {Current Project Name}.If the project has been modified,
-there will be an asterisk following the project name.</p>
-</dd></dl>
+<dt id="learn_ml.ui.NavigationButton.NavigationButton.buttonPressed">
+<code class="sig-name descname">buttonPressed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">button_text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/learn_ml/ui/NavigationButton.html#NavigationButton.buttonPressed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_ml.ui.NavigationButton.NavigationButton.buttonPressed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="learn_ml.ui.App.LearnML.staticMetaObject">
-<code class="sig-name descname">staticMetaObject</code><em class="property"> = &lt;PySide2.QtCore.QMetaObject object&gt;</em><a class="headerlink" href="#learn_ml.ui.App.LearnML.staticMetaObject" title="Permalink to this definition">¶</a></dt>
+<dt id="learn_ml.ui.NavigationButton.NavigationButton.nextNumber">
+<code class="sig-name descname">nextNumber</code><em class="property"> = &lt;PySide2.QtCore.Signal object&gt;</em><a class="headerlink" href="#learn_ml.ui.NavigationButton.NavigationButton.nextNumber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="learn_ml.ui.NavigationButton.NavigationButton.staticMetaObject">
+<code class="sig-name descname">staticMetaObject</code><em class="property"> = &lt;PySide2.QtCore.QMetaObject object&gt;</em><a class="headerlink" href="#learn_ml.ui.NavigationButton.NavigationButton.staticMetaObject" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
