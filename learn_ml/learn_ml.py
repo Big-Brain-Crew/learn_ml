@@ -5,10 +5,14 @@ This will launch the learn_ml application to a new project.
 
 import sys
 from utils.log_configurator import LogConfigurator
-from ui.App import LearnML
 from Qt.QtWidgets import QApplication
 import argparse
 
+from PySide2.QtGui import QGuiApplication
+from PySide2.QtQml import QQmlApplicationEngine
+from PySide2.QtCore import QUrl
+
+from ui.NavigationButton import NavigationButton
 
 
 
@@ -16,18 +20,18 @@ def main(verbosity, log_to_file):
     # Configure the LogConfigurator and instantiate logger for this module
     logConfig = LogConfigurator(verbosity = "DEBUG", output_to_logfile = log_to_file)
 
-    app = QApplication(sys.argv)
+    app = QGuiApplication(sys.argv)
+    engine = QQmlApplicationEngine()
 
-    instance = LearnML.instance()
-    if instance is not None:
-        app.setActiveWindow(instance)
-        instance.show()
+    nav_buttons = NavigationButton()
+    engine.rootContext().setContextProperty("nav_buttons", nav_buttons)
 
-        try:
-            sys.exit(app.exec_())
-        except Exception as e:
-            print(e)
+    engine.load(QUrl("learn_ml/ui/app.qml"))
 
+    if not engine.rootObjects():
+        sys.exit(-1)
+
+    sys.exit(app.exec_())
 
 if __name__ == '__main__':
     # Parse arguments
