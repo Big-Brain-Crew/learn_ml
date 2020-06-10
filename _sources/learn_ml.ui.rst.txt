@@ -10,18 +10,6 @@ Subpackages
    learn_ml.ui.utils
    learn_ml.ui.widgets
 
-Submodules
-----------
-
-learn\_ml.ui.NavigationButton module
-------------------------------------
-
-.. automodule:: learn_ml.ui.NavigationButton
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
 Module contents
 ---------------
 
