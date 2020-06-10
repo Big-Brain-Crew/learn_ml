@@ -1,24 +1,31 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
+import QtQuick.Layouts 1.15
+import "components"
 
 Window {
+    id: root
     width: 1920
     height: 1080
     visible: true
-    title: "Hello Python World!"
+    title: "Learn ML!"
 
-    Rectangle {
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
+    RowLayout {
+
+        NodeBar {
+            id: nodeBar
+        }
 
         CircleNavigationBar {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
+            x: 1920 / 2
+            y: -400
             id: circleNavigationBar
-            x: 179
-            y: 156
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.33000001311302185}
+}
+##^##*/

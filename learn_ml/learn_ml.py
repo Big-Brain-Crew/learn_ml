@@ -9,28 +9,34 @@ from Qt.QtWidgets import QApplication
 import argparse
 
 from PySide2.QtGui import QGuiApplication
-from PySide2.QtQml import QQmlApplicationEngine
+from PySide2.QtQml import QQmlApplicationEngine, qmlRegisterType
 from PySide2.QtCore import QUrl
 
-from ui.NavigationButton import NavigationButton
-
+from ui.python_classes.NavigationButton import NavigationButton
+from ui.python_classes.SearchPanel import SearchPanel
 
 
 def main(verbosity, log_to_file):
     # Configure the LogConfigurator and instantiate logger for this module
     logConfig = LogConfigurator(verbosity = "DEBUG", output_to_logfile = log_to_file)
 
+    # Create the QML Application and Engine
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
+    # Instantiate custom python classes and add them to QML engine
     nav_buttons = NavigationButton()
-    engine.rootContext().setContextProperty("nav_buttons", nav_buttons)
+    search_panels = SearchPanel()
+    engine.rootContext().setContextProperty("nav_buttons", nav_buttons)    
+    qmlRegisterType(SearchPanel, "Search", 1, 0, "SearchPanel")
 
+    # Load the main QML file
     engine.load(QUrl("learn_ml/ui/app.qml"))
 
     if not engine.rootObjects():
         sys.exit(-1)
 
+    # Begin execution
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
