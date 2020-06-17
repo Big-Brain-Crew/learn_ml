@@ -1,0 +1,40 @@
+{
+    "layer_options": {
+        "AbstractRNNCell": [
+            {
+                "name": "trainable",
+                "type": "bool",
+                "default": "true",
+                "required": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "default": "None",
+                "required": false
+            }
+        ],
+        "Dense": [
+            {
+                "name": "units",
+                "type": "int",
+                "default": null,
+                "required": true
+            },
+            {
+                "name": "activation",
+                "type": "string",
+                "default": "None",
+                "required": false
+            }
+        ],
+        "Flatten": [
+            {
+                "name": "input_shape",
+                "type": "List[int]",
+                "default": null,
+                "required": false
+            }
+        ]
+    }
+}

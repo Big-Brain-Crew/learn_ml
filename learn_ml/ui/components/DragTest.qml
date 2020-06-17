@@ -21,8 +21,8 @@ Item {
         color: "red"
 
         Drag.active: dragArea.drag.active
-        Drag.hotSpot.x: 10
-        Drag.hotSpot.y: 10
+//        Drag.hotSpot.x: 10
+//        Drag.hotSpot.y: 10
 
         MouseArea {
             id: dragArea

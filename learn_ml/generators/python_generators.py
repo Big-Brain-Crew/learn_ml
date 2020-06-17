@@ -434,7 +434,7 @@ class PipelineGenerator(ClassGenerator):
         imports = {
             "tensorflow": "tf",
             "tensorflow_datasets": "tfds",
-            "tf_utils": "tf_utils"
+            "project.tf_utils": "tf_utils"
         }
         self._write_imports(imports)
 
@@ -581,7 +581,7 @@ class ModelGenerator(ClassGenerator):
 
         imports = {
             "tensorflow": "tf",
-            "tf_utils": "tf_utils",
+            "project.tf_utils": "tf_utils",
             "json" : "json"
         }
 

@@ -1,7 +1,7 @@
 import random
 
 from PySide2.QtCore import QObject, Signal, Slot
-from utils.log_configurator import LogConfigurator
+from learn_ml.utils.log_configurator import LogConfigurator
 
 
 class NavigationButton(QObject):

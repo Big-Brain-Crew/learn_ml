@@ -92,14 +92,14 @@ def create_model_json():
 def create_pipeline():
     pipe_gen = python_generators.PipelineGenerator(pipeline_config="project/pipeline.json",
                                                    map_config="learn_ml/generators/pipeline_map.json",
-                                                   name="pipeline_1")
+                                                   out="./project/pipelines/pipeline_1.py")
     pipe_gen.gen_pipeline()
 
 
 def create_model():
     pipe_gen = python_generators.ModelGenerator(model_config="project/model.json",
                                                 map_config="learn_ml/generators/model_map.json",
-                                                name="model_1")
+                                                out="./project/models/model_1.py")
     pipe_gen.gen_model()
 
 

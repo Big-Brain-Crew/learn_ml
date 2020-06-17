@@ -6,24 +6,22 @@ import QtQuick.Layouts 1.11
 // Python classes
 import Search 1.0
 
-Rectangle {
-    id: root
-    width: 480
-    height: 1080
-    color: "#102027"
-    border.color: "#102027"
-    anchors.horizontalCenter: parent.horizontalCenter
-    anchors.verticalCenter: parent.verticalCenter
-    state: "initialState"
+FocusScope {
+    id: root 
+    width: mainRect.width
+    height: mainRect.height
+    property alias color: mainRect.color
+    // focus: true
 
-    signal nodeClicked
+    signal nodeClicked(string name)
 
-    FocusScope {
-        id: mainView
-
-        width: parent.width
-        height: parent.height
-        focus: true
+    Rectangle {
+        id: mainRect
+        width: 480
+        height: 1080
+        color: "#102027"
+        border.color: "#102027"
+        state: "initialState"
 
         // Title display
         Text {
@@ -58,7 +56,7 @@ Rectangle {
 
             onPressed: {
                 searchPanel.search(searchField.text)
-                mainView.state = "searchState"
+                mainRect.state = "searchState"
             }
             Keys.onTabPressed: { 
             searchResults.focus = true
@@ -99,8 +97,8 @@ Rectangle {
             delegate: ResultsButton {
                 id: resultsButton
                 text: result
-                onDoubleClicked: { root.nodeClicked() }
-                Keys.onReturnPressed: { root.nodeClicked() }
+                onDoubleClicked: { root.nodeClicked(text) }
+                Keys.onReturnPressed: { root.nodeClicked(text) }
             }
 
             Keys.onTabPressed: { incrementCurrentIndex() }
@@ -125,8 +123,8 @@ Rectangle {
         
         /* Root connections */
         Connections {
-            target: mainView
-            function onReResultsChanged() { mainView.updateSearchResults() }
+            target: mainRect
+            function onReResultsChanged() { mainRect.updateSearchResults() }
         }
 
         /* states */

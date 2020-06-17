@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
 import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.0
 import "components"
 
 Window {
@@ -10,18 +11,38 @@ Window {
     visible: true
     title: "Learn ML!"
 
-    RowLayout {
+    // Item {
+    //     anchors.centerIn: parent
+    //     width: 640
+    //     height: 480
 
-        NodeBar {
-            id: nodeBar
-        }
+    //     Node {
+    //         anchors.centerIn: parent
+    //     }
+    // }
+    
 
-        CircleNavigationBar {
-            x: 1920 / 2
-            y: -400
-            id: circleNavigationBar
-        }
+    NodeCanvas {
+        anchors.centerIn: parent
     }
+
+    //  NodeManager {
+    //         id: nodeManager
+    //         anchors.fill: parent
+    //     }
+
+    // RowLayout {
+
+    //     // NodeBar {
+    //     //     id: nodeBar
+    //     // }
+
+    //     // CircleNavigationBar {
+    //     //     x: 1920 / 2
+    //     //     y: -400
+    //     //     id: circleNavigationBar
+    //     // }
+    // }
 }
 
 /*##^##
