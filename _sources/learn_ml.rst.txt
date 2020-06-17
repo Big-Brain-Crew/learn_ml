@@ -12,18 +12,6 @@ Subpackages
    learn_ml.ui
    learn_ml.utils
 
-Submodules
-----------
-
-learn\_ml.learn\_ml module
---------------------------
-
-.. automodule:: learn_ml.learn_ml
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
 Module contents
 ---------------
 
