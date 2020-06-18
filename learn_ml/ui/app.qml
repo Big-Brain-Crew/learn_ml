@@ -1,49 +1,46 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
 import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.15
 import "components"
 
 Window {
     id: root
+    visible: true
     width: 1920
     height: 1080
-    visible: true
+    minimumWidth: 1000
+    minimumHeight: 800
     title: "Learn ML!"
 
-    // Item {
-    //     anchors.centerIn: parent
-    //     width: 640
-    //     height: 480
+    // Main application top container page
+    Page {
+        id: page
+        anchors.fill:parent
+        title: "Main"
 
-    //     Node {
-    //         anchors.centerIn: parent
-    //     }
-    // }
-    
+        // create a page loader to handle switching ui panels
+        Loader {
+            id: pageLoader
+            source: {
+                // load new page when slider get big
+                (slider.value < 1) ? '' : 'components/WelcomePage.qml'
+            }
 
-    NodeCanvas {
-        anchors.centerIn: parent
+            anchors.fill: parent
+
+            // dinky funny slider demo to show the switching of pages
+                Slider {
+                    id: slider
+                    x: 860
+                    y: 76
+                    value: 0
+                }
+            }
     }
 
-    //  NodeManager {
-    //         id: nodeManager
-    //         anchors.fill: parent
-    //     }
 
-    // RowLayout {
-
-    //     // NodeBar {
-    //     //     id: nodeBar
-    //     // }
-
-    //     // CircleNavigationBar {
-    //     //     x: 1920 / 2
-    //     //     y: -400
-    //     //     id: circleNavigationBar
-    //     // }
-    // }
-}
+ }
 
 /*##^##
 Designer {
