@@ -13,34 +13,22 @@ Window {
     minimumHeight: 800
     title: "Learn ML!"
 
-    // Main application top container page
-    Page {
-        id: page
-        anchors.fill:parent
-        title: "Main"
+    // Top level loader
+   Loader{
+       id: topLoader
+       anchors.fill:parent
+       source: "components/pages/WelcomePage.qml"
 
-        // create a page loader to handle switching ui panels
-        Loader {
-            id: pageLoader
-            source: {
-                // load new page when slider get big
-                (slider.value < 1) ? '' : 'components/WelcomePage.qml'
-            }
+       Connections{
+           target: topLoader.item
+           function onOpenProject(sourceFile){
+               topLoader.source = sourceFile
 
-            anchors.fill: parent
+           }
+       }
+   }
+}
 
-            // dinky funny slider demo to show the switching of pages
-                Slider {
-                    id: slider
-                    x: 860
-                    y: 76
-                    value: 0
-                }
-            }
-    }
-
-
- }
 
 /*##^##
 Designer {
