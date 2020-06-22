@@ -54,11 +54,10 @@ class NodeManager(QObject):
     def update_params(self, nodes):
         nodes = nodes.toVariant()
         for i in range(len(nodes)):
-            name = nodes[i].property("text")
+            name = nodes[i].property("name")
             parameters = nodes[i].property("parameters").toVariant()
-
             parameters = self.__convert_params(parameters)
-
+            print(parameters)
             self.layers[i]["args"] = parameters
 
     # Convert parameters from front-end to back-end format

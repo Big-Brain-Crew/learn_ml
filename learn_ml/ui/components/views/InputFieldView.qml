@@ -1,29 +1,36 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.15
-
 
 FocusScope {
     id: scope 
+    width: root.width; height: root.height
 
-    property alias color: background.color
+    property alias color: root.color
     property alias text: textInput.text
-    width: background.width; height: background.height
-
-    signal pressed 
+    property alias inputFieldModel: root.inputFieldModel
 
     Rectangle {
-        id: background
+        id: root
         width: 300
         height: 40
         color: "#ffffff"
         radius: 20
 
+        /// Public Interface ///
+        
+        /* Define with object creation */
+        required property var inputFieldModel
+
+        /// End Public Interface
+
+        /* Properties */
+        readonly property var dispatcher: inputFieldModel.dispatcher
+
         TextInput {
             id: textInput
             x: 27
             y: 12
-            width: background.width - 40
-            height: background.height - 20
+            width: root.width - 40
+            height: root.height - 20
             text: qsTr("Search layer")
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
@@ -32,7 +39,7 @@ FocusScope {
             font.pixelSize: 12
             focus: true
             Keys.onPressed: {
-                scope.pressed()
+                root.dispatcher.input(textInput.text)
             }
         }
     }

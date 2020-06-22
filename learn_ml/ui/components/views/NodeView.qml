@@ -5,12 +5,9 @@ FocusScope {
     id: scope 
     width: root.width
     height: root.height 
-    x: root.x
-    y: root.y
-    focus: true
 
-    property alias text: root.text
-    property alias parameters: root.parameters
+    property alias name: nodeText.text
+    property alias nodeModel: root.nodeModel
 
     Rectangle {
         id: root
@@ -19,15 +16,20 @@ FocusScope {
         height: 75
         state: "initialState"
 
-        property alias text: nodeText.text
-        property var parameters: [
-            {
-                "name" : "param1",
-                "type" : "string",
-                "default" : "None",
-                "required" : true
-            }
-        ]
+        /// Public Interface ///
+
+        /* Define with object creation */
+
+        // Connect to NodeModel
+        required property var nodeModel
+
+        /// End Public Interface ///
+
+        readonly property var dispatcher: nodeModel.dispatcher
+
+        Component.onCompleted: {
+            parametersListView.model = root.nodeModel.parametersListModel
+        }
 
         property int parameterHeight: 40
         property int parameterWidth: 150
@@ -35,13 +37,11 @@ FocusScope {
         property int rightPadding: 20
         property int bottomPadding: 20
 
-        onParametersChanged: updateParameters()
-
         Drag.active: dragArea.drag.active
 
         Text {
             id: nodeText
-            text: qsTr("Layer 1")
+            text: nodeModel.name
             anchors.top: parent.top
             anchors.topMargin: 15
             anchors.horizontalCenter: parent.horizontalCenter
@@ -73,9 +73,14 @@ FocusScope {
                 }
             }
         }
-
-        ListModel {
-            id: parametersListModel
+    
+        MouseArea {
+            id: dragArea
+            anchors.fill: parent
+            drag.target: parent
+            onClicked: {
+                scope.focus = true
+            }
         }
 
         Component {
@@ -97,7 +102,6 @@ FocusScope {
 
                     Text {
                         id: parameterText
-                        text: parameterName
                         width: parent.width / 2
                         height: parent.height
                         anchors.left: parent.left
@@ -106,6 +110,10 @@ FocusScope {
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: 12
                         color: "#ffffff"
+
+                        // From Model
+                        text: parameterName
+
                     }
 
                     TextInput {
@@ -117,12 +125,15 @@ FocusScope {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: 12
-                        text: parameterValue
                         color: "#ffffff"
                         focus: true
 
+                        // From Model
+                        text: parameterValue
+
                         Keys.onReturnPressed: {
-                            root.updateParameterValues(parameterText.text, text)
+                            root.dispatcher.updateNodeParameterValue(
+                                root.nodeModel.identifier, parameterText.text, text)
                         }
                     }
                 }
@@ -141,20 +152,10 @@ FocusScope {
             focus: true
             keyNavigationWraps: true
 
-            model: parametersListModel
             delegate: parametersDelegate
 
             Keys.onTabPressed: { incrementCurrentIndex() }
             Keys.onBacktabPressed: { decrementCurrentIndex() }
-        }
-
-        MouseArea {
-            id: dragArea
-            anchors.fill: parent
-            drag.target: parent
-            onClicked: {
-                scope.focus = true
-            }
         }
 
         states: [
@@ -177,31 +178,6 @@ FocusScope {
             }
 
         ]
-
-        /* Functions */
-        // Update search results after new search is entered
-        function updateParameters() {
-            parametersListModel.clear()
-            for (var i = 0; i < root.parameters.length; i++){
-                parametersListModel.append({
-                                    "parameterName" : root.parameters[i]["name"],
-                                    "parameterValue" : root.parameters[i]["default"] === undefined ? "" : root.parameters[i]["default"]
-                                }
-                )
-            }
-        }
-
-        function updateParameterValues(name, value) {
-            console.log("Updating " + name)
-            for (var i = 0; i < parameters.length; i++){
-                if (parameters[i]["name"] === name){
-                    parameters[i]["value"] = value
-                }
-            }
-
-//            parameters[name] = value
-//            console.log(parameters[name])
-        }
     }
 }
 

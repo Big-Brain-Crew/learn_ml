@@ -27,7 +27,7 @@ def main(verbosity, log_to_file):
     # Instantiate custom python classes and add them to QML engine
     nav_buttons = NavigationButton()
     search_panels = SearchPanel()
-    engine.rootContext().setContextProperty("nav_buttons", nav_buttons)    
+    qmlRegisterType(NavigationButton, "NavigationButton", 1, 0, "NavigationButton") 
     qmlRegisterType(SearchPanel, "Search", 1, 0, "SearchPanel")
     qmlRegisterType(NodeManager, "Node", 1, 0, "NodeManager")
 

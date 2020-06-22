@@ -18,5 +18,5 @@ class NavigationButton(QObject):
     nextNumber = Signal(int)
 
     @Slot(str)
-    def buttonPressed(self, button_text):
+    def button_pressed(self, button_text):
         self.logger.info("\"{}\" was pressed!!!!!!!!".format(button_text))

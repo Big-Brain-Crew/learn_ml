@@ -1,8 +1,12 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Window 2.0
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import "components"
+import "components/pages"
+import "components/views"
+import "components/logics"
+import "components/models"
 
 Window {
     id: root
