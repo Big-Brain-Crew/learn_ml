@@ -1,0 +1,2 @@
+# SPI Communication Protocol
+This document describes the protocol that the microcontroller and Coral expect to communicate data over SPI.

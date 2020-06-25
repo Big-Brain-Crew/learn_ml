@@ -12,6 +12,8 @@ Welcome to learn-ml's documentation!
 
    modules
 
+   spicommprotocol
+
 
 
 Indices and tables
