@@ -84,7 +84,25 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="modules.html">learn_ml</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">SPI Communication Protocol</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SPI Communication Protocol</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#spi-settings">SPI Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#arduino-wiring">Arduino Wiring</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#message-format">Message Format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#header">Header</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#body">Body</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#initialization-sequence">Initialization sequence</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#coral">Coral</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#microcontroller">Microcontroller</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#heartbeat">Heartbeat</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -152,7 +170,81 @@
             
   <div class="section" id="spi-communication-protocol">
 <h1>SPI Communication Protocol<a class="headerlink" href="#spi-communication-protocol" title="Permalink to this headline">¶</a></h1>
-<p>This document describes the protocol that the microcontroller and Coral expect to communicate data over SPI.</p>
+<p>This document describes the protocol that the microcontroller and Coral expect to communicate data over SPI. Currently, the devices are configured such that the Coral is the master and the microcontroller is the slave.</p>
+<div class="section" id="spi-settings">
+<h2>SPI Settings<a class="headerlink" href="#spi-settings" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Max Speed: 10 kHz</p></li>
+<li><p>Bits per word: 8</p></li>
+<li><p>Bit order: MSB</p></li>
+<li><p>SPI Mode: 0</p></li>
+</ul>
+</div>
+<div class="section" id="wiring">
+<h2>Wiring<a class="headerlink" href="#wiring" title="Permalink to this headline">¶</a></h2>
+<p>This protocol uses the standard 4-wire SPI protocol with an GPIO wire and ground wire. This is a total of 6 wires. The GPIO pin should be configured as an output on the microcontroller and as an input on the Coral.</p>
+<div class="section" id="arduino-wiring">
+<h3>Arduino Wiring<a class="headerlink" href="#arduino-wiring" title="Permalink to this headline">¶</a></h3>
+<p>The Arduino library requires the following wiring:</p>
+<p>| Name          | Arduino Pin      | Coral Pin      |
+| :—:         | :—:            | :—:          |
+| GND           | GND              | GND (14)       |
+| SCK           | 13               | 23             |
+| MISO          | 12               | 21             |
+| MOSI          | 11               | 19             |
+| SS            | 10               | 24             |
+| SIGNAL (GPIO) | 9                | 13             |</p>
+</div>
+</div>
+<div class="section" id="message-format">
+<h2>Message Format<a class="headerlink" href="#message-format" title="Permalink to this headline">¶</a></h2>
+<p>Each message contains 2 parts: the header and the message body.</p>
+<div class="section" id="header">
+<h3>Header<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h3>
+<p>The header is a 1 byte message. It describes what content will be contained in the body. The current valid headers are listed below in the table below.</p>
+<p>| Header Value          | Meaning      | Message Body Length |
+| :—:                 | :—:        | :—:               |
+| 0x10                  | Hearbeat     | 0 bytes             |
+| 0x20                  | Config       | 4 bytes             |
+| 0x30                  | Data         | Data length         |</p>
+<p>The data length is variable determined by the output size of the neural net. This data length size is specified in a config message and then cannot be changed afterwards.</p>
+</div>
+<div class="section" id="body">
+<h3>Body<a class="headerlink" href="#body" title="Permalink to this headline">¶</a></h3>
+<p>The body of the message is a series of bytes of the length determined by the header. The messages are in MSB format.</p>
+</div>
+</div>
+<div class="section" id="initialization-sequence">
+<h2>Initialization sequence<a class="headerlink" href="#initialization-sequence" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="coral">
+<h3>Coral<a class="headerlink" href="#coral" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>While waiting for a connection from the microcontroller, the Coral should be sending 0XFF constantly on the SPI channel. The microcontroller should respond with a series of three bytes: 0xFF, 0xFE, 0xFD (in that sequence).</p></li>
+<li><p>Next, a config message must be sent over SPI. First, the config header is transferred, followed by an empty message [0x00,0x00,0x00,0x00] to signal to the microcontroller that the Coral successfully received the heartbeat.</p></li>
+<li><p>After that message is transferred, the Coral should wait for a HIGH on the signal pin, signifying the Arduino is ready to receive the config</p></li>
+<li><p>Once the high is received, the config message should be sent. Send the config header, followed by the following 4 bytes:</p></li>
+</ol>
+<p>| Position              | Value        |  Info                     |
+| :—:                 | :—:        |  :—:                    |
+| 0                     | Datatype     | Currently not implemented |
+| 1                     | Data Length  | Length of data in bytes   |
+| 2                     | Empty        | Value can be anything     |
+| 3                     | Empty        | Value can be anything     |</p>
+</div>
+<div class="section" id="microcontroller">
+<h3>Microcontroller<a class="headerlink" href="#microcontroller" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>Listen for messages sent via SPI. After received one 0xFF, load 0xFF into buffer to send to the Coral. This value should be decremented every time a transfer occurs, until a total of 4 0xFF messages are received.</p></li>
+<li><p>Listen for a config header followed by a message body containing [0x00, 0x00, 0x00, 0x00]. This is an acknowledgement by the Coral that it received the response correctly.</p></li>
+<li><p>Once the microcontroller is ready to receive the config information, raise the SIGNAL line high.</p></li>
+<li><p>Listen for the config and configure the buffer and message fields correctly. The message format is listed above.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="heartbeat">
+<h2>Heartbeat<a class="headerlink" href="#heartbeat" title="Permalink to this headline">¶</a></h2>
+<p>The coral should send a heartbeat at a regular frequency to the microcontroller to check availability. The response from the microcontroller should increment on every message transferred (including non-heartbeat messages), except where there is an overflow (0xFF -&gt; 0x00). If the heartbeat message is no longer incrementing, the microcontroller is unavailable or has been reset. The communications should return to init state.</p>
+</div>
 </div>
 
 
