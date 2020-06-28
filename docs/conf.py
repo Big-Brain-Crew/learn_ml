@@ -34,7 +34,8 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.githubpages",
     "sphinx.ext.viewcode",
-    'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon',
+    'recommonmark'
 ]
 napoleon_include_private_with_doc = True
 
