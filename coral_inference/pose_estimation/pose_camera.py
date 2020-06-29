@@ -36,8 +36,28 @@ EDGES = (
 
 class PoseCamera(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, model=None, use_stream=False,mirror=False,res='640x480',videosrc='/dev/video0',h264=False,jpeg=False):
+        self.use_stream = use_stream
+        self.mirror = mirror
+        self.res = res
+        self.videosrc = videosrc
+        self.h264 = h264
+        self.jpeg = jpeg
+
+        self.default_model = 'coral_inference/pose_estimation/posenet/models/mobilenet/posenet_mobilenet_v1_075_%d_%d_quant_decoder_edgetpu.tflite'
+        if self.res == '480x360':
+            self.src_size = (640, 480)
+            self.appsink_size = (480, 360)
+            self.model = model or self.default_model % (353, 481)
+        elif self.res == '640x480':
+            self.src_size = (640, 480)
+            self.appsink_size = (640, 480)
+            self.model = model or self.default_model % (481, 641)
+        elif self.res == '1280x720':
+            self.src_size = (1280, 720)
+            self.appsink_size = (1280, 720)
+            self.model = model or self.default_model % (721, 1281)
+
 
     def run(self):
         n = 0
@@ -50,7 +70,7 @@ class PoseCamera(object):
             return engine.run_inference(input_tensor)
 
         def render_overlay(engine, output, src_size, inference_box):
-            # nonlocal n, sum_process_time, sum_inference_time, fps_counter
+            nonlocal n, sum_process_time, sum_inference_time, fps_counter
 
             svg_canvas = svgwrite.Drawing('', size=src_size)
             start_time = time.monotonic()
@@ -65,9 +85,9 @@ class PoseCamera(object):
                 avg_inference_time, 1000 / avg_inference_time, next(fps_counter), len(outputs)
             )
 
-            shadow_text(svg_canvas, 10, 20, text_line)
+            self.shadow_text(svg_canvas, 10, 20, text_line)
             for pose in outputs:
-                draw_pose(svg_canvas, pose, src_size, inference_box)
+                self.draw_pose(svg_canvas, pose, src_size, inference_box)
             return (svg_canvas.tostring(), False)
 
         self._run(run_inference, render_overlay)
@@ -112,39 +132,40 @@ class PoseCamera(object):
             yield len(window) / sum(window)
 
     def _run(self, inf_callback, render_callback):
-        parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument('--mirror', help='flip video horizontally', action='store_true')
-        parser.add_argument('--model', help='.tflite model path.', required=False)
-        parser.add_argument('--res', help='Resolution', default='640x480',
-                            choices=['480x360', '640x480', '1280x720'])
-        parser.add_argument('--videosrc', help='Which video source to use', default='/dev/video0')
-        parser.add_argument('--h264', help='Use video/x-h264 input', action='store_true')
-        parser.add_argument('--jpeg', help='Use image/jpeg input', action='store_true')
-        args = parser.parse_args()
+        #parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        #parser.add_argument('--mirror', help='flip video horizontally', action='store_true')
+        #parser.add_argument('--model', help='.tflite model path.', required=False)
+        #parser.add_argument('--res', help='Resolution', default='640x480',
+        #                    choices=['480x360', '640x480', '1280x720'])
+        #parser.add_argument('--videosrc', help='Which video source to use', default='/dev/video0')
+        #parser.add_argument('--h264', help='Use video/x-h264 input', action='store_true')
+        #parser.add_argument('--jpeg', help='Use image/jpeg input', action='store_true')
+        #args = parser.parse_args()
 
-        default_model = 'models/mobilenet/posenet_mobilenet_v1_075_%d_%d_quant_decoder_edgetpu.tflite'
-        if args.res == '480x360':
-            src_size = (640, 480)
-            appsink_size = (480, 360)
-            model = args.model or default_model % (353, 481)
-        elif args.res == '640x480':
-            src_size = (640, 480)
-            appsink_size = (640, 480)
-            model = args.model or default_model % (481, 641)
-        elif args.res == '1280x720':
-            src_size = (1280, 720)
-            appsink_size = (1280, 720)
-            model = args.model or default_model % (721, 1281)
+        #default_model = 'coral_inference/pose_estimation/posenet/models/mobilenet/posenet_mobilenet_v1_075_%d_%d_quant_decoder_edgetpu.tflite'
+        #if args.res == '480x360':
+        #    src_size = (640, 480)
+        #    appsink_size = (480, 360)
+        #    model = args.model or default_model % (353, 481)
+        #elif args.res == '640x480':
+        #    src_size = (640, 480)
+        #    appsink_size = (640, 480)
+        #    model = args.model or default_model % (481, 641)
+        #elif args.res == '1280x720':
+        #    src_size = (1280, 720)
+        #    appsink_size = (1280, 720)
+        #    model = args.model or default_model % (721, 1281)
 
-        print('Loading model: ', model)
-        engine = PoseEngine(model)
+        print('Loading model: ', self.model)
+        engine = PoseEngine(self.model)
         input_shape = engine.get_input_tensor_shape()
         inference_size = (input_shape[2], input_shape[1])
 
         gstreamer.run_pipeline(partial(inf_callback, engine), partial(render_callback, engine),
-                               src_size, inference_size,
-                               mirror=args.mirror,
-                               videosrc=args.videosrc,
-                               h264=args.h264,
-                               jpeg=args.jpeg
+                               self.src_size, inference_size,
+                               mirror=self.mirror,
+                               videosrc=self.videosrc,
+                               h264=self.h264,
+                               jpeg=self.jpeg,
+                               use_stream=self.use_stream
                                )
