@@ -1,3 +1,4 @@
+import os
 import argparse
 import collections
 from functools import partial
@@ -7,9 +8,11 @@ import time
 import numpy as np
 from PIL import Image
 import svgwrite
-from posenet import gstreamer
 
+from posenet import gstreamer
 from posenet.pose_engine import PoseEngine
+import cv2
+from ..classification.base_classifier import BaseClassifier
 
 EDGES = (
     ('nose', 'left eye'),
@@ -66,31 +69,34 @@ class PoseCamera(object):
         ctr = 0
         fps_counter = self.avg_fps_counter(30)
 
-        def run_inference(engine, input_tensor):
-            return engine.run_inference(input_tensor)
+        if self.use_stream:
+            def run_inference(engine, input_tensor):
+                return engine.run_inference(input_tensor)
 
-        def render_overlay(engine, output, src_size, inference_box):
-            nonlocal n, sum_process_time, sum_inference_time, fps_counter
+            def render_overlay(engine, output, src_size, inference_box):
+                nonlocal n, sum_process_time, sum_inference_time, fps_counter
 
-            svg_canvas = svgwrite.Drawing('', size=src_size)
-            start_time = time.monotonic()
-            outputs, inference_time = engine.ParseOutput(output)
-            end_time = time.monotonic()
-            n += 1
-            sum_process_time += 1000 * (end_time - start_time)
-            sum_inference_time += inference_time
+                svg_canvas = svgwrite.Drawing('', size=src_size)
+                start_time = time.monotonic()
+                outputs, inference_time = engine.ParseOutput(output)
+                end_time = time.monotonic()
+                n += 1
+                sum_process_time += 1000 * (end_time - start_time)
+                sum_inference_time += inference_time
 
-            avg_inference_time = sum_inference_time / n
-            text_line = 'PoseNet: %.1fms (%.2f fps) TrueFPS: %.2f Nposes %d' % (
-                avg_inference_time, 1000 / avg_inference_time, next(fps_counter), len(outputs)
-            )
+                avg_inference_time = sum_inference_time / n
+                text_line = 'PoseNet: %.1fms (%.2f fps) TrueFPS: %.2f Nposes %d' % (
+                    avg_inference_time, 1000 / avg_inference_time, next(fps_counter), len(outputs)
+                )
 
-            self.shadow_text(svg_canvas, 10, 20, text_line)
-            for pose in outputs:
-                self.draw_pose(svg_canvas, pose, src_size, inference_box)
-            return (svg_canvas.tostring(), False)
+                self.shadow_text(svg_canvas, 10, 20, text_line)
+                for pose in outputs:
+                    self.draw_pose(svg_canvas, pose, src_size, inference_box)
+                return (svg_canvas.tostring(), False)
 
-        self._run(run_inference, render_overlay)
+            self._run(run_inference, render_overlay)
+        else:
+            pass # Do the OpenCV stuff
 
     def shadow_text(self, dwg, x, y, text, font_size=16):
         dwg.add(dwg.text(text, insert=(x + 1, y + 1), fill='black',
