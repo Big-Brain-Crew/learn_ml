@@ -14,6 +14,7 @@ from learn_ml.utils.log_configurator import LogConfigurator
 from learn_ml.ui.python_classes.NavigationButton import NavigationButton
 from learn_ml.ui.python_classes.SearchPanel import SearchPanel
 from learn_ml.ui.python_classes.NodeManager import NodeManager
+from learn_ml.ui.python_classes.DeployManager import DeployManager
 
 def main(verbosity, log_to_file):
 
@@ -27,9 +28,11 @@ def main(verbosity, log_to_file):
     # Instantiate custom python classes and add them to QML engine
     nav_buttons = NavigationButton()
     search_panels = SearchPanel()
+    deploy_manager = DeployManager()
     qmlRegisterType(NavigationButton, "NavigationButton", 1, 0, "NavigationButton") 
     qmlRegisterType(SearchPanel, "Search", 1, 0, "SearchPanel")
     qmlRegisterType(NodeManager, "Node", 1, 0, "NodeManager")
+    qmlRegisterType(DeployManager, "Deploy", 1, 0, "DeployManager")
 
     # Load the main QML file
     engine.load(QUrl("learn_ml/ui/app.qml"))

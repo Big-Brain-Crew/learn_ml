@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Window 2.0
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import Deploy 1.0
 
 Page {
     id: root
@@ -11,6 +12,10 @@ Page {
 
     // Signals
     signal openProject(string sourceFile)
+
+    DeployManager {
+        id: deployManager
+    }
 
     // background color for welcomePage
     Rectangle {
@@ -62,8 +67,8 @@ Page {
                 // Create Project Button
                 Button {
                     id: proj1Button
-                    text: qsTr("Project 1")
-//                  onClicked: create a project file and stuff ------------- TODO
+                    text: qsTr("Pose Estimation")
+                    onClicked: deployManager.deploy("posenet")
 
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     Layout.preferredWidth: 300
@@ -84,8 +89,8 @@ Page {
 
                 Button {
                     id: proj2Button
-                    text: qsTr("Project 2")
-//                  onClicked: create a project file and stuff ------------- TODO
+                    text: qsTr("Face Detection")
+                   onClicked: deployManager.deploy("facenet")
 
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     Layout.preferredWidth: 300
@@ -106,7 +111,7 @@ Page {
 
                 Button {
                     id: proj3Button
-                    text: qsTr("Project 3")
+                    text: qsTr("Coming Soon")
 //                  onClicked: create a project file and stuff ------------- TODO
 
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -128,7 +133,7 @@ Page {
 
                 Button {
                     id: proj4Button
-                    text: qsTr("Project 4")
+                    text: qsTr("Coming Soon")
 //                  onClicked: create a project file and stuff ------------- TODO
 
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -156,7 +161,7 @@ Page {
 
 
                     // Button Styling --------------------------------
-                    text: qsTr("Project 5")
+                    text: qsTr("Coming Soon")
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     Layout.preferredWidth: 300
                     Layout.preferredHeight: 100
