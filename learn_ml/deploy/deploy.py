@@ -22,12 +22,12 @@ DEFAULT_USERNAME = "mendel"
 DEFAULT_PASSWORD = "mendel"
 
 # Instantiate LogConfigurator
-log_config = LogConfigurator()
+log_config = LogConfigurator(verbosity = "INFO", output_to_logfile = False)
 
 # Get the logger for module
 logger = log_config.get_logger(__name__)
 
-def deploy(address, model, identity_file=None, password=None):
+def deploy(address, task, identity_file=None, password=None):
     """ Deploys the a model to the Coral Board.
 
     Connects to the coral board via ssh to deploy the model. You must pass a tflite model.
@@ -65,24 +65,24 @@ def deploy(address, model, identity_file=None, password=None):
         ssh.connect(hostname=address, username=DEFAULT_USERNAME, password=password)
     logger.info("Successfully connected to Anything Sensor v1!")
 
-    # Transfer model to coral
-    logger.info("Transferring model to Anything Sensor...")
-    # SCPCLient takes a paramiko transport as an argument
-    with SCPClient(ssh.get_transport()) as scp:
-        scp.put(model, "/home/mendel/learn_ml/coral_inference/classification/" + os.path.basename(model))
-    logger.info("Transfer Successful!")
+    # # Transfer model to coral
+    # logger.info("Transferring model to Anything Sensor...")
+    # # SCPCLient takes a paramiko transport as an argument
+    # with SCPClient(ssh.get_transport()) as scp:
+    #     scp.put(model, "/home/mendel/learn_ml/coral_inference/classification/" + os.path.basename(model))
+    # logger.info("Transfer Successful!")
 
     # Start model execution
     ssh.exec_command("pkill screen")
-    ssh.exec_command("cd /home/mendel/learn_ml/coral_inference/classification && screen -d -m python3 "
-                     + "app.py --mnist -m " + os.path.basename(model))
+    ssh.exec_command("cd /home/mendel/learn_ml/coral_inference/ && screen -d -m python3 "
+                     + "app.py --task {task} -p spi ".format(task=task))
 
     logger.info("Started execution!")
-    logger.info("Stream accessible at {}:5000".format(address))
+    # logger.info("Stream accessible at {}:5000".format(address))
 
     ssh.close()
 
-def deploy_usb(model):
+def deploy_usb(task):
     # Import a discoverer object from mendel development tools
     discoverer = Discoverer()
 
@@ -95,13 +95,14 @@ def deploy_usb(model):
         # Just select the first element in the dictionary
         ip = discoveries[list(discoveries)[0]]
         logger.info("Found Anything Sensor at {}!".format(ip))
-        deploy(ip, model, password = DEFAULT_PASSWORD)
+        deploy(ip, task, password = DEFAULT_PASSWORD)
 
 
 if __name__ == "__main__":
     # Parse arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-m', '--model', help='Path to .tflite model file', required=True)
+    parser.add_argument('-t', '--task', help="The task to run inference", required=True)
+    parser.add_argument('-m', '--model', help='Path to .tflite model file', required=False)
     parser.add_argument('-a', '--address', help='Address of the coral device', required=False)
     parser.add_argument('-i', '--identity-file',
                         help='Identity file to authenticate with', required=False)
@@ -110,6 +111,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if(args.usb):
-        deploy_usb(args.model)
+        deploy_usb(args.task)
     else:
         deploy(args.address, args.model, identity_file=args.identity_file, password=args.password)
