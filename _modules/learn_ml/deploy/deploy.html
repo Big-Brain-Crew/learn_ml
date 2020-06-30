@@ -165,7 +165,17 @@
 <span class="kn">from</span> <span class="nn">scp</span> <span class="kn">import</span> <span class="n">SCPClient</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">mdt.discoverer</span> <span class="kn">import</span> <span class="n">Discoverer</span>
+<span class="kn">from</span> <span class="nn">learn_ml.utils.log_configurator</span> <span class="kn">import</span> <span class="n">LogConfigurator</span>
 
+<span class="n">DEFAULT_USERNAME</span> <span class="o">=</span> <span class="s2">&quot;mendel&quot;</span>
+<span class="n">DEFAULT_PASSWORD</span> <span class="o">=</span> <span class="s2">&quot;mendel&quot;</span>
+
+<span class="c1"># Instantiate LogConfigurator</span>
+<span class="n">log_config</span> <span class="o">=</span> <span class="n">LogConfigurator</span><span class="p">()</span>
+
+<span class="c1"># Get the logger for module</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">log_config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="deploy"><a class="viewcode-back" href="../../../learn_ml.deploy.html#learn_ml.deploy.deploy.deploy">[docs]</a><span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">identity_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Deploys the a model to the Coral Board.</span>
@@ -191,49 +201,68 @@
     <span class="n">use_key</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">if</span><span class="p">(</span><span class="n">identity_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">use_key</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>  <span class="c1"># This condition means that neither identity file nor password was passed</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must pass identity file OR password&quot;</span><span class="p">)</span>
 
     <span class="n">ssh</span> <span class="o">=</span> <span class="n">SSHClient</span><span class="p">()</span>
     <span class="n">ssh</span><span class="o">.</span><span class="n">load_system_host_keys</span><span class="p">()</span>
 
     <span class="c1"># Connect to coral</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connecting...&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Connecting to Anything Sensor...&quot;</span><span class="p">)</span>
     <span class="k">if</span><span class="p">(</span><span class="n">use_key</span><span class="p">):</span>  <span class="c1"># Connect using private key</span>
-        <span class="n">ssh</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;mendel&quot;</span><span class="p">,</span> <span class="n">key_filename</span><span class="o">=</span><span class="n">identity_file</span><span class="p">)</span>
+        <span class="n">ssh</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">DEFAULT_USERNAME</span><span class="p">,</span> <span class="n">key_filename</span><span class="o">=</span><span class="n">identity_file</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># Connect using password</span>
-        <span class="n">ssh</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;mendel&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Successfully connected to Anything Sensor v1!&quot;</span><span class="p">)</span>
+        <span class="n">ssh</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">DEFAULT_USERNAME</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Successfully connected to Anything Sensor v1!&quot;</span><span class="p">)</span>
 
     <span class="c1"># Transfer model to coral</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transferring model to Anything Sensor...&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Transferring model to Anything Sensor...&quot;</span><span class="p">)</span>
     <span class="c1"># SCPCLient takes a paramiko transport as an argument</span>
     <span class="k">with</span> <span class="n">SCPClient</span><span class="p">(</span><span class="n">ssh</span><span class="o">.</span><span class="n">get_transport</span><span class="p">())</span> <span class="k">as</span> <span class="n">scp</span><span class="p">:</span>
         <span class="n">scp</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;/home/mendel/learn_ml/coral_inference/classification/&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transfer Successful!&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Transfer Successful!&quot;</span><span class="p">)</span>
 
     <span class="c1"># Start model execution</span>
     <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s2">&quot;pkill screen&quot;</span><span class="p">)</span>
     <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s2">&quot;cd /home/mendel/learn_ml/coral_inference/classification &amp;&amp; screen -d -m python3 &quot;</span>
                      <span class="o">+</span> <span class="s2">&quot;app.py --mnist -m &quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Started execution!&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stream accessible at </span><span class="si">{}</span><span class="s2">:5000&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">address</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Started execution!&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stream accessible at </span><span class="si">{}</span><span class="s2">:5000&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">address</span><span class="p">))</span>
 
     <span class="n">ssh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="deploy_usb"><a class="viewcode-back" href="../../../learn_ml.deploy.html#learn_ml.deploy.deploy.deploy_usb">[docs]</a><span class="k">def</span> <span class="nf">deploy_usb</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="c1"># Import a discoverer object from mendel development tools</span>
+    <span class="n">discoverer</span> <span class="o">=</span> <span class="n">Discoverer</span><span class="p">()</span>
+
+    <span class="c1"># Discover available objects and get available devices</span>
+    <span class="n">discoverer</span><span class="o">.</span><span class="n">discover</span><span class="p">()</span>
+    <span class="n">discoveries</span> <span class="o">=</span> <span class="n">discoverer</span><span class="o">.</span><span class="n">discoveries</span>
+
+    <span class="c1"># TODO Update this to allow for selecting between multiple available devices</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">discoveries</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]):</span>
+        <span class="c1"># Just select the first element in the dictionary</span>
+        <span class="n">ip</span> <span class="o">=</span> <span class="n">discoveries</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">discoveries</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Found Anything Sensor at </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ip</span><span class="p">))</span>
+        <span class="n">deploy</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">password</span> <span class="o">=</span> <span class="n">DEFAULT_PASSWORD</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="c1"># Parse arguments</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;--model&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to .tflite model file&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;--address&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Address of the coral device&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;--address&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Address of the coral device&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="s1">&#39;--identity-file&#39;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Identity file to authenticate with&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--password&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Password to login with&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-u&#39;</span><span class="p">,</span> <span class="s1">&#39;--usb&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Deploy over USB&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-    <span class="n">deploy</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">identity_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">identity_file</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">usb</span><span class="p">):</span>
+        <span class="n">deploy_usb</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">deploy</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">identity_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">identity_file</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
 </pre></div>
 
            </div>
