@@ -21,7 +21,7 @@ Window {
    Loader{
        id: topLoader
        anchors.fill:parent
-       source: "components/pages/WelcomePage.qml"
+       source: "components/pages/DemoPage.qml"
 
        Connections{
            target: topLoader.item
