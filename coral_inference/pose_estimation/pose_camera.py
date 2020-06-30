@@ -9,10 +9,10 @@ import numpy as np
 from PIL import Image
 import svgwrite
 
-from posenet import gstreamer
-from posenet.pose_engine import PoseEngine
+from pose_estimation.posenet import gstreamer
+from pose_estimation.posenet.pose_engine import PoseEngine
 import cv2
-from ..classification.base_classifier import BaseClassifier
+from classification.base_classifier import BaseClassifier
 
 EDGES = (
     ('nose', 'left eye'),
@@ -39,15 +39,14 @@ EDGES = (
 
 class PoseCamera(object):
 
-    def __init__(self, model=None, use_stream=False,mirror=False,res='640x480',videosrc='/dev/video0',h264=False,jpeg=False):
-        self.use_stream = use_stream
+    def __init__(self, model=None, mirror=False,res='640x480',videosrc='/dev/video0',h264=False,jpeg=False):
         self.mirror = mirror
         self.res = res
         self.videosrc = videosrc
         self.h264 = h264
         self.jpeg = jpeg
 
-        self.default_model = 'coral_inference/pose_estimation/posenet/models/mobilenet/posenet_mobilenet_v1_075_%d_%d_quant_decoder_edgetpu.tflite'
+        self.default_model = 'pose_estimation/posenet/models/mobilenet/posenet_mobilenet_v1_075_%d_%d_quant_decoder_edgetpu.tflite'
         if self.res == '480x360':
             self.src_size = (640, 480)
             self.appsink_size = (480, 360)
@@ -61,6 +60,8 @@ class PoseCamera(object):
             self.appsink_size = (1280, 720)
             self.model = model or self.default_model % (721, 1281)
 
+        self.run()
+
 
     def run(self):
         n = 0
@@ -68,35 +69,31 @@ class PoseCamera(object):
         sum_inference_time = 0
         ctr = 0
         fps_counter = self.avg_fps_counter(30)
+        def run_inference(engine, input_tensor):
+            return engine.run_inference(input_tensor)
 
-        if self.use_stream:
-            def run_inference(engine, input_tensor):
-                return engine.run_inference(input_tensor)
+        def render_overlay(engine, output, src_size, inference_box):
+            nonlocal n, sum_process_time, sum_inference_time, fps_counter
 
-            def render_overlay(engine, output, src_size, inference_box):
-                nonlocal n, sum_process_time, sum_inference_time, fps_counter
+            svg_canvas = svgwrite.Drawing('', size=src_size)
+            start_time = time.monotonic()
+            outputs, inference_time = engine.ParseOutput(output)
+            end_time = time.monotonic()
+            n += 1
+            sum_process_time += 1000 * (end_time - start_time)
+            sum_inference_time += inference_time
 
-                svg_canvas = svgwrite.Drawing('', size=src_size)
-                start_time = time.monotonic()
-                outputs, inference_time = engine.ParseOutput(output)
-                end_time = time.monotonic()
-                n += 1
-                sum_process_time += 1000 * (end_time - start_time)
-                sum_inference_time += inference_time
+            avg_inference_time = sum_inference_time / n
+            text_line = 'PoseNet: %.1fms (%.2f fps) TrueFPS: %.2f Nposes %d' % (
+                avg_inference_time, 1000 / avg_inference_time, next(fps_counter), len(outputs)
+            )
 
-                avg_inference_time = sum_inference_time / n
-                text_line = 'PoseNet: %.1fms (%.2f fps) TrueFPS: %.2f Nposes %d' % (
-                    avg_inference_time, 1000 / avg_inference_time, next(fps_counter), len(outputs)
-                )
+            self.shadow_text(svg_canvas, 10, 20, text_line)
+            for pose in outputs:
+                self.draw_pose(svg_canvas, pose, src_size, inference_box)
+            return (svg_canvas.tostring(), False)
 
-                self.shadow_text(svg_canvas, 10, 20, text_line)
-                for pose in outputs:
-                    self.draw_pose(svg_canvas, pose, src_size, inference_box)
-                return (svg_canvas.tostring(), False)
-
-            self._run(run_inference, render_overlay)
-        else:
-            pass # Do the OpenCV stuff
+        self._run(run_inference, render_overlay)
 
     def shadow_text(self, dwg, x, y, text, font_size=16):
         dwg.add(dwg.text(text, insert=(x + 1, y + 1), fill='black',
@@ -138,30 +135,7 @@ class PoseCamera(object):
             yield len(window) / sum(window)
 
     def _run(self, inf_callback, render_callback):
-        #parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        #parser.add_argument('--mirror', help='flip video horizontally', action='store_true')
-        #parser.add_argument('--model', help='.tflite model path.', required=False)
-        #parser.add_argument('--res', help='Resolution', default='640x480',
-        #                    choices=['480x360', '640x480', '1280x720'])
-        #parser.add_argument('--videosrc', help='Which video source to use', default='/dev/video0')
-        #parser.add_argument('--h264', help='Use video/x-h264 input', action='store_true')
-        #parser.add_argument('--jpeg', help='Use image/jpeg input', action='store_true')
-        #args = parser.parse_args()
-
-        #default_model = 'coral_inference/pose_estimation/posenet/models/mobilenet/posenet_mobilenet_v1_075_%d_%d_quant_decoder_edgetpu.tflite'
-        #if args.res == '480x360':
-        #    src_size = (640, 480)
-        #    appsink_size = (480, 360)
-        #    model = args.model or default_model % (353, 481)
-        #elif args.res == '640x480':
-        #    src_size = (640, 480)
-        #    appsink_size = (640, 480)
-        #    model = args.model or default_model % (481, 641)
-        #elif args.res == '1280x720':
-        #    src_size = (1280, 720)
-        #    appsink_size = (1280, 720)
-        #    model = args.model or default_model % (721, 1281)
-
+        
         print('Loading model: ', self.model)
         engine = PoseEngine(self.model)
         input_shape = engine.get_input_tensor_shape()
@@ -173,5 +147,4 @@ class PoseCamera(object):
                                videosrc=self.videosrc,
                                h264=self.h264,
                                jpeg=self.jpeg,
-                               use_stream=self.use_stream
                                )
