@@ -1,25 +1,26 @@
 import os
 import cv2
-from base_classifier import BaseClassifier
+from classification.base_classifier import BaseClassifier
 import time
 
+import imutils
+from edgetpu.detection.engine import DetectionEngine
 import tflite_runtime.interpreter as tflite
 import numpy as np
 
+from PIL import Image
+
 class Classifier(BaseClassifier):
-    video_source = 1
+    video_source = 0
 
     def __init__(self, model_path):
         if os.environ.get('OPENCV_CAMERA_SOURCE'):
             self.set_video_source(int(os.environ['OPENCV_CAMERA_SOURCE']))
 
-        # Load TFLite model and allocate tensors
-        self.interpreter = tflite.Interpreter(model_path=model_path, experimental_delegates=[tflite.load_delegate('libedgetpu.so.1.0')])
-        self.interpreter.allocate_tensors()
+        # # Load TFLite model and allocate tensors
+        # self.interpreter = tflite.Interpreter(model_path=model_path, experimental_delegates=[tflite.load_delegate('libedgetpu.so.1.0')])
+        # self.interpreter.allocate_tensors()
         super(Classifier, self).__init__()
-
-    def set_video_source(self, source):
-        self.video_source = source
 
     # Crops an image into a square.
     # image: image to be cropped.
@@ -42,7 +43,7 @@ class Classifier(BaseClassifier):
         cropped = img[width_crop_start:width_crop_end, height_crop_start: height_crop_end]
 
         # Return resized image
-        return cv2.resize(cropped, dsize=tuple(target_dims))
+        return cv2.resize(cropped, tuple(target_dims))
 
     # Conver the image to gray scale
     def convert_to_gray(self, img):
@@ -65,6 +66,8 @@ class Classifier(BaseClassifier):
         # This is necessary for tf2 models
         if input_details[0]['dtype'] == np.float32:
             input_data = input_data.astype(np.float32)
+        else:
+            input_data = input_data.astype(np.uint8)
 
         return input_data
 
@@ -73,7 +76,8 @@ class Classifier(BaseClassifier):
         input_details = self.interpreter.get_input_details()
         output_details = self.interpreter.get_output_details()
 
-        input_shape = input_details[0]['shape']
+        input_shape = input_details[0]["shape"]
+
 
         # Open camera capture
         camera = cv2.VideoCapture(self.video_source)
@@ -105,6 +109,7 @@ class Classifier(BaseClassifier):
 
             # The result is the maximum probability
             result = np.argmax(probabilities)
+            print(probabilities)
 
             # Display result on original image
             cv2.putText(original_img, str(result), (0,100), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 0), 2, cv2.LINE_AA)
@@ -145,3 +150,70 @@ class MnistClassifier(Classifier):
         img = img / 255.0
 
         return img
+
+
+IMAGE_WIDTH = 720
+class FaceClassifier(Classifier):
+
+    def __init__(self, model_path, stream = False):
+        print("test")
+        self.stream = stream
+        self.model  = DetectionEngine(model_path)
+
+
+        super(FaceClassifier, self).__init__(model_path)
+
+    # The MNIST dataset consists of white numbers on a black background.
+    # The camera image must be cropped to a square, resized, and converted
+    # to a similar black background and white number.
+    def preprocess(self, frame):
+        resized_frame = imutils.resize(frame, width=IMAGE_WIDTH)
+        rgb_array = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
+        frame_as_image = Image.fromarray(rgb_array)
+
+
+        return frame_as_image, resized_frame
+
+    def get_length(self):
+        return 8
+
+    def frames(self):
+        # Open camera capture
+        camera = cv2.VideoCapture(self.video_source)
+        if not camera.isOpened():
+            raise RuntimeError('Could not start camera.')
+
+        while True:
+            start = time.time()
+
+            # read current frame
+            _, input_frame = camera.read()
+
+
+
+
+
+            processed_frame, frame = self.preprocess(input_frame)
+            detected_faces = self.model.detect_with_image(
+                processed_frame,
+                threshold=0.5,
+                keep_aspect_ratio=True,
+                relative_coord=False,
+                top_k=2,
+            )
+
+            # encode
+            if(self.stream):
+                if(len(detected_faces) > 0):
+                    for face in detected_faces:
+                        bb = face.bounding_box.flatten().astype("int")
+                        # Display result on original image
+                        frame = cv2.rectangle(frame, (bb[0], bb[1]), (bb[2], bb[3]), (255, 255, 0), 2)
+                yield cv2.imencode('.jpg', frame)[1].tobytes()
+            else:
+                output_data = np.zeros(shape = (self.get_length(),), dtype = np.float32)
+                for i, face in enumerate(detected_faces):
+                    output_data[4*i:4*i+4] = bb = face.bounding_box.flatten().astype("float")
+
+                yield output_data
+

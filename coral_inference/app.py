@@ -2,7 +2,10 @@ import argparse
 from periphery import GPIO
 
 from SPIComms import SPIComms
-from pose_estimation.pose_estimator import PoseEstimator 
+from pose_estimation.pose_classifier import PoseClassifier
+from classification.classifier import FaceClassifier
+
+import subprocess
 # from classification.FaceCamera import FaceCamera
 
 def main():
@@ -14,18 +17,18 @@ def main():
 
     print("Initializing neural net")
 
-    if(args.task == 'posenet'):
-        nn = PoseEstimator(stream = (args.comm_protocol == "video"))
-    else:
-        nn = PoseEstimator(stream = (args.comm_protocol == "video"))
+    if((args.comm_protocol == "spi")):
+        if(args.task == 'posenet'):
+            nn = PoseClassifier(videosrc = 0, stream = False)
+        else:
+            nn = FaceClassifier("/home/mendel/ssd_mobilenet_v2_face_quant_postprocess_edgetpu.tflite", stream = (args.comm_protocol == "video"))
         # nn = FaceCamera(args.model, stream = (args.comm_protocol == "video"))
-    data_length = nn.get_length()
+        data_length = nn.get_length()
 
-    print("Initializing comms")
-    comm_handler = None
+        print("Initializing comms")
+        comm_handler = None
 
-    # Streaming data over SPI
-    if(args.comm_protocol == "spi"):
+        # Streaming data over SPI
         comm_handler = SPIComms(data_length)
         comm_handler.start_comms()
 
@@ -33,8 +36,12 @@ def main():
             comm_handler.set_data(nn.get_data())
 
     else: # If we're streaming video, just loop forever to play the stream
-        while True:
-            pass
+        print("starting process")
+        if(args.task == 'posenet'):
+            subprocess.run('python3 stream.py --pose --model .', shell = True)
+        else:
+            subprocess.run('python3 stream.py --face --model /home/mendel/ssd_mobilenet_v2_face_quant_postprocess_edgetpu.tflite', shell = True)
+
 
 
 if __name__ == "__main__":
@@ -47,6 +54,4 @@ if __name__ == "__main__":
     except:
         indicator_light.write(False)
         indicator_light.close()
-
-
 

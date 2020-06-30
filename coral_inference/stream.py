@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, Response
 import cv2
-import classifier
+from classification import classifier
+from pose_estimation import pose_classifier
 import argparse
 
 if __name__ == '__main__':
@@ -9,6 +10,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-m','--model', help='Path to .tflite model file', required=True)
     parser.add_argument("--mnist", required=False, action="store_true")
+    parser.add_argument("--face", required=False, action="store_true")
+    parser.add_argument("--pose", required=False, action="store_true")
     args = parser.parse_args()
 
     app = Flask(__name__)
@@ -20,6 +23,10 @@ if __name__ == '__main__':
 
         if model_type == "mnist":
             return classifier.MnistClassifier(args.model)
+        elif model_type == "face":
+            return classifier.FaceClassifier(args.model, True)
+        elif model_type == "pose":
+            return pose_classifier.PoseClassifier(videosrc = 0, stream = True)
         else:
             return classifier.Classifier(args.model)
 
@@ -34,6 +41,7 @@ if __name__ == '__main__':
     def gen(camera):
         while True:
             frame = camera.get_frame()
+
             yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
@@ -43,7 +51,15 @@ if __name__ == '__main__':
 
         # Choose classifier
         #model_type = args.model.split('/')[-1].split('_')[0]
-        model_type = "mnist" if args.mnist else "other"
+        if(args.mnist):
+            model_type = "mnist"
+        elif(args.face):
+            model_type = "face"
+        elif(args.pose):
+            model_type = "pose"
+        else:
+            model_type = "other"
+
         print(model_type)
         classifier_obj = choose_classifier(model_type)
         print(classifier_obj)
