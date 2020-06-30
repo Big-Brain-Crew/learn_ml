@@ -11,3 +11,6 @@ PySide2
 Qt.py
 nine
 singleton-decorator
+mendel-development-tool
+typing
+zeroconf
