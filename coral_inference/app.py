@@ -2,29 +2,24 @@ import argparse
 from periphery import GPIO
 
 from SPIComms import SPIComms
-from classification.PoseCamera import PoseCamera
-from classification.FaceCamera import FaceCamera
+from pose_estimation.pose_estimator import PoseEstimator 
+# from classification.FaceCamera import FaceCamera
 
 def main():
 
-
     parser = argparse.ArgumentParser()
-    parser.add_argument("--face", help='Use face detection', required=True, action = "store_true")
-    parser.add_argument("--posenet", help='Use posenet', required=True, action = "store_true")
-    parser.add_argument('-m','--model', help='Path to .tflite model file', required=True)
     parser.add_argument("-t","--task", help="Task for neural net to accomplish", required=True)
     parser.add_argument("-p","--comm-protocol", help="Communication protocol over which to transmit data, currently only supports \"spi\"", required=True)
     args = parser.parse_args()
 
     print("Initializing neural net")
 
-    if(args.posenet):
-        nn = PoseCamera(args.model, stream = (args.comm_protocol == "video"))
+    if(args.task == 'posenet'):
+        nn = PoseEstimator(stream = (args.comm_protocol == "video"))
     else:
-        nn = FaceCamera(args.model, stream = (args.comm_protocol == "video"))
-
-    data_length = nn.length()
-
+        nn = PoseEstimator(stream = (args.comm_protocol == "video"))
+        # nn = FaceCamera(args.model, stream = (args.comm_protocol == "video"))
+    data_length = nn.get_length()
 
     print("Initializing comms")
     comm_handler = None
