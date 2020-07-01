@@ -6,12 +6,27 @@ import Deploy 1.0
 
 Page {
     id: root
-    property alias openProjectButton: proj5Button
+    property alias openProjectButton: startButton
 
     anchors.fill:parent
 
     // Signals
     signal openProject(string sourceFile)
+
+    signal reStreamChanged(string stream)
+
+    Connections {
+        target: root
+        function onReStreamChanged(stream) { 
+
+            if (videoButton.selected) {
+                streamButton.visible = true
+                streamButton.stream = stream 
+            }        
+        }
+    }
+    Component.onCompleted: deployManager.streamChanged.connect(reStreamChanged)
+
 
     DeployManager {
         id: deployManager
@@ -64,127 +79,299 @@ Page {
                 Layout.alignment: Qt.AlignHCenter
                 spacing: 50
 
-                // Create Project Button
-                Button {
-                    id: proj1Button
-                    text: qsTr("Pose Estimation")
-                    onClicked: deployManager.deploy("posenet")
+                ColumnLayout {
+                    id: taskColumn
+                    height: parent.height
+                    width: parent.width / 2
+                    spacing: 50
+                    
 
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    Layout.preferredWidth: 300
-                    Layout.preferredHeight: 100
-                    contentItem: Text {
-                            text: parent.text
-                            font.pointSize: 12
-                            color: parent.down ? "green" : "#131822"
-                            horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+                    Text {
+                        id: taskText
+                        text: qsTr("Choose a Task")
+                        font.pointSize: 18
+                        color: "white"
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+
+                    }
+
+                    // Create Project Button
+                    Button {
+                        id: poseButton
+                        text: qsTr("Pose Estimation")
+                        property bool selected: false
+
+                        onClicked: {
+                            if (selected === false) {
+                                selected = true
+                                if (videoButton.selected || spiButton.selected) {
+                                    startButton.visible = true
+                                }
+                            } 
+                            if (faceButton.selected === true) {
+                                faceButton.selected = false
+                            }
                         }
 
-                    background: Rectangle{
-                        border.color: parent.down ? "green" : "#131822"
-                        opacity: parent.down? 1:0.90
-                        border.width: 1; radius:parent.height
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        Layout.preferredWidth: 300
+                        Layout.preferredHeight: 100
+                        contentItem: Text {
+                                text: parent.text
+                                font.pointSize: 12
+                                color: parent.selected ? "white" : "#131822"
+                                horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+                            }
+
+                        background: Rectangle{
+                            border.color: parent.down ? "pink" : "#131822"
+                            color: parent.selected ? "gray" : "white"
+                            opacity: parent.down? 1:0.90
+                            border.width: 1; radius:parent.height
+                        }
+                    }
+
+                    Button {
+                        id: faceButton
+                        text: qsTr("Face Detection")
+                        property bool selected: false
+
+                        onClicked: {
+                            if (selected === false) {
+                                selected = true
+                                if (videoButton.selected || spiButton.selected) {
+                                    startButton.visible = true
+                                }
+                            }
+                            if (poseButton.selected === true) {
+                                poseButton.selected = false
+                            }
+                         }
+
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        Layout.preferredWidth: 300
+                        Layout.preferredHeight: 100
+                        contentItem: Text {
+                                text: parent.text
+                                font.pointSize: 12
+                                color: parent.selected ? "white" : "#131822"
+                                horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+                        }
+
+                        background: Rectangle{
+                            border.color: parent.down ? "pink" : "#131822"
+                            color: parent.selected ? "gray" : "white"
+                            opacity: parent.down? 1:0.90
+                            border.width: 1; radius:parent.height
+                        }
                     }
                 }
 
-                Button {
-                    id: proj2Button
-                    text: qsTr("Face Detection")
-                   onClicked: deployManager.deploy("facenet")
+                ColumnLayout {
+                    id: streamColumn
+                    height: parent.height
+                    width: parent.width / 2
+                    spacing: 50
 
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    Layout.preferredWidth: 300
-                    Layout.preferredHeight: 100
-                    contentItem: Text {
-                            text: parent.text
-                            font.pointSize: 12
-                            color: parent.down ? "green" : "#131822"
-                            horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
-                        }
+                    Text {
+                        id: streamText
+                        text: qsTr("Choose a Stream")
+                        font.pointSize: 18
+                        color: "white"
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
 
-                    background: Rectangle{
-                        border.color: parent.down ? "green" : "#131822"
-                        opacity: parent.down? 1:0.90
-                        border.width: 1; radius:parent.height
                     }
-                }
 
-                Button {
-                    id: proj3Button
-                    text: qsTr("Coming Soon")
-//                  onClicked: create a project file and stuff ------------- TODO
-
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    Layout.preferredWidth: 300
-                    Layout.preferredHeight: 100
-                    contentItem: Text {
-                            text: parent.text
-                            font.pointSize: 12
-                            color: parent.down ? "green" : "#131822"
-                            horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+                    Button {
+                        id: videoButton
+                        text: qsTr("Video")
+                        property bool selected: false
+                        onClicked: {
+                            if (selected === false) {
+                                selected = true
+                                if (faceButton.selected || poseButton.selected) {
+                                    startButton.visible = true
+                                }
+                            } 
+                            if (spiButton.selected === true) {
+                                spiButton.selected = false
+                            }
                         }
 
-                    background: Rectangle{
-                        border.color: parent.down ? "green" : "#131822"
-                        opacity: parent.down? 1:0.90
-                        border.width: 1; radius:parent.height
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        Layout.preferredWidth: 300
+                        Layout.preferredHeight: 100
+                        contentItem: Text {
+                                text: parent.text
+                                font.pointSize: 12
+                                color: parent.selected ? "white" : "#131822"
+                                horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+                        }
+
+                        background: Rectangle{
+                            border.color: parent.down ? "pink" : "#131822"
+                            color: parent.selected ? "gray" : "white"
+                            opacity: parent.down? 1:0.90
+                            border.width: 1; radius:parent.height
+                        }
                     }
-                }
 
-                Button {
-                    id: proj4Button
-                    text: qsTr("Coming Soon")
-//                  onClicked: create a project file and stuff ------------- TODO
+                    Button {
+                        id: spiButton
+                        text: qsTr("Arduino")
+                        property bool selected: false
+                        onClicked: {
+                            if (selected === false) {
+                                selected = true
+                                if (faceButton.selected || poseButton.selected) {
+                                    startButton.visible = true
+                                }
+                            } 
+                            if (videoButton.selected === true) {
+                                videoButton.selected = false
+                            }
+                        }
 
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    Layout.preferredWidth: 300
-                    Layout.preferredHeight: 100
-                    contentItem: Text {
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        Layout.preferredWidth: 300
+                        Layout.preferredHeight: 100
+                        contentItem: Text {
                             text: parent.text
                             font.pointSize: 12
-                            color: parent.down ? "green" : "#131822"
+                            color: parent.selected ? "white" : "#131822"
                             horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
                         }
 
-                    background: Rectangle{
-                        border.color: parent.down ? "green" : "#131822"
-                        opacity: parent.down? 1:0.90
-                        border.width: 1; radius:parent.height
+                        background: Rectangle{
+                            border.color: parent.down ? "pink" : "#131822"
+                            color: parent.selected ? "gray" : "white"
+                            opacity: parent.down? 1:0.90
+                            border.width: 1; radius:parent.height
+                        }
                     }
                 }
 
                 // Open Project Button    TODO: replace onClicked functionality with file explorer
                 Button {
-                    id: proj5Button
-                    onClicked: logoShrink.start()
-                    //onClicked: root.openProject("components/pages/WorkspacePage.qml")
+                    id: startButton
+                    property bool selected: false
+                    visible: false
+                    onClicked: {
+                        logoShrink.start()
+                        selected = true
+
+                        let task = ""
+                        let stream = ""
+                        if (poseButton.selected) {
+                            task = "posenet"
+                        }
+                        else if (faceButton.selected) {
+                            task = "face"
+                        }
+
+                        if (videoButton.selected) {
+                            stream = "video"
+                        }
+                        else if (spiButton.selected) {
+                            stream = "spi"
+                        }
+
+                        deployManager.deploy(task, stream)
+                    }
 
 
                     // Button Styling --------------------------------
-                    text: qsTr("Coming Soon")
+                    text: qsTr("Start")
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     Layout.preferredWidth: 300
                     Layout.preferredHeight: 100
 
                     contentItem: Text {
-                            text: openProjectButton.text;  font.pointSize: 12
-                            color: openProjectButton.down ? "green" : "#131822"
-                            horizontalAlignment: Text.AlignHCenter;  verticalAlignment: Text.AlignVCenter
+                            text: parent.selected ? "Started!" : parent.text
+                            font.pointSize: 12
+                            color: parent.selected ? "white" : "#131822"
+                            horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
                         }
 
                     background: Rectangle{
-                        border.color: openProjectButton.down ? "green" : "#131822"
-                        opacity: openProjectButton.down? 1:0.90
-                        border.width: 1;   radius:parent.height
+                        border.color: parent.down ? "pink" : "#131822"
+                        color: parent.selected ? "gray" : "white"
+                        opacity: parent.down? 1:0.90
+                        border.width: 1; radius:parent.height
                     }
-
                 }
 
             }
         }
+        Button {
+            id: streamButton
+            x: parent.width / 2 - width / 2
+            y: parent.height / 2 - height / 2
+            visible: false
 
+            width: 350
+            height: 100
+
+            property string stream: "..."
+
+            // Button Styling --------------------------------
+            text: qsTr("Stream accessible at " + stream)
+
+            contentItem: Text {
+                    text: parent.text
+                    font.pointSize: 12
+                    color: parent.selected ? "white" : "#131822"
+                    horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+                }
+
+            background: Rectangle{
+                border.color: parent.down ? "pink" : "#131822"
+                color: parent.selected ? "gray" : "white"
+                opacity: parent.down? 1:0.90
+                border.width: 1; radius:parent.height
+            }
+        }
+
+        Button {
+            id: resetButton
+
+            width: 100
+            height: 50
+
+            anchors.right: parent.right
+            anchors.rightMargin: 25
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 25
+            onClicked: {
+                poseButton.selected = false 
+                faceButton.selected = false 
+                videoButton.selected = false 
+                spiButton.selected = false 
+                startButton.selected = false
+                streamButton.visible = false
+                streamButton.stream = "..."
+            }
+
+            // Button Styling --------------------------------
+            text: qsTr("Reset")
+
+            contentItem: Text {
+                    text: parent.text
+                    font.pointSize: 12
+                    color: parent.selected ? "white" : "#131822"
+                    horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+                }
+
+            background: Rectangle{
+                border.color: parent.down ? "pink" : "#131822"
+                color: parent.selected ? "gray" : "white"
+                opacity: parent.down? 1:0.90
+                border.width: 1; radius:parent.height
+            }
+        }
     }
-
 }
 
 /*##^##

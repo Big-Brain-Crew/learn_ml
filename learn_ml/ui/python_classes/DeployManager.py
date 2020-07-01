@@ -16,10 +16,24 @@ class DeployManager(QObject):
         # Get the logger for module
         self.logger = self.log_config.get_logger(__name__)
 
-    @Slot(str)
-    def deploy(self, task):
-        self.__deploy(task)
+        self.video = ""
 
-    def __deploy(self, task):
+    @Slot(str, str)
+    def deploy(self, task, stream):
+        self.__deploy(task, stream)
+
+    def __deploy(self, task, stream):
         print("Deploying")
-        deploy.deploy_usb(task)
+        stream = deploy.deploy_usb(task, stream)
+        self.__set_stream(stream)
+    
+    def __set_stream(self, stream):
+        self.video = stream
+        self.streamChanged.emit(stream)
+    
+    def get_stream(self):
+        return self.video
+
+    streamChanged = Signal(str)
+
+    stream = Property(str, get_stream, notify=streamChanged)
