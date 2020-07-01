@@ -14,6 +14,8 @@ Welcome to learn-ml's documentation!
 
    spicommprotocol
 
+   arduinoquickstart
+
 
 
 Indices and tables
