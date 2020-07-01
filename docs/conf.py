@@ -35,7 +35,8 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.viewcode",
     'sphinx.ext.napoleon',
-    'recommonmark'
+    'recommonmark',
+    'sphinx_markdown_tables'
 ]
 napoleon_include_private_with_doc = True
 
