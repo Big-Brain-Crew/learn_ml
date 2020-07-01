@@ -186,15 +186,47 @@
 <div class="section" id="arduino-wiring">
 <h3>Arduino Wiring<a class="headerlink" href="#arduino-wiring" title="Permalink to this headline">¶</a></h3>
 <p>The Arduino library requires the following wiring:</p>
-<p>| Name          | Arduino Pin      | Coral Pin      |
-| :—:         | :—:            | :—:          |
-| GND           | GND              | GND (14)       |
-| SCK           | 13               | 23             |
-| MISO          | 12               | 21             |
-| MOSI          | 11               | 19             |
-| SS            | 10               | 24             |
-| SIGNAL (GPIO) | 9                | 13             |</p>
-</div>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Arduino Pin</th>
+<th align="center">Coral Pin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">GND</td>
+<td align="center">GND</td>
+<td align="center">GND (14)</td>
+</tr>
+<tr>
+<td align="center">SCK</td>
+<td align="center">13</td>
+<td align="center">23</td>
+</tr>
+<tr>
+<td align="center">MISO</td>
+<td align="center">12</td>
+<td align="center">21</td>
+</tr>
+<tr>
+<td align="center">MOSI</td>
+<td align="center">11</td>
+<td align="center">19</td>
+</tr>
+<tr>
+<td align="center">SS</td>
+<td align="center">10</td>
+<td align="center">24</td>
+</tr>
+<tr>
+<td align="center">SIGNAL (GPIO)</td>
+<td align="center">9</td>
+<td align="center">13</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <div class="section" id="message-format">
 <h2>Message Format<a class="headerlink" href="#message-format" title="Permalink to this headline">¶</a></h2>
@@ -202,12 +234,32 @@
 <div class="section" id="header">
 <h3>Header<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h3>
 <p>The header is a 1 byte message. It describes what content will be contained in the body. The current valid headers are listed below in the table below.</p>
-<p>| Header Value          | Meaning      | Message Body Length |
-| :—:                 | :—:        | :—:               |
-| 0x10                  | Hearbeat     | 0 bytes             |
-| 0x20                  | Config       | 4 bytes             |
-| 0x30                  | Data         | Data length         |</p>
-<p>The data length is variable determined by the output size of the neural net. This data length size is specified in a config message and then cannot be changed afterwards.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center">Header Value</th>
+<th align="center">Meaning</th>
+<th align="center">Message Body Length</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">0x10</td>
+<td align="center">Hearbeat</td>
+<td align="center">0 bytes</td>
+</tr>
+<tr>
+<td align="center">0x20</td>
+<td align="center">Config</td>
+<td align="center">4 bytes</td>
+</tr>
+<tr>
+<td align="center">0x30</td>
+<td align="center">Data</td>
+<td align="center">Data length</td>
+</tr>
+</tbody>
+</table><p>The data length is variable determined by the output size of the neural net. This data length size is specified in a config message and then cannot be changed afterwards.</p>
 </div>
 <div class="section" id="body">
 <h3>Body<a class="headerlink" href="#body" title="Permalink to this headline">¶</a></h3>
@@ -224,13 +276,37 @@
 <li><p>After that message is transferred, the Coral should wait for a HIGH on the signal pin, signifying the Arduino is ready to receive the config</p></li>
 <li><p>Once the high is received, the config message should be sent. Send the config header, followed by the following 4 bytes:</p></li>
 </ol>
-<p>| Position              | Value        |  Info                     |
-| :—:                 | :—:        |  :—:                    |
-| 0                     | Datatype     | Currently not implemented |
-| 1                     | Data Length  | Length of data in bytes   |
-| 2                     | Empty        | Value can be anything     |
-| 3                     | Empty        | Value can be anything     |</p>
-</div>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center">Position</th>
+<th align="center">Value</th>
+<th align="center">Info</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">0</td>
+<td align="center">Datatype</td>
+<td align="center">Currently not implemented</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">Data Length</td>
+<td align="center">Length of data in bytes</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">Empty</td>
+<td align="center">Value can be anything</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">Empty</td>
+<td align="center">Value can be anything</td>
+</tr>
+</tbody>
+</table></div>
 <div class="section" id="microcontroller">
 <h3>Microcontroller<a class="headerlink" href="#microcontroller" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
