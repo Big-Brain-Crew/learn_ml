@@ -33,7 +33,7 @@ def main():
         comm_handler.start_comms()
 
         while(True):
-            comm_handler.set_data(nn.get_data())
+            comm_handler.set_data(nn.get_frame())
 
     else: # If we're streaming video, just loop forever to play the stream
         print("starting process")
