@@ -16,6 +16,8 @@ Welcome to learn-ml's documentation!
    face
    posenet
 
+   arduinoquickstart
+
 
 
 Indices and tables
