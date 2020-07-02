@@ -77,7 +77,7 @@ def deploy(address, task, identity_file=None, password=None, comm_protocol='spi'
     # logger.info("Transfer Successful!")
 
     # Start model execution
-    ssh.exec_command("pkill screen")
+    ssh.exec_command("python3 /home/mendel/turn_off_light.py")
     ssh.exec_command("cd /home/mendel/learn_ml/coral_inference/ && screen -d -m python3 "
                      + "app.py --task {task} -p {protocol} ".format(task=task,
                                                                     protocol=comm_protocol))
