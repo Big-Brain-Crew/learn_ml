@@ -13,6 +13,8 @@ Welcome to learn-ml's documentation!
    modules
 
    spicommprotocol
+   face
+   posenet
 
    arduinoquickstart
 
