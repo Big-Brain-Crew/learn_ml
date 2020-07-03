@@ -212,7 +212,7 @@
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">get()</span></code> function expects an index (int) specifying which data point to retrieve and will always return a float.</p>
 <p>Here is the whole program together:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span> <span class="s2">&quot;AnythingSensor.h&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;AnythingSensor.h&gt;</span>
 
 <span class="n">AnythingSensor</span> <span class="n">sensor</span> <span class="o">=</span> <span class="n">AnythingSensor</span><span class="p">();</span>
 
@@ -220,7 +220,7 @@
 <span class="p">{</span>
  <span class="o">//</span> <span class="n">Start</span> <span class="n">the</span> <span class="n">serial</span> <span class="n">terminal</span>
  <span class="n">Serial</span><span class="o">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
- <span class="n">Serial</span><span class="o">.</span><span class="n">begin</span><span class="p">(</span><span class="s2">&quot;Starting program&quot;</span><span class="p">);</span>
+ <span class="n">Serial</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Starting program&quot;</span><span class="p">);</span>
 
  <span class="o">//</span> <span class="n">Initialize</span> <span class="n">the</span> <span class="n">sensor</span>
  <span class="n">sensor</span><span class="o">.</span><span class="n">begin</span><span class="p">();</span>
