@@ -65,7 +65,7 @@ The `get()` function expects an index (int) specifying which data point to retri
 
 Here is the whole program together:
 ```
-include "AnythingSensor.h"
+#include <AnythingSensor.h>
 
 AnythingSensor sensor = AnythingSensor();
 
@@ -73,7 +73,7 @@ void setup()
 {
  // Start the serial terminal
  Serial.begin(9600);
- Serial.begin("Starting program");
+ Serial.println("Starting program");
 
  // Initialize the sensor
  sensor.begin();
