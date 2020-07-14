@@ -5,7 +5,7 @@ import threading
 
 import numpy as np
 
-class SPIComms:
+class SPIComms(object):
     # Message headers defined for this communication protocl
     HEADERS = {
         "heartbeat" : b'\x10',
@@ -13,8 +13,9 @@ class SPIComms:
         "config" : b'\x30'
     }
 
-    def __init__(self, data_length):
-        self.data_length = data_length
+    def __init__(self, source):
+        self.source = source
+        self.data_length = self.source.get_flatten_length()
 
         # Store heartbeat received from microcontroller
         # Used to make sure that microcontroller is still available
@@ -30,15 +31,15 @@ class SPIComms:
         self.signal_pin = None
         self.comm_thread = None
 
-        self.max_error_count = 5
+        self.max_error_count = 50
 
         self.data_lock = threading.Lock()
         self.data = np.zeros(shape = (self.data_length,), dtype = np.float32)
 
-    def start_comms(self):
+    def start(self):
         # Open spidev0.0 device with mode 0 and max speed 100 kHz
         if(self.spi is None):
-            self.spi = SPI("/dev/spidev0.0", 0, 10000) #, bit_order= "lsb")
+            self.spi = SPI("/dev/spidev0.0", 0, 30000) #, bit_order= "lsb")
 
         # Open GPIO pin connection
         if(self.signal_pin is None):
@@ -57,9 +58,10 @@ class SPIComms:
         while True:
             # Initialize the communications with the microcontoller
             self._comm_init()
-
             error_count = 0
             while error_count < self.max_error_count:
+                
+
                 # heartbeat header
                 self.prev_heartbeat_count = self.heartbeat_count
                 self.heartbeat_count = int.from_bytes(self.spi.transfer(self.HEADERS["heartbeat"]), "little")
@@ -74,7 +76,8 @@ class SPIComms:
                     print("Transferring data")
                     self.spi.transfer(self.HEADERS['message'])
                     with self.data_lock:
-                        self.spi.transfer(self.data.tobytes())
+                        self.data = self.source.tobytes()
+                        self.spi.transfer(self.data)
 
                 time.sleep(0.01)
 

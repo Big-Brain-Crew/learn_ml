@@ -1,0 +1,18 @@
+{
+    "app_params": {
+        "source": {
+            "source": "/dev/video1"
+        },
+        "engine": {
+            "model_path": "/home/mendel/models/ssd_mobilenet_v2_coco_quant_postprocess_edgetpu.tflite",
+            "label_path": "/home/mendel/models/coco_labels.txt",
+            "top_k": 15,
+            "threshold": 0.5
+        },
+        "postprocessor": {
+            "output_resolution": "640x480"
+        },
+        "stream_spi": true,
+        "stream_flask": false
+    }
+}

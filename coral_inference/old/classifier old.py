@@ -1,22 +1,19 @@
 import os
 import cv2
-from base_classifier import BaseClassifier
+from base_camera import BaseCamera
 import time
 
 import tflite_runtime.interpreter as tflite
 import numpy as np
 
-class Classifier(BaseClassifier):
-    video_source = 1
+class OpenCVCamera(BaseCamera):
 
     def __init__(self, model_path):
+        self.video_source = 1
         if os.environ.get('OPENCV_CAMERA_SOURCE'):
             self.set_video_source(int(os.environ['OPENCV_CAMERA_SOURCE']))
-
-        # Load TFLite model and allocate tensors
-        self.interpreter = tflite.Interpreter(model_path=model_path, experimental_delegates=[tflite.load_delegate('libedgetpu.so.1.0')])
-        self.interpreter.allocate_tensors()
-        super(Classifier, self).__init__()
+            
+        super(OpenCVCamera, self).__init__()
 
     def set_video_source(self, source):
         self.video_source = source
@@ -117,8 +114,8 @@ class Classifier(BaseClassifier):
     def preprocess(self, img, input_shape):
         pass
 
-# Number classifier trained on the MNIST digits dataset.
-class MnistClassifier(Classifier):
+# Number OpenCVCamera trained on the MNIST digits dataset.
+class MnistClassifier(OpenCVCamera):
     def __init__(self, model_path):
         super(MnistClassifier, self).__init__(model_path)
 
